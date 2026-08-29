@@ -4359,7 +4359,7 @@ updateVipAccess();
 /*
 =========================================================
 IMPORTANT P4-F CONNECTION
-=========================================================
+=====rtPermission=======================================
 
 Google/Firebase Login ပြီးတဲ့အခါ
 ဒီလိုပဲ သတ်မှတ်ပေးရမယ် -
@@ -4995,665 +4995,55 @@ onAuthStateChanged(
 /* =========================================================
    EXPOSE FIREBASE AUTH
 ========================================================= */
-
-window.timeflowAuth =
-    auth;
-
-
-window.timeflowGoogleProvider =
-    provider;
-
-
-</script>
-
-
 <!-- =======================================================
-     P4-C END
-======================================================= END
-   <!-- =======================================================
      TIMEFLOW P4-D
-     🔔 NOTIFICATION + 🔊 CUSTOM ALARM SOUND
-======================================================= -->
+     💾 FIRESTORE USER DATA + FREE/VIP PLAN
+======================================================= --><script type="module">
 
-<style>
-
-/* =========================================================
-   NOTIFICATION / SOUND SETTINGS
-========================================================= */
-
-.p4d-card{
-    background:var(--card);
-
-    border:1px solid var(--border);
-
-    border-radius:20px;
-
-    padding:16px;
-
-    margin-top:15px;
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    updateDoc
 }
-
-.p4d-card-title{
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    margin-bottom:14px;
-}
-
-.p4d-card-title strong{
-    font-size:15px;
-}
-
-.p4d-status{
-    font-size:9px;
-
-    color:var(--muted);
-}
-
-.p4d-row{
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    gap:12px;
-
-    padding:13px 0;
-
-    border-bottom:1px solid var(--border);
-}
-
-.p4d-row:last-child{
-    border-bottom:0;
-}
-
-.p4d-row-info{
-    min-width:0;
-}
-
-.p4d-row-title{
-    font-size:12px;
-
-    font-weight:800;
-}
-
-.p4d-row-sub{
-    margin-top:4px;
-
-    color:var(--muted);
-
-    font-size:9px;
-
-    line-height:1.5;
-}
-
-.p4d-btn{
-    flex:0 0 auto;
-
-    padding:10px 12px;
-
-    border:0;
-
-    border-radius:10px;
-
-    background:#252b35;
-
-    color:white;
-
-    font-size:10px;
-
-    font-weight:800;
-
-    cursor:pointer;
-}
-
-.p4d-btn.gold{
-    background:
-        linear-gradient(
-            135deg,
-            var(--gold),
-            var(--gold2)
-        );
-
-    color:#111;
-}
-
-.p4d-btn.red{
-    background:#2a2024;
-
-    color:#ff6262;
-}
-
-.p4d-sound-name{
-    margin-top:12px;
-
-    padding:11px;
-
-    border-radius:11px;
-
-    background:#090c11;
-
-    border:1px solid var(--border);
-
-    color:var(--gold);
-
-    font-size:10px;
-
-    word-break:break-all;
-}
-
-.p4d-file-input{
-    display:none;
-}
-
-.p4d-test-box{
-    display:grid;
-
-    grid-template-columns:1fr 1fr;
-
-    gap:8px;
-
-    margin-top:12px;
-}
-
-.p4d-test-box button{
-    padding:12px;
-
-    border:1px solid var(--border);
-
-    border-radius:11px;
-
-    background:#171c25;
-
-    color:white;
-
-    font-size:10px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-}
-
-.p4d-permission{
-    border-radius:14px;
-
-    padding:12px;
-
-    margin-top:12px;
-
-    background:#171c25;
-
-    border:1px solid var(--border);
-
-    font-size:10px;
-
-    line-height:1.6;
-}
-
-.p4d-permission.ok{
-    border-color:
-        rgba(74,222,128,.25);
-
-    color:var(--green);
-}
-
-.p4d-permission.warn{
-    border-color:
-        rgba(245,196,81,.25);
-
-    color:var(--gold);
-}
-
-.p4d-permission.denied{
-    border-color:
-        rgba(255,98,98,.25);
-
-    color:var(--red);
-}
-
-</style>
-
-
-<!-- =======================================================
-     SETTINGS PAGE
-======================================================= -->
-
-<section
-    class="page"
-    id="settingsPage">
-
-    <div class="section-title">
-
-        <h2>
-            ⚙️ Settings
-        </h2>
-
-        <span>
-            PREFERENCES
-        </span>
-
-    </div>
-
-
-    <!-- =====================================================
-         NOTIFICATION
-    ====================================================== -->
-
-    <div class="p4d-card">
-
-        <div class="p4d-card-title">
-
-            <strong>
-                🔔 Notifications
-            </strong>
-
-            <span
-                class="p4d-status"
-                id="notificationStatus">
-
-                Checking...
-
-            </span>
-
-        </div>
-
-
-        <div class="p4d-row">
-
-            <div class="p4d-row-info">
-
-                <div class="p4d-row-title">
-
-                    Notification Permission
-
-                </div>
-
-                <div class="p4d-row-sub">
-
-                    Schedule ရောက်တဲ့အချိန်
-                    Notification ပြဖို့
-                    Permission လိုပါတယ်။
-
-                </div>
-
-            </div>
-
-
-            <button
-                class="p4d-btn gold"
-                id="notificationPermissionBtn"
-                onclick="requestNotificationPermission()">
-
-                Allow
-
-            </button>
-
-        </div>
-
-
-        <div
-            class="p4d-permission warn"
-            id="notificationMessage">
-
-            🔔 Notification Permission
-            စစ်နေပါတယ်...
-
-        </div>
-
-    </div>
-
-
-    <!-- =====================================================
-         CUSTOM SOUND
-    ====================================================== -->
-
-    <div class="p4d-card">
-
-        <div class="p4d-card-title">
-
-            <strong>
-                🔊 Alarm Sound
-            </strong>
-
-            <span
-                class="p4d-status">
-
-                CUSTOM
-
-            </span>
-
-        </div>
-
-
-        <div class="p4d-row">
-
-            <div class="p4d-row-info">
-
-                <div class="p4d-row-title">
-
-                    Choose Sound
-
-                </div>
-
-                <div class="p4d-row-sub">
-
-                    Phone ထဲက Audio File
-                    တစ်ခုရွေးနိုင်ပါတယ်။
-
-                </div>
-
-            </div>
-
-
-            <label
-                class="p4d-btn gold"
-                for="alarmSoundFile">
-
-                📁 Choose
-
-            </label>
-
-
-            <input
-                class="p4d-file-input"
-                type="file"
-                id="alarmSoundFile"
-                accept="audio/*">
-
-        </div>
-
-
-        <div
-            class="p4d-sound-name"
-            id="selectedSoundName">
-
-            🔊 Default Alarm Sound
-
-        </div>
-
-
-        <div class="p4d-test-box">
-
-            <button
-                onclick="testAlarmSound()">
-
-                ▶️ Test Sound
-
-            </button>
-
-
-            <button
-                onclick="stopAlarmSound()">
-
-                ⏹ Stop
-
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <!-- =====================================================
-         ALARM STATUS
-    ====================================================== -->
-
-    <div class="p4d-card">
-
-        <div class="p4d-card-title">
-
-            <strong>
-                ⏰ Alarm Engine
-            </strong>
-
-            <span
-                id="alarmEngineStatus"
-                class="p4d-status">
-
-                OFF
-
-            </span>
-
-        </div>
-
-
-        <div class="p4d-row">
-
-            <div class="p4d-row-info">
-
-                <div class="p4d-row-title">
-
-                    Background Alarm Check
-
-                </div>
-
-                <div class="p4d-row-sub">
-
-                    App ဖွင့်ထားချိန်မှာ
-                    Schedule ကို စစ်ပေးပါမယ်။
-
-                </div>
-
-            </div>
-
-
-            <button
-                class="p4d-btn"
-                id="alarmEngineButton"
-                onclick="toggleAlarmEngine()">
-
-                Start
-
-            </button>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =======================================================
-     P4-D JAVASCRIPT
-======================================================= -->
-
-<script>
-
-/* =========================================================
-   P4-D STATE
-========================================================= */
-
-let alarmAudio = null;
-
-let alarmSoundUrl = null;
-
-let alarmEngineRunning = false;
-
-let alarmEngineTimer = null;
-
-let firedAlarmKeys = new Set();
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
 /* =========================================================
-   NOTIFICATION SUPPORT
+   FIRESTORE
 ========================================================= */
 
-function notificationSupported(){
+const db = getFirestore(window.timeflowAuth.app);
 
-    return (
-        "Notification" in window
+
+/*
+   Firebase Auth ကနေ current user ရမယ်။
+*/
+
+
+/* =========================================================
+   USER DOCUMENT
+========================================================= */
+
+function getUserRef(uid){
+
+    return doc(
+        db,
+        "users",
+        uid
     );
 
 }
 
 
 /* =========================================================
-   UPDATE NOTIFICATION STATUS
+   CREATE / LOAD USER
 ========================================================= */
 
-function updateNotificationStatus(){
+async function loadUserData(user){
 
-    const status =
-        document.getElementById(
-            "notificationStatus"
-        );
-
-    const message =
-        document.getElementById(
-            "notificationMessage"
-        );
-
-    const button =
-        document.getElementById(
-            "notificationPermissionBtn"
-        );
-
-
-    if(
-        !notificationSupported()
-    ){
-
-        if(status){
-
-            status.innerText =
-                "NOT SUPPORTED";
-
-        }
-
-        if(message){
-
-            message.className =
-                "p4d-permission denied";
-
-            message.innerText =
-                "❌ ဒီ Browser မှာ Notification မထောက်ပံ့ပါ။";
-
-        }
-
-        if(button){
-
-            button.style.display =
-                "none";
-
-        }
-
-        return;
-
-    }
-
-
-    const permission =
-        Notification.permission;
-
-
-    if(permission === "granted"){
-
-        if(status){
-
-            status.innerText =
-                "ALLOWED";
-
-        }
-
-        if(message){
-
-            message.className =
-                "p4d-permission ok";
-
-            message.innerText =
-                "✅ Notification Permission ရပြီးပါပြီ။";
-
-        }
-
-        if(button){
-
-            button.innerText =
-                "✓ Allowed";
-
-            button.classList.remove(
-                "gold"
-            );
-
-        }
-
-    }
-    else if(permission === "denied"){
-
-        if(status){
-
-            status.innerText =
-                "BLOCKED";
-
-        }
-
-        if(message){
-
-            message.className =
-                "p4d-permission denied";
-
-            message.innerText =
-                "❌ Notification ကို Browser Settings မှာ
-                Allow ပြန်လုပ်ပေးရပါမယ်။";
-
-        }
-
-        if(button){
-
-            button.innerText =
-                "Blocked";
-
-        }
-
-    }
-    else{
-
-        if(status){
-
-            status.innerText =
-                "NOT SET";
-
-        }
-
-        if(message){
-
-            message.className =
-                "p4d-permission warn";
-
-            message.innerText =
-                "⚠️ Notification Permission မရသေးပါ။";
-
-        }
-
-        if(button){
-
-            button.innerText =
-                "Allow";
-
-        }
-
-    }
-
-}
-
-
-/* =========================================================
-   REQUEST NOTIFICATION
-========================================================= */
-
-window.requestNotificationPermission =
-async function(){
-
-    if(
-        !notificationSupported()
-    ){
-
-        showToast(
-            "❌ Notification မထောက်ပံ့ပါ"
-        );
+    if(!user){
 
         return;
 
@@ -5662,354 +5052,215 @@ async function(){
 
     try{
 
-        const permission =
-            await Notification.requestPermission();
+        const userRef =
+            getUserRef(user.uid);
 
 
-        updateNotificationStatus();
+        const snapshot =
+            await getDoc(userRef);
 
 
-        if(permission === "granted"){
-
-            showToast(
-                "🔔 Notification Permission ရပါပြီ!"
-            );
-
-
-            sendTestNotification();
-
-        }
-        else if(
-            permission === "denied"
-        ){
-
-            showToast(
-                "❌ Notification Permission ပိတ်ထားပါတယ်"
-            );
-
-        }
-        else{
-
-            showToast(
-                "⚠️ Permission မပေးရသေးပါ"
-            );
-
-        }
-
-    }catch(error){
-
-        console.error(
-            "Notification Permission Error:",
-            error
-        );
-
-        showToast(
-            "❌ Notification Permission Error"
-        );
-
-    }
-
-};
-
-
-/* =========================================================
-   TEST NOTIFICATION
-========================================================= */
-
-function sendTestNotification(){
-
-    if(
-        !notificationSupported()
-    ){
-
-        return;
-
-    }
-
-
-    if(
-        Notification.permission !==
-        "granted"
-    ){
-
-        return;
-
-    }
-
-
-    try{
-
-        new Notification(
-            "⚡ TimeFlow",
-            {
-
-                body:
-                    "🔔 Notification အလုပ်လုပ်နေပါပြီ!",
-
-                icon:
-                    ""
-
-            }
-        );
-
-    }catch(error){
-
-        console.error(
-            "Test Notification Error:",
-            error
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   CUSTOM SOUND FILE
-========================================================= */
-
-document
-    .getElementById(
-        "alarmSoundFile"
-    )
-    .addEventListener(
-        "change",
-        function(event){
-
-            const file =
-                event.target.files[0];
-
-
-            if(!file){
-
-                return;
-
-            }
-
-
-            if(
-                !file.type.startsWith(
-                    "audio/"
-                )
-            ){
-
-                showToast(
-                    "❌ Audio File မဟုတ်ပါ"
-                );
-
-                return;
-
-            }
-
+        if(!snapshot.exists()){
 
             /*
-               အရင် Object URL ရှိရင်
-               memory release လုပ်မယ်
+               User အသစ်
             */
 
-            if(alarmSoundUrl){
+            const newUserData = {
 
-                URL.revokeObjectURL(
-                    alarmSoundUrl
-                );
+                uid:
+                    user.uid,
 
-            }
+                name:
+                    user.displayName || "Google User",
+
+                email:
+                    user.email || "",
+
+                photoURL:
+                    user.photoURL || "",
+
+                plan:
+                    "free",
+
+                timetableData:
+                    [],
+
+                scheduleData:
+                    [],
+
+                taskData:
+                    [],
+
+                vipTimetable:
+                    null,
+
+                createdAt:
+                    Date.now(),
+
+                updatedAt:
+                    Date.now()
+
+            };
 
 
-            alarmSoundUrl =
-                URL.createObjectURL(
-                    file
-                );
+            await setDoc(
+                userRef,
+                newUserData
+            );
 
 
-            alarmAudio =
-                new Audio(
-                    alarmSoundUrl
-                );
+            window.currentUserPlan =
+                "free";
 
 
-            alarmAudio.preload =
-                "auto";
+            window.userData =
+                newUserData;
 
 
-            document.getElementById(
-                "selectedSoundName"
-            ).innerText =
-                "🔊 " + file.name;
+            updateAccountUI(user);
+
+            updatePlanUI("free");
 
 
             showToast(
-                "🔊 Alarm Sound ရွေးပြီးပါပြီ!"
+                "👤 Account အသစ်ဖန်တီးပြီးပါပြီ"
             );
 
-        }
-    );
-
-
-/* =========================================================
-   TEST ALARM SOUND
-========================================================= */
-
-window.testAlarmSound =
-function(){
-
-    /*
-       Custom sound ရှိရင်
-       custom sound ကိုသုံးမယ်
-    */
-
-    if(alarmAudio){
-
-        try{
-
-            alarmAudio.currentTime =
-                0;
-
-            alarmAudio.loop =
-                false;
-
-            alarmAudio.play();
-
-            showToast(
-                "🔊 Custom Alarm Sound ဖွင့်နေပါတယ်"
-            );
-
-        }catch(error){
-
-            console.error(
-                "Audio Error:",
-                error
-            );
-
-            showToast(
-                "⚠️ Sound ဖွင့်မရပါ"
-            );
-
-        }
-
-        return;
-
-    }
-
-
-    /*
-       Custom sound မရွေးရသေးရင်
-       Browser beep အသုံးပြုမယ်
-    */
-
-    playDefaultAlarm();
-
-
-};
-
-
-/* =========================================================
-   STOP ALARM
-========================================================= */
-
-window.stopAlarmSound =
-function(){
-
-    if(alarmAudio){
-
-        alarmAudio.pause();
-
-        alarmAudio.currentTime =
-            0;
-
-    }
-
-
-    showToast(
-        "⏹ Alarm ရပ်လိုက်ပါပြီ"
-    );
-
-};
-
-
-/* =========================================================
-   DEFAULT ALARM
-========================================================= */
-
-function playDefaultAlarm(){
-
-    try{
-
-        const AudioContext =
-            window.AudioContext ||
-            window.webkitAudioContext;
-
-
-        if(!AudioContext){
-
-            showToast(
-                "⚠️ Audio မထောက်ပံ့ပါ"
-            );
 
             return;
 
         }
 
 
-        const ctx =
-            new AudioContext();
+        /*
+           Existing User
+        */
+
+        const data =
+            snapshot.data();
 
 
-        const oscillator =
-            ctx.createOscillator();
+        window.userData =
+            data;
 
 
-        const gain =
-            ctx.createGain();
+        window.currentUserPlan =
+            data.plan === "vip"
+            ? "vip"
+            : "free";
 
 
-        oscillator.type =
-            "sine";
+        /*
+           P4-A timetable
+        */
+
+        timetableData =
+            Array.isArray(
+                data.timetableData
+            )
+            ? data.timetableData
+            : [];
 
 
-        oscillator.frequency.value =
-            880;
+        /*
+           P4-B VIP timetable
+        */
+
+        if(data.vipTimetable){
+
+            vipTimetable =
+                data.vipTimetable;
+
+        }
 
 
-        gain.gain.value =
-            0.12;
+        /*
+           Schedule
+        */
+
+        if(
+            Array.isArray(
+                data.scheduleData
+            )
+        ){
+
+            scheduleData =
+                data.scheduleData;
+
+        }
 
 
-        oscillator.connect(
-            gain
+        /*
+           Tasks
+        */
+
+        if(
+            Array.isArray(
+                data.taskData
+            )
+        ){
+
+            taskData =
+                data.taskData;
+
+        }
+
+
+        updateAccountUI(user);
+
+        updatePlanUI(
+            window.currentUserPlan
         );
 
 
-        gain.connect(
-            ctx.destination
-        );
+        renderTimetable();
+
+        if(
+            typeof renderVipGrid ===
+            "function"
+        ){
+
+            renderVipGrid();
+
+        }
 
 
-        oscillator.start();
+        if(
+            typeof renderSchedule ===
+            "function"
+        ){
+
+            renderSchedule();
+
+        }
 
 
-        setTimeout(
-            function(){
+        if(
+            typeof renderTasks ===
+            "function"
+        ){
 
-                oscillator.stop();
+            renderTasks();
 
-                ctx.close();
-
-            },
-            700
-        );
+        }
 
 
         showToast(
-            "🔊 Default Alarm ဖွင့်နေပါတယ်"
+            "☁️ Account Data ပြန်တင်ပြီးပါပြီ"
         );
 
 
     }catch(error){
 
         console.error(
-            "Default Alarm Error:",
+            "Load User Data Error:",
             error
+        );
+
+
+        showToast(
+            "❌ Account Data Load မအောင်မြင်ပါ"
         );
 
     }
@@ -6018,544 +5269,376 @@ function playDefaultAlarm(){
 
 
 /* =========================================================
-   PLAY ALARM
+   SAVE USER DATA
 ========================================================= */
 
-function playAlarm(){
+window.saveUserData =
+async function(){
 
-    if(alarmAudio){
-
-        try{
-
-            alarmAudio.currentTime =
-                0;
-
-            alarmAudio.play();
-
-        }catch(error){
-
-            console.error(
-                "Custom Alarm Error:",
-                error
-            );
-
-            playDefaultAlarm();
-
-        }
-
-    }else{
-
-        playDefaultAlarm();
-
-    }
-
-}
+    const user =
+        window.timeflowAuth.currentUser;
 
 
-/* =========================================================
-   SHOW ALARM NOTIFICATION
-========================================================= */
+    if(!user){
 
-function showAlarmNotification(
-    title,
-    body
-){
+        showToast(
+            "🔐 အရင် Google Login ဝင်ပါ"
+        );
 
-    if(
-        !notificationSupported()
-    ){
-
-        return;
-
-    }
-
-
-    if(
-        Notification.permission !==
-        "granted"
-    ){
-
-        return;
+        return false;
 
     }
 
 
     try{
 
-        new Notification(
-            title,
-            {
+        const userRef =
+            getUserRef(user.uid);
 
-                body:body
 
-            }
-        );
+        const data = {
 
-    }catch(error){
+            uid:
+                user.uid,
 
-        console.error(
-            "Alarm Notification Error:",
-            error
-        );
+            name:
+                user.displayName || "",
 
-    }
+            email:
+                user.email || "",
 
-}
+            photoURL:
+                user.photoURL || "",
 
+            plan:
+                window.currentUserPlan || "free",
 
-/* =========================================================
-   ALARM ENGINE
-========================================================= */
+            timetableData:
+                Array.isArray(timetableData)
+                ? timetableData
+                : [],
 
-window.toggleAlarmEngine =
-function(){
+            scheduleData:
+                Array.isArray(scheduleData)
+                ? scheduleData
+                : [],
 
-    if(alarmEngineRunning){
+            taskData:
+                Array.isArray(taskData)
+                ? taskData
+                : [],
 
-        stopAlarmEngine();
+            vipTimetable:
+                window.currentUserPlan === "vip"
+                ? vipTimetable
+                : null,
 
-    }else{
-
-        startAlarmEngine();
-
-    }
-
-};
-
-
-/* =========================================================
-   START ENGINE
-========================================================= */
-
-window.startAlarmEngine =
-function(){
-
-    if(alarmEngineRunning){
-
-        return;
-
-    }
-
-
-    alarmEngineRunning =
-        true;
-
-
-    const status =
-        document.getElementById(
-            "alarmEngineStatus"
-        );
-
-
-    const button =
-        document.getElementById(
-            "alarmEngineButton"
-        );
-
-
-    if(status){
-
-        status.innerText =
-            "ON";
-
-    }
-
-
-    if(button){
-
-        button.innerText =
-            "Stop";
-
-        button.classList.add(
-            "red"
-        );
-
-    }
-
-
-    checkAlarmSchedules();
-
-
-    alarmEngineTimer =
-        setInterval(
-            checkAlarmSchedules,
-            15000
-        );
-
-
-    showToast(
-        "⏰ Alarm Engine စပါပြီ"
-    );
-
-};
-
-
-/* =========================================================
-   STOP ENGINE
-========================================================= */
-
-window.stopAlarmEngine =
-function(){
-
-    alarmEngineRunning =
-        false;
-
-
-    if(alarmEngineTimer){
-
-        clearInterval(
-            alarmEngineTimer
-        );
-
-        alarmEngineTimer =
-            null;
-
-    }
-
-
-    const status =
-        document.getElementById(
-            "alarmEngineStatus"
-        );
-
-
-    const button =
-        document.getElementById(
-            "alarmEngineButton"
-        );
-
-
-    if(status){
-
-        status.innerText =
-            "OFF";
-
-    }
-
-
-    if(button){
-
-        button.innerText =
-            "Start";
-
-        button.classList.remove(
-            "red"
-        );
-
-    }
-
-
-    showToast(
-        "⏹ Alarm Engine ရပ်ပါပြီ"
-    );
-
-};
-
-
-/* =========================================================
-   CHECK SCHEDULE
-========================================================= */
-
-function checkAlarmSchedules(){
-
-    if(!alarmEngineRunning){
-
-        return;
-
-    }
-
-
-    /*
-       P4-E မှာ scheduleData ကို
-       တကယ်အသုံးပြုမယ်။
-
-       အခု scheduleData မရှိသေးရင်
-       return လုပ်မယ်။
-    */
-
-    if(
-        !Array.isArray(
-            window.scheduleData
-        )
-    ){
-
-        return;
-
-    }
-
-
-    const now =
-        new Date();
-
-
-    const hour =
-        String(
-            now.getHours()
-        ).padStart(2,"0");
-
-
-    const minute =
-        String(
-            now.getMinutes()
-        ).padStart(2,"0");
-
-
-    const currentTime =
-        `${hour}:${minute}`;
-
-
-    const today =
-        now.getDay();
-
-
-    const days = [
-
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday"
-
-    ];
-
-
-    const currentDay =
-        days[today];
-
-
-    window.scheduleData.forEach(
-        function(item,index){
-
-            if(!item){
-
-                return;
-
-            }
-
-
-            /*
-               Schedule object က
-               P4-E မှာ start / time
-               support လုပ်မယ်။
-            */
-
-            const itemTime =
-                item.time ||
-                item.start;
-
-
-            if(
-                itemTime !==
-                currentTime
-            ){
-
-                return;
-
-            }
-
-
-            if(
-                item.day &&
-                item.day !==
-                currentDay
-            ){
-
-                return;
-
-            }
-
-
-            const alarmKey =
-                `${now.toDateString()}_${index}_${itemTime}`;
-
-
-            if(
-                firedAlarmKeys.has(
-                    alarmKey
-                )
-            ){
-
-                return;
-
-            }
-
-
-            firedAlarmKeys.add(
-                alarmKey
-            );
-
-
-            const title =
-                "⏰ TimeFlow Alarm";
-
-
-            const taskName =
-                item.name ||
-                item.task ||
-                "Scheduled Task";
-
-
-            const body =
-                `🔔 ${taskName}`;
-
-
-            playAlarm();
-
-
-            showAlarmNotification(
-                title,
-                body
-            );
-
-
-            showToast(
-                `🔔 ${taskName}`
-            );
-
-
-            /*
-               24 hours ကျော်ရင်
-               fired key တွေကို
-               နောက်ပိုင်း cleanup လုပ်နိုင်တယ်။
-            */
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   SETTINGS NAV
-========================================================= */
-
-function addSettingsNavButton(){
-
-    const nav =
-        document.querySelector(
-            ".bottom-nav"
-        );
-
-
-    if(!nav){
-
-        return;
-
-    }
-
-
-    if(
-        document.getElementById(
-            "settingsNavButton"
-        )
-    ){
-
-        return;
-
-    }
-
-
-    const button =
-        document.createElement(
-            "button"
-        );
-
-
-    button.className =
-        "nav";
-
-
-    button.id =
-        "settingsNavButton";
-
-
-    button.onclick =
-        function(){
-
-            switchPage(
-                "settingsPage",
-                button
-            );
+            updatedAt:
+                Date.now()
 
         };
 
 
-    button.innerHTML = `
-
-        <div>
-            ⚙️
-        </div>
-
-        Settings
-
-    `;
+        await setDoc(
+            userRef,
+            data,
+            {
+                merge:true
+            }
+        );
 
 
-    nav.appendChild(
-        button
+        window.userData =
+            {
+                ...(window.userData || {}),
+                ...data
+            };
+
+
+        return true;
+
+
+    }catch(error){
+
+        console.error(
+            "Save User Data Error:",
+            error
+        );
+
+
+        showToast(
+            "❌ Data သိမ်းမရပါ"
+        );
+
+
+        return false;
+
+    }
+
+};
+
+
+/* =========================================================
+   SAVE TIMETABLE
+========================================================= */
+
+window.saveTimetableToFirebase =
+async function(){
+
+    await saveUserData();
+
+};
+
+
+/* =========================================================
+   SAVE VIP TIMETABLE
+========================================================= */
+
+window.saveVipTimetableToFirebase =
+async function(){
+
+    if(
+        window.currentUserPlan !==
+        "vip"
+    ){
+
+        showToast(
+            "🔒 VIP User Only"
+        );
+
+        return;
+
+    }
+
+
+    await saveUserData();
+
+};
+
+
+/* =========================================================
+   CHANGE PLAN
+========================================================= */
+
+window.changeUserPlan =
+async function(plan){
+
+    const user =
+        window.timeflowAuth.currentUser;
+
+
+    if(!user){
+
+        showToast(
+            "🔐 Login လုပ်ထားဖို့လိုပါတယ်"
+        );
+
+        return;
+
+    }
+
+
+    plan =
+        String(plan)
+            .toLowerCase();
+
+
+    if(
+        plan !== "vip" &&
+        plan !== "free"
+    ){
+
+        plan = "free";
+
+    }
+
+
+    try{
+
+        const userRef =
+            getUserRef(user.uid);
+
+
+        await updateDoc(
+            userRef,
+            {
+
+                plan:
+                    plan,
+
+                updatedAt:
+                    Date.now()
+
+            }
+        );
+
+
+        window.currentUserPlan =
+            plan;
+
+
+        window.userData =
+            {
+
+                ...(window.userData || {}),
+
+                plan:
+                    plan
+
+            };
+
+
+        updatePlanUI(plan);
+
+        updateVipAccess();
+
+
+        showToast(
+            plan === "vip"
+            ? "👑 VIP Activated"
+            : "🆓 Free Account"
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "Plan Update Error:",
+            error
+        );
+
+
+        showToast(
+            "❌ Plan Update မအောင်မြင်ပါ"
+        );
+
+    }
+
+};
+
+
+/* =========================================================
+   AUTO LOAD AFTER LOGIN
+========================================================= */
+
+if(
+    window.timeflowAuth
+){
+
+    window.timeflowAuth.onAuthStateChanged(
+        async function(user){
+
+            if(user){
+
+                await loadUserData(
+                    user
+                );
+
+            }
+
+        }
     );
 
 }
 
 
 /* =========================================================
-   INITIALIZE P4-D
+   AUTO SAVE HELPERS
 ========================================================= */
-
-window.scheduleData =
-    window.scheduleData || [];
-
-
-addSettingsNavButton();
-
-updateNotificationStatus();
 
 
 /*
-   Browser tab ပြန် active ဖြစ်တဲ့အခါ
-   Permission status ပြန်စစ်မယ်။
+   P4-A timetable save
 */
 
-document.addEventListener(
-    "visibilitychange",
-    function(){
+const oldSaveTimetable =
+    window.saveTimetable;
 
-        if(
-            !document.hidden
-        ){
 
-            updateNotificationStatus();
+window.saveTimetable =
+async function(event){
 
-        }
+    if(oldSaveTimetable){
+
+        await oldSaveTimetable(
+            event
+        );
 
     }
-);
+
+    await saveUserData();
+
+};
+
+
+/*
+   P4-B VIP grid save
+*/
+
+const oldSaveVipCellTask =
+    window.saveVipCellTask;
+
+
+window.saveVipCellTask =
+async function(event){
+
+    if(oldSaveVipCellTask){
+
+        await oldSaveVipCellTask(
+            event
+        );
+
+    }
+
+    if(
+        window.currentUserPlan ===
+        "vip"
+    ){
+
+        await saveUserData();
+
+    }
+
+};
+
+
+/*
+   VIP Grid create
+*/
+
+const oldCreateVipGrid =
+    window.createVipGrid;
+
+
+window.createVipGrid =
+async function(){
+
+    if(oldCreateVipGrid){
+
+        await oldCreateVipGrid();
+
+    }
+
+    if(
+        window.currentUserPlan ===
+        "vip"
+    ){
+
+        await saveUserData();
+
+    }
+
+};
 
 
 /* =========================================================
-   CLEANUP SOUND URL
+   P4-D READY
 ========================================================= */
 
-window.addEventListener(
-    "beforeunload",
-    function(){
-
-        if(alarmSoundUrl){
-
-            URL.revokeObjectURL(
-                alarmSoundUrl
-            );
-
-        }
-
-    }
+console.log(
+    "🔥 TimeFlow P4-D Firebase Data System Ready"
 );
 
-</script>
-
-
-<!-- =======================================================
+</script><!-- =======================================================
      P4-D END
 ======================================================= -->
