@@ -46,6 +46,13 @@ body{
     padding-bottom:95px;
 }
 
+button,
+input{
+    font-family:inherit;
+}
+
+/* HEADER */
+
 .header{
     padding:28px 20px 18px;
 }
@@ -86,11 +93,12 @@ body{
 }
 
 .vip-badge{
-    background:linear-gradient(
-        135deg,
-        var(--gold),
-        var(--gold2)
-    );
+    background:
+        linear-gradient(
+            135deg,
+            var(--gold),
+            var(--gold2)
+        );
     color:#111;
 }
 
@@ -106,12 +114,12 @@ body{
     align-items:center;
     justify-content:center;
     font-size:18px;
+    overflow:hidden;
 }
 
 .account-btn img{
     width:100%;
     height:100%;
-    border-radius:50%;
     object-fit:cover;
 }
 
@@ -129,6 +137,8 @@ body{
     margin-top:6px;
     font-size:26px;
 }
+
+/* PAGE */
 
 .page{
     display:none;
@@ -154,6 +164,8 @@ body{
 
 }
 
+/* PROGRESS */
+
 .progress-card{
     margin:8px 0 22px;
     padding:20px;
@@ -171,6 +183,11 @@ body{
 .progress-head{
     display:flex;
     justify-content:space-between;
+    align-items:center;
+}
+
+.progress-head h3{
+    font-size:16px;
 }
 
 .progress-head span{
@@ -198,6 +215,7 @@ body{
             #292d35 0deg
         );
     position:relative;
+    flex-shrink:0;
 }
 
 .circle::before{
@@ -211,6 +229,7 @@ body{
 
 .circle strong{
     position:relative;
+    font-size:18px;
 }
 
 .progress-info{
@@ -244,6 +263,8 @@ body{
     transition:.5s;
 }
 
+/* SECTION */
+
 .section-title{
     display:flex;
     justify-content:space-between;
@@ -259,6 +280,8 @@ body{
     color:var(--muted);
     font-size:10px;
 }
+
+/* TASK */
 
 .task-list{
     display:flex;
@@ -324,6 +347,11 @@ body{
     color:var(--green);
 }
 
+.status.missed{
+    background:rgba(255,98,98,.12);
+    color:var(--red);
+}
+
 .task-actions{
     display:flex;
     gap:5px;
@@ -339,6 +367,8 @@ body{
     cursor:pointer;
 }
 
+/* EMPTY */
+
 .empty{
     text-align:center;
     padding:35px 15px;
@@ -347,6 +377,8 @@ body{
     border-radius:18px;
     font-size:13px;
 }
+
+/* TIMELINE */
 
 .timeline{
     position:relative;
@@ -405,6 +437,8 @@ body{
     font-size:10px;
 }
 
+/* STATS */
+
 .stats-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
@@ -431,6 +465,8 @@ body{
     font-size:9px;
 }
 
+/* BIG PROGRESS */
+
 .big-progress{
     margin-top:15px;
     padding:20px;
@@ -438,6 +474,12 @@ body{
     border-radius:20px;
     border:1px solid var(--border);
 }
+
+.big-progress h3{
+    font-size:15px;
+}
+
+/* ADD */
 
 .add-btn{
     position:fixed;
@@ -459,6 +501,8 @@ body{
     cursor:pointer;
     z-index:20;
 }
+
+/* NAV */
 
 .bottom-nav{
     position:fixed;
@@ -497,6 +541,8 @@ body{
     color:var(--gold);
 }
 
+/* MODAL */
+
 .modal{
     position:fixed;
     inset:0;
@@ -511,6 +557,7 @@ body{
 
 .modal.show{
     display:flex;
+    animation:fade .25s ease;
 }
 
 .modal-box{
@@ -522,6 +569,7 @@ body{
     border:1px solid rgba(245,196,81,.15);
     border-radius:25px;
     padding:22px;
+    box-shadow:0 25px 80px rgba(0,0,0,.6);
 }
 
 .modal-header{
@@ -529,6 +577,10 @@ body{
     align-items:center;
     justify-content:space-between;
     margin-bottom:22px;
+}
+
+.modal-header h2{
+    font-size:19px;
 }
 
 .close{
@@ -541,6 +593,8 @@ body{
     cursor:pointer;
 }
 
+/* FORM */
+
 .form-group{
     margin-bottom:16px;
 }
@@ -551,6 +605,7 @@ body{
     font-size:10px;
     font-weight:bold;
     margin-bottom:7px;
+    letter-spacing:1px;
 }
 
 .form-group input{
@@ -578,6 +633,8 @@ body{
     font-weight:900;
     cursor:pointer;
 }
+
+/* ACCOUNT */
 
 .account-avatar{
     width:76px;
@@ -612,6 +669,7 @@ body{
     color:var(--muted);
     font-size:11px;
     margin-top:5px;
+    word-break:break-all;
 }
 
 .google-btn{
@@ -635,13 +693,32 @@ body{
     font-weight:bold;
     cursor:pointer;
     margin-top:10px;
+    display:none;
 }
+
+.user-only{
+    display:none;
+}
+
+/* LOGIN STATUS */
+
+.login-status{
+    text-align:center;
+    font-size:10px;
+    color:var(--muted);
+    margin-top:12px;
+    line-height:1.6;
+}
+
+/* TOAST */
 
 .toast{
     position:fixed;
     left:50%;
     bottom:92px;
-    transform:translateX(-50%) translateY(20px);
+    transform:
+        translateX(-50%)
+        translateY(20px);
     background:#202631;
     border:1px solid rgba(245,196,81,.2);
     color:white;
@@ -656,13 +733,20 @@ body{
 
 .toast.show{
     opacity:1;
-    transform:translateX(-50%) translateY(0);
+    transform:
+        translateX(-50%)
+        translateY(0);
 }
+
+/* MOBILE */
 
 @media(max-width:430px){
 
     .task{
-        grid-template-columns:57px 1fr auto;
+        grid-template-columns:
+            57px
+            1fr
+            auto;
     }
 
     .task .status{
@@ -728,6 +812,8 @@ body{
 </header>
 
 
+<!-- HOME -->
+
 <section
     class="page active"
     id="home">
@@ -780,6 +866,7 @@ body{
 
     </div>
 
+
     <div class="section-title">
 
         <h2>
@@ -805,6 +892,7 @@ body{
 
     </div>
 
+
     <div class="section-title">
 
         <h2>
@@ -826,6 +914,7 @@ body{
         </div>
 
     </div>
+
 
     <div class="section-title">
 
@@ -861,6 +950,8 @@ body{
 </section>
 
 
+<!-- SCHEDULE -->
+
 <section
     class="page"
     id="schedule">
@@ -889,6 +980,8 @@ body{
 
 </section>
 
+
+<!-- PROGRESS -->
 
 <section
     class="page"
@@ -925,6 +1018,7 @@ body{
 
     </div>
 
+
     <div class="big-progress">
 
         <h3>
@@ -951,10 +1045,24 @@ body{
 
         </div>
 
+        <p
+            style="
+                color:#858d9c;
+                font-size:11px;
+                margin-top:12px;
+            ">
+
+            Small progress every day becomes
+            big results. 🔥
+
+        </p>
+
     </div>
 
 </section>
 
+
+<!-- ADD -->
 
 <button
     class="add-btn"
@@ -965,6 +1073,8 @@ body{
 </button>
 
 
+<!-- NAV -->
+
 <nav class="bottom-nav">
 
     <button
@@ -972,7 +1082,6 @@ body{
         onclick="switchPage('home',this)">
 
         <div>🏠</div>
-
         Home
 
     </button>
@@ -982,7 +1091,6 @@ body{
         onclick="switchPage('schedule',this)">
 
         <div>⏰</div>
-
         Schedule
 
     </button>
@@ -992,13 +1100,14 @@ body{
         onclick="switchPage('progress',this)">
 
         <div>📊</div>
-
         Progress
 
     </button>
 
 </nav>
 
+
+<!-- ACCOUNT MODAL -->
 
 <div
     class="modal"
@@ -1021,6 +1130,7 @@ body{
             </button>
 
         </div>
+
 
         <div class="account-modal-user">
 
@@ -1062,7 +1172,7 @@ body{
 
         <button
             class="google-btn"
-            id="googleLoginButton"
+            id="googleLoginBtn"
             onclick="googleLogin()">
 
             🔐 Continue with Google
@@ -1072,18 +1182,29 @@ body{
 
         <button
             class="logout-btn"
-            id="logoutButton"
-            onclick="logoutUser()"
-            style="display:none;">
+            id="logoutBtn"
+            onclick="googleLogout()">
 
-            🚪 Logout
+            🚪 Sign Out
 
         </button>
+
+
+        <div
+            class="login-status"
+            id="loginStatus">
+
+            Google Account Login
+            နဲ့ Firebase Auth ချိတ်ထားပါတယ်။
+
+        </div>
 
     </div>
 
 </div>
 
+
+<!-- ADD TASK -->
 
 <div
     class="modal"
@@ -1107,6 +1228,7 @@ body{
 
         </div>
 
+
         <form
             onsubmit="saveTask(event)">
 
@@ -1123,6 +1245,7 @@ body{
 
             </div>
 
+
             <div class="form-group">
 
                 <label>
@@ -1137,6 +1260,7 @@ body{
 
             </div>
 
+
             <div class="form-group">
 
                 <label>
@@ -1149,6 +1273,7 @@ body{
                     placeholder="Study / Meal / Workout">
 
             </div>
+
 
             <button
                 type="submit"
@@ -1164,6 +1289,8 @@ body{
 
 </div>
 
+
+<!-- TOAST -->
 
 <div
     class="toast"
@@ -1182,108 +1309,187 @@ body{
 
 import {
     initializeApp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
 import {
     getAuth,
     GoogleAuthProvider,
     signInWithPopup,
-    onAuthStateChanged,
-    signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    signOut,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
+
+/* FIREBASE CONFIG */
 
 const firebaseConfig = {
 
     apiKey:
-    "AIzaSyCw72aOGSLvdf3q221gF0yIM63RiSqpkJc",
+        "AIzaSyCw72aOGSLvdf3q221gF0yIM63RiSqpkJc",
 
     authDomain:
-    "my-productivity-7ae74.firebaseapp.com",
+        "my-productivity-7ae74.firebaseapp.com",
 
     projectId:
-    "my-productivity-7ae74",
+        "my-productivity-7ae74",
 
     storageBucket:
-    "my-productivity-7ae74.firebasestorage.app",
+        "my-productivity-7ae74.firebasestorage.app",
 
     messagingSenderId:
-    "955389154479",
+        "955389154479",
 
     appId:
-    "1:955389154479:web:e2b46c690d7e9b1610305a",
+        "1:955389154479:web:e2b46c690d7e9b1610305a",
 
     measurementId:
-    "G-FYVSE71BM1"
+        "G-FYVSE71BM1"
 
 };
 
 
+/* INIT */
+
 const app =
     initializeApp(firebaseConfig);
 
-
 const auth =
     getAuth(app);
-
 
 const provider =
     new GoogleAuthProvider();
 
 
-window.googleLogin =
-async function(){
+/* GOOGLE LOGIN */
+
+window.googleLogin = async function(){
+
+    const button =
+        document.getElementById(
+            "googleLoginBtn"
+        );
+
+    const status =
+        document.getElementById(
+            "loginStatus"
+        );
+
+    button.disabled = true;
+
+    button.innerText =
+        "⏳ Connecting...";
+
+    status.innerText =
+        "Google Account ရွေးနေပါတယ်...";
+
 
     try{
 
-        showToast("🔐 Google Login ဖွင့်နေပါတယ်...");
+        const result =
+            await signInWithPopup(
+                auth,
+                provider
+            );
 
-        await signInWithPopup(
-            auth,
-            provider
-        );
 
-    }
+        const user =
+            result.user;
 
-    catch(error){
 
-        console.error(error);
+        updateUserUI(user);
 
         showToast(
-            "❌ Login မအောင်မြင်ပါ: "
-            + error.code
+            "✅ Google Login အောင်မြင်ပါပြီ!"
         );
+
+
+    }catch(error){
+
+        console.error(
+            "Google Login Error:",
+            error
+        );
+
+
+        let message =
+            "❌ Login မအောင်မြင်ပါ။";
+
+
+        if(
+            error.code ===
+            "auth/unauthorized-domain"
+        ){
+
+            message =
+                "❌ Firebase Authorized Domain မထည့်ရသေးပါ။";
+
+        }
+
+        else if(
+            error.code ===
+            "auth/popup-closed-by-user"
+        ){
+
+            message =
+                "⚠️ Google Login ပိတ်လိုက်ပါတယ်။";
+
+        }
+
+        else if(
+            error.code ===
+            "auth/popup-blocked"
+        ){
+
+            message =
+                "⚠️ Browser က popup ကိုပိတ်ထားပါတယ်။";
+
+        }
+
+
+        status.innerText =
+            message;
+
+        showToast(message);
+
+
+    }finally{
+
+        button.disabled = false;
+
+        button.innerText =
+            "🔐 Continue with Google";
 
     }
 
 };
 
 
-window.logoutUser =
-async function(){
+/* LOGOUT */
+
+window.googleLogout = async function(){
 
     try{
 
         await signOut(auth);
 
         showToast(
-            "🚪 Logout လုပ်ပြီးပါပြီ"
+            "👋 Sign out လုပ်ပြီးပါပြီ"
         );
 
-    }
-
-    catch(error){
+    }catch(error){
 
         console.error(error);
 
         showToast(
-            "❌ Logout မအောင်မြင်ပါ"
+            "❌ Sign out မအောင်မြင်ပါ"
         );
 
     }
 
 };
 
+
+/* AUTH STATE */
 
 onAuthStateChanged(
     auth,
@@ -1303,6 +1509,8 @@ onAuthStateChanged(
 );
 
 
+/* USER UI */
+
 function updateUserUI(user){
 
     const name =
@@ -1313,52 +1521,17 @@ function updateUserUI(user){
         user.email
         || "No email";
 
-    const photo =
-        user.photoURL;
 
-
-    document
-        .getElementById("accountName")
-        .innerText =
+    document.getElementById(
+        "accountName"
+    ).innerText =
         name;
 
 
-    document
-        .getElementById("accountEmail")
-        .innerText =
+    document.getElementById(
+        "accountEmail"
+    ).innerText =
         email;
-
-
-    document
-        .getElementById("googleLoginButton")
-        .style.display =
-        "none";
-
-
-    document
-        .getElementById("logoutButton")
-        .style.display =
-        "block";
-
-
-    document
-        .getElementById("headerPlan")
-        .innerText =
-        "🆓 FREE";
-
-
-    document
-        .getElementById("accountPlan")
-        .innerText =
-        "🆓 FREE";
-
-
-    document
-        .getElementById("greetingTitle")
-        .innerText =
-        "Welcome, "
-        + name
-        + " 👋";
 
 
     const avatar =
@@ -1367,96 +1540,132 @@ function updateUserUI(user){
         );
 
 
-    if(photo){
+    const button =
+        document.getElementById(
+            "accountButton"
+        );
+
+
+    if(user.photoURL){
 
         avatar.innerHTML =
-        `<img src="${photo}" alt="Profile">`;
+            `<img src="${user.photoURL}" alt="Profile">`;
 
-        document
-            .getElementById("accountButton")
-            .innerHTML =
-        `<img src="${photo}" alt="Profile">`;
+        button.innerHTML =
+            `<img src="${user.photoURL}" alt="Profile">`;
+
+    }else{
+
+        avatar.innerHTML =
+            "👤";
+
+        button.innerHTML =
+            "👤";
 
     }
+
+
+    document.getElementById(
+        "googleLoginBtn"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "logoutBtn"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "loginStatus"
+    ).innerText =
+        "Google Account နဲ့ Login ဝင်ထားပါတယ်။";
+
+
+    document.getElementById(
+        "greetingTitle"
+    ).innerText =
+        "Welcome, " + name + " 👋";
 
 }
 
 
+/* GUEST UI */
+
 function updateGuestUI(){
 
-    document
-        .getElementById("accountName")
-        .innerText =
+    document.getElementById(
+        "accountName"
+    ).innerText =
         "Guest User";
 
 
-    document
-        .getElementById("accountEmail")
-        .innerText =
+    document.getElementById(
+        "accountEmail"
+    ).innerText =
         "Not signed in";
 
 
-    document
-        .getElementById("googleLoginButton")
-        .style.display =
+    document.getElementById(
+        "accountAvatar"
+    ).innerHTML =
+        "👤";
+
+
+    document.getElementById(
+        "accountButton"
+    ).innerHTML =
+        "👤";
+
+
+    document.getElementById(
+        "googleLoginBtn"
+    ).style.display =
         "block";
 
 
-    document
-        .getElementById("logoutButton")
-        .style.display =
+    document.getElementById(
+        "logoutBtn"
+    ).style.display =
         "none";
 
 
-    document
-        .getElementById("accountAvatar")
-        .innerHTML =
-        "👤";
+    document.getElementById(
+        "loginStatus"
+    ).innerText =
+        "Google Account Login နဲ့ Firebase Auth ချိတ်ထားပါတယ်။";
 
 
-    document
-        .getElementById("accountButton")
-        .innerHTML =
-        "👤";
-
-
-    document
-        .getElementById("greetingTitle")
-        .innerText =
+    document.getElementById(
+        "greetingTitle"
+    ).innerText =
         "Let's get things done. 🚀";
 
 }
 
-</script>
 
+/* PAGE SWITCH */
 
-<script>
+window.switchPage = function(
+    pageId,
+    btn
+){
 
-/* =====================================================
-   APP STATE
-===================================================== */
-
-let tasks = [];
-
-
-/* =====================================================
-   PAGE SWITCH
-===================================================== */
-
-function switchPage(pageId,btn){
-
-    document
-        .querySelectorAll(".page")
-        .forEach(page =>
-            page.classList.remove("active")
+    document.querySelectorAll(".page")
+        .forEach(
+            page =>
+                page.classList.remove("active")
         );
 
 
-    document
-        .querySelectorAll(".bottom-nav .nav")
-        .forEach(nav =>
+    document.querySelectorAll(
+        ".bottom-nav .nav"
+    )
+    .forEach(
+        nav =>
             nav.classList.remove("active")
-        );
+    );
 
 
     const page =
@@ -1476,58 +1685,62 @@ function switchPage(pageId,btn){
 
     }
 
-}
+};
 
 
-/* =====================================================
-   ACCOUNT
-===================================================== */
+/* ACCOUNT */
 
-function openAccountModal(){
+window.openAccountModal =
+function(){
 
     document
         .getElementById("accountModal")
         .classList.add("show");
 
-}
+};
 
 
-function closeAccountModal(){
+window.closeAccountModal =
+function(){
 
     document
         .getElementById("accountModal")
         .classList.remove("show");
 
-}
+};
 
 
-/* =====================================================
-   ADD TASK
-===================================================== */
+/* ADD TASK */
 
-function openAddModal(){
+window.openAddModal =
+function(){
 
     document
         .getElementById("addTaskModal")
         .classList.add("show");
 
-}
+};
 
 
-function closeAddModal(){
+window.closeAddModal =
+function(){
 
     document
         .getElementById("addTaskModal")
         .classList.remove("show");
 
-}
+};
 
 
-/* =====================================================
-   SAVE TASK
-===================================================== */
+/* TASK STATE */
 
-function saveTask(event){
+let tasks = [];
+
+
+/* SAVE TASK */
+
+window.saveTask =
+function(event){
 
     event.preventDefault();
 
@@ -1578,12 +1791,10 @@ function saveTask(event){
         "✨ Task သိမ်းပြီးပါပြီ!"
     );
 
-}
+};
 
 
-/* =====================================================
-   RENDER
-===================================================== */
+/* RENDER */
 
 function renderTasks(){
 
@@ -1592,12 +1803,10 @@ function renderTasks(){
             "taskList"
         );
 
-
     const scheduleList =
         document.getElementById(
             "scheduleList"
         );
-
 
     const schedulePageList =
         document.getElementById(
@@ -1607,28 +1816,31 @@ function renderTasks(){
 
     if(tasks.length === 0){
 
-        taskList.innerHTML = `
+        taskList.innerHTML =
+            `
             <div class="empty">
                 📭 Task မရှိသေးပါ။
                 <br><br>
                 + ခလုတ်ကိုနှိပ်ပြီး
                 Task အသစ်ထည့်ပါ။
             </div>
-        `;
+            `;
 
 
-        scheduleList.innerHTML = `
+        scheduleList.innerHTML =
+            `
             <div class="empty">
                 ⏰ Schedule မရှိသေးပါ။
             </div>
-        `;
+            `;
 
 
-        schedulePageList.innerHTML = `
+        schedulePageList.innerHTML =
+            `
             <div class="empty">
                 ⏰ Schedule မရှိသေးပါ။
             </div>
-        `;
+            `;
 
 
         updateProgress();
@@ -1640,7 +1852,7 @@ function renderTasks(){
 
     tasks.sort(
         (a,b) =>
-        a.time.localeCompare(b.time)
+            a.time.localeCompare(b.time)
     );
 
 
@@ -1651,91 +1863,95 @@ function renderTasks(){
     schedulePageList.innerHTML = "";
 
 
-    tasks.forEach(task => {
+    tasks.forEach(
+        task => {
 
-        const time =
-            formatTime(task.time);
-
-
-        taskList.innerHTML += `
-
-            <div class="task">
-
-                <div class="time">
-                    ${time}
-                </div>
-
-                <div class="task-info">
-
-                    <strong>
-                        ${escapeHtml(task.name)}
-                    </strong>
-
-                    <small>
-                        ${escapeHtml(task.category)}
-                    </small>
-
-                </div>
-
-                <div
-                    class="status ${task.status}">
-
-                    ${task.status.toUpperCase()}
-
-                </div>
-
-                <div class="task-actions">
-
-                    <button
-                        class="icon-btn"
-                        onclick="toggleTask(${task.id})">
-
-                        ✓
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        `;
+            const time =
+                formatTime(task.time);
 
 
-        const timelineHTML = `
+            taskList.innerHTML += `
 
-            <div class="timeline-item">
+                <div class="task">
 
-                <div class="timeline-dot"></div>
-
-                <div class="timeline-card">
-
-                    <div class="schedule-time">
+                    <div class="time">
                         ${time}
                     </div>
 
-                    <h3>
-                        ${escapeHtml(task.name)}
-                    </h3>
+                    <div class="task-info">
 
-                    <small>
-                        ${escapeHtml(task.category)}
-                    </small>
+                        <strong>
+                            ${escapeHtml(task.name)}
+                        </strong>
+
+                        <small>
+                            ${escapeHtml(task.category)}
+                        </small>
+
+                    </div>
+
+                    <div
+                        class="status ${task.status}">
+
+                        ${task.status.toUpperCase()}
+
+                    </div>
+
+                    <div class="task-actions">
+
+                        <button
+                            class="icon-btn"
+                            onclick="
+                                toggleTask(${task.id})
+                            ">
+
+                            ✓
+
+                        </button>
+
+                    </div>
 
                 </div>
 
-            </div>
-
-        `;
+            `;
 
 
-        scheduleList.innerHTML +=
-            timelineHTML;
+            const timelineHTML = `
+
+                <div class="timeline-item">
+
+                    <div class="timeline-dot"></div>
+
+                    <div class="timeline-card">
+
+                        <div class="schedule-time">
+                            ${time}
+                        </div>
+
+                        <h3>
+                            ${escapeHtml(task.name)}
+                        </h3>
+
+                        <small>
+                            ${escapeHtml(task.category)}
+                        </small>
+
+                    </div>
+
+                </div>
+
+            `;
 
 
-        schedulePageList.innerHTML +=
-            timelineHTML;
+            scheduleList.innerHTML +=
+                timelineHTML;
 
-    });
+
+            schedulePageList.innerHTML +=
+                timelineHTML;
+
+        }
+    );
 
 
     updateProgress();
@@ -1743,11 +1959,10 @@ function renderTasks(){
 }
 
 
-/* =====================================================
-   COMPLETE TASK
-===================================================== */
+/* TOGGLE */
 
-function toggleTask(id){
+window.toggleTask =
+function(id){
 
     const task =
         tasks.find(
@@ -1777,12 +1992,10 @@ function toggleTask(id){
         : "↩️ Task ပြန်ဖွင့်ပြီးပါပြီ"
     );
 
-}
+};
 
 
-/* =====================================================
-   PROGRESS
-===================================================== */
+/* PROGRESS */
 
 function updateProgress(){
 
@@ -1799,7 +2012,7 @@ function updateProgress(){
     const missed =
         tasks.filter(
             task =>
-            task.status === "missed"
+                task.status === "missed"
         ).length;
 
 
@@ -1807,102 +2020,108 @@ function updateProgress(){
         total === 0
         ? 0
         : Math.round(
-            done / total * 100
+            (done / total) * 100
         );
 
 
-    document
-        .getElementById("percent")
-        .innerText =
+    document.getElementById(
+        "percent"
+    ).innerText =
         percent + "%";
 
 
-    document
-        .getElementById("circlePercent")
-        .innerText =
+    document.getElementById(
+        "circlePercent"
+    ).innerText =
         percent + "%";
 
 
-    document
-        .getElementById("progressPercent")
-        .innerText =
+    document.getElementById(
+        "progressPercent"
+    ).innerText =
         percent + "%";
 
 
-    document
-        .getElementById("progressFill")
-        .style.width =
+    document.getElementById(
+        "progressFill"
+    ).style.width =
         percent + "%";
 
 
-    document
-        .getElementById("progressPageFill")
-        .style.width =
+    document.getElementById(
+        "progressPageFill"
+    ).style.width =
         percent + "%";
 
 
-    document
-        .getElementById("taskCount")
-        .innerText =
+    document.getElementById(
+        "taskCount"
+    ).innerText =
         total + " TASKS";
 
 
-    document
-        .getElementById("pDone")
-        .innerText =
+    document.getElementById(
+        "pDone"
+    ).innerText =
         done;
 
 
-    document
-        .getElementById("pMissed")
-        .innerText =
+    document.getElementById(
+        "pMissed"
+    ).innerText =
         missed;
 
 
-    document
-        .getElementById("pTotal")
-        .innerText =
+    document.getElementById(
+        "pTotal"
+    ).innerText =
         total;
 
 
-    document
-        .getElementById("pageDone")
-        .innerText =
+    document.getElementById(
+        "pageDone"
+    ).innerText =
         done;
 
 
-    document
-        .getElementById("pageMissed")
-        .innerText =
+    document.getElementById(
+        "pageMissed"
+    ).innerText =
         missed;
 
 
-    document
-        .getElementById("pageTotal")
-        .innerText =
+    document.getElementById(
+        "pageTotal"
+    ).innerText =
         total;
 
 
-    document
-        .getElementById("progressCircle")
-        .style.background =
-        `conic-gradient(
+    document.getElementById(
+        "progressCircle"
+    ).style.background = `
+
+        conic-gradient(
             var(--gold)
             ${percent * 3.6}deg,
+
             #292d35
             ${percent * 3.6}deg
-        )`;
+        )
+
+    `;
 
 }
 
 
-/* =====================================================
-   TIME
-===================================================== */
+/* TIME */
 
 function formatTime(time){
 
-    if(!time) return "";
+    if(!time){
+
+        return "";
+
+    }
 
 
     const parts =
@@ -1928,7 +2147,9 @@ function formatTime(time){
 
 
     if(hours === 0){
+
         hours = 12;
+
     }
 
 
@@ -1937,14 +2158,14 @@ function formatTime(time){
 }
 
 
-/* =====================================================
-   SECURITY
-===================================================== */
+/* ESCAPE */
 
 function escapeHtml(text){
 
     const div =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     div.textContent =
@@ -1956,14 +2177,13 @@ function escapeHtml(text){
 }
 
 
-/* =====================================================
-   TOAST
-===================================================== */
+/* TOAST */
 
 let toastTimer = null;
 
 
-function showToast(message){
+window.showToast =
+function(message){
 
     const toast =
         document.getElementById(
@@ -1975,16 +2195,12 @@ function showToast(message){
         message;
 
 
-    toast.classList.add(
-        "show"
-    );
+    toast.classList.add("show");
 
 
     if(toastTimer){
 
-        clearTimeout(
-            toastTimer
-        );
+        clearTimeout(toastTimer);
 
     }
 
@@ -2001,25 +2217,24 @@ function showToast(message){
             2500
         );
 
-}
+};
 
 
-/* =====================================================
-   BACKDROP
-===================================================== */
+/* BACKDROP */
 
 document.addEventListener(
     "click",
     function(event){
 
         if(
-            event.target.classList
-                .contains("modal")
+            event.target.classList.contains(
+                "modal"
+            )
         ){
 
-            event.target
-                .classList
-                .remove("show");
+            event.target.classList.remove(
+                "show"
+            );
 
         }
 
@@ -2027,20 +2242,11 @@ document.addEventListener(
 );
 
 
-/* =====================================================
-   INITIALIZE
-===================================================== */
+/* INITIALIZE */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function(){
+renderTasks();
 
-        renderTasks();
-
-        updateProgress();
-
-    }
-);
+updateProgress();
 
 </script>
 
