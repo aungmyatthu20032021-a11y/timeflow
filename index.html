@@ -4383,18 +4383,14 @@ updateVipAccess();
      P4-B END
 ======================================================= -->
 <!-- =======================================================
-     TIMEFLOW P4-C
+     TIMEFLOW P4-C FIXED
      🔐 FIREBASE + GOOGLE LOGIN + ACCOUNT + FREE/VIP
-======================================================= -->
+======================================================= --><script type="module">
 
-<!-- =======================================================
-     FIREBASE SDK
-======================================================= -->
-
-<script type="module">
-
-import { initializeApp }
-    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+    initializeApp
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
     getAuth,
@@ -4437,7 +4433,7 @@ const firebaseConfig = {
 
 
 /* =========================================================
-   INITIALIZE FIREBASE
+   FIREBASE INITIALIZE
 ========================================================= */
 
 const app =
@@ -4452,16 +4448,26 @@ const provider =
     new GoogleAuthProvider();
 
 
-/*
-   Google account selection ကို
-   login တိုင်း ပြနိုင်အောင်
-*/
-
 provider.setCustomParameters({
 
-    prompt:"select_account"
+    prompt:
+        "select_account"
 
 });
+
+
+/* =========================================================
+   EXPOSE FIREBASE
+========================================================= */
+
+window.timeflowApp =
+    app;
+
+window.timeflowAuth =
+    auth;
+
+window.timeflowGoogleProvider =
+    provider;
 
 
 /* =========================================================
@@ -4477,14 +4483,19 @@ async function(){
         );
 
 
+    if(status){
+
+        status.innerText =
+            "🔐 Google Login လုပ်နေပါတယ်...";
+
+    }
+
+
     try{
 
-        if(status){
-
-            status.innerText =
-                "🔐 Google Login လုပ်နေပါတယ်...";
-
-        }
+        console.log(
+            "TimeFlow: Starting Google Login..."
+        );
 
 
         const result =
@@ -4498,18 +4509,25 @@ async function(){
             result.user;
 
 
-        /*
-           Default plan
-           အခု FREE ဖြစ်မယ်။
+        console.log(
+            "TimeFlow: Login Success",
+            user
+        );
 
-           နောက် P4-F မှာ
-           Firebase user data ကနေ
-           VIP / FREE ကို အလိုအလျောက်
-           သတ်မှတ်ပေးမယ်။
+
+        window.currentUser =
+            user;
+
+
+        /*
+           Default FREE
+           P4-D မှာ Firestore ကနေ
+           VIP / FREE ပြန်သတ်မှတ်မယ်
         */
 
         if(
-            !window.currentUserPlan
+            window.currentUserPlan !==
+            "vip"
         ){
 
             window.currentUserPlan =
@@ -4518,10 +4536,24 @@ async function(){
         }
 
 
-        updateAccountUI(user);
+        updateAccountUI(
+            user
+        );
 
 
-        updateVipAccess();
+        updatePlanUI(
+            window.currentUserPlan
+        );
+
+
+        if(
+            typeof updateVipAccess ===
+            "function"
+        ){
+
+            updateVipAccess();
+
+        }
 
 
         showToast(
@@ -4532,7 +4564,7 @@ async function(){
     }catch(error){
 
         console.error(
-            "Google Login Error:",
+            "TimeFlow Google Login Error:",
             error
         );
 
@@ -4541,35 +4573,67 @@ async function(){
             "❌ Google Login မအောင်မြင်ပါ။";
 
 
-        if(
-            error.code ===
-            "auth/popup-closed-by-user"
-        ){
+        switch(error.code){
 
-            message =
-                "⚠️ Login window ပိတ်လိုက်ပါတယ်။";
+            case "auth/unauthorized-domain":
 
-        }
+                message =
+                    "⚠️ ဒီ Website Domain ကို Firebase မှာ Authorized မလုပ်ရသေးပါ။";
 
-
-        if(
-            error.code ===
-            "auth/unauthorized-domain"
-        ){
-
-            message =
-                "⚠️ Firebase Authorized Domain မထည့်ရသေးပါ။";
-
-        }
+                break;
 
 
-        if(
-            error.code ===
-            "auth/popup-blocked"
-        ){
+            case "auth/popup-blocked":
 
-            message =
-                "⚠️ Browser က Login popup ကိုပိတ်ထားပါတယ်။";
+                message =
+                    "⚠️ Browser က Google Login Popup ကိုပိတ်ထားပါတယ်။";
+
+                break;
+
+
+            case "auth/popup-closed-by-user":
+
+                message =
+                    "⚠️ Google Login Window ကိုပိတ်လိုက်ပါတယ်။";
+
+                break;
+
+
+            case "auth/cancelled-popup-request":
+
+                message =
+                    "⚠️ Login Request တစ်ခုရှိပြီးသားပါ။";
+
+                break;
+
+
+            case "auth/network-request-failed":
+
+                message =
+                    "⚠️ Internet Connection ကိုစစ်ပါ။";
+
+                break;
+
+
+            case "auth/operation-not-allowed":
+
+                message =
+                    "⚠️ Firebase Authentication ထဲမှာ Google Provider မဖွင့်ရသေးပါ။";
+
+                break;
+
+
+            default:
+
+                message =
+                    "❌ Login Error: " +
+                    (
+                        error.message
+                        ||
+                        error.code
+                        ||
+                        "Unknown Error"
+                    );
 
         }
 
@@ -4582,7 +4646,16 @@ async function(){
         }
 
 
-        showToast(message);
+        if(
+            typeof showToast ===
+            "function"
+        ){
+
+            showToast(
+                message
+            );
+
+        }
 
     }
 
@@ -4598,14 +4671,36 @@ async function(){
 
     try{
 
-        await signOut(auth);
+        await signOut(
+            auth
+        );
 
+
+        window.currentUser =
+            null;
 
         window.currentUserPlan =
             "free";
 
 
-        updateVipAccess();
+        updateAccountUI(
+            null
+        );
+
+
+        updatePlanUI(
+            "free"
+        );
+
+
+        if(
+            typeof updateVipAccess ===
+            "function"
+        ){
+
+            updateVipAccess();
+
+        }
 
 
         showToast(
@@ -4631,7 +4726,7 @@ async function(){
 
 
 /* =========================================================
-   UPDATE ACCOUNT UI
+   ACCOUNT UI
 ========================================================= */
 
 function updateAccountUI(user){
@@ -4736,10 +4831,6 @@ function updateAccountUI(user){
         }
 
 
-        updatePlanUI(
-            "free"
-        );
-
         return;
 
     }
@@ -4778,6 +4869,11 @@ function updateAccountUI(user){
 
         `;
 
+    }else if(avatar){
+
+        avatar.innerHTML =
+            "👤";
+
     }
 
 
@@ -4793,6 +4889,11 @@ function updateAccountUI(user){
                 alt="Profile">
 
         `;
+
+    }else if(accountButton){
+
+        accountButton.innerHTML =
+            "👤";
 
     }
 
@@ -4822,7 +4923,8 @@ function updateAccountUI(user){
 
 
     updatePlanUI(
-        window.currentUserPlan || "free"
+        window.currentUserPlan ||
+        "free"
     );
 
 }
@@ -4888,13 +4990,20 @@ function updatePlanUI(plan){
     }
 
 
-    updateVipAccess();
+    if(
+        typeof updateVipAccess ===
+        "function"
+    ){
+
+        updateVipAccess();
+
+    }
 
 }
 
 
 /* =========================================================
-   SET PLAN
+   SET USER PLAN
 ========================================================= */
 
 window.setUserPlan =
@@ -4910,7 +5019,8 @@ function(plan){
         plan !== "free"
     ){
 
-        plan = "free";
+        plan =
+            "free";
 
     }
 
@@ -4934,33 +5044,35 @@ function(plan){
 
 
 /* =========================================================
-   FIREBASE AUTH STATE
+   AUTH STATE
 ========================================================= */
 
 onAuthStateChanged(
     auth,
     function(user){
 
+        console.log(
+            "TimeFlow Auth State:",
+            user
+            ? user.email
+            : "SIGNED OUT"
+        );
+
+
+        window.currentUser =
+            user || null;
+
+
         if(user){
 
-            /*
-               Login ဝင်ထားတယ်
-            */
+            window.currentUserPlan =
+                window.currentUserPlan ||
+                "free";
+
 
             updateAccountUI(
                 user
             );
-
-
-            /*
-               လောလောဆယ် FREE
-               P4-F မှာ Firebase
-               user plan ကို load မယ်
-            */
-
-            window.currentUserPlan =
-                window.currentUserPlan
-                || "free";
 
 
             updatePlanUI(
@@ -4969,10 +5081,6 @@ onAuthStateChanged(
 
 
         }else{
-
-            /*
-               Login မဝင်ထားဘူး
-            */
 
             window.currentUserPlan =
                 "free";
@@ -4983,7 +5091,9 @@ onAuthStateChanged(
             );
 
 
-            updateVipAccess();
+            updatePlanUI(
+                "free"
+            );
 
         }
 
@@ -4992,5 +5102,13 @@ onAuthStateChanged(
 
 
 /* =========================================================
-   EXPOSE FIREBASE AUTH
+   READY
 ========================================================= */
+
+console.log(
+    "🔥 TimeFlow P4-C Firebase Auth Ready"
+);
+
+</script><!-- =======================================================
+     P4-C FIXED END
+======================================================= -->
