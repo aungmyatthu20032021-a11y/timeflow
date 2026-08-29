@@ -1972,8 +1972,7 @@ function(event){
 
         day:
             document.getElementById(
-                "timetableDay"
-            ).value,
+              Avatarold         ).value,
 
         start:
             document.getElementById(
@@ -2576,724 +2575,639 @@ renderTimetable();
 </script>
 
 <!-- =======================================================
-     ⚠️ P4-B STARTS HERE
-     DO NOT DELETE ANYTHING ABOVE
-======================================================ABOVE
-    <script>
+     TIMEFLOW P4-B
+     👑 VIP CUSTOM TIMETABLE
+======================================================= -->
+
+<style>
 
 /* =========================================================
-   TIMEFLOW P4-B
-   SCHEDULE + TASK + NOTIFICATION + SOUND + STORAGE
+   VIP TIMETABLE
 ========================================================= */
 
-
-/* =========================================================
-   APP STATE
-========================================================= */
-
-let scheduleData = [];
-
-let taskData = [];
-
-let selectedAlarmSound = "";
-
-let currentUser = null;
-
-let userPlan = "FREE";
-
-let notificationGranted = false;
-
-
-/* =========================================================
-   STORAGE
-========================================================= */
-
-function saveAppData(){
-
-    localStorage.setItem(
-        "timeflow_timetable",
-        JSON.stringify(timetableData)
-    );
-
-    localStorage.setItem(
-        "timeflow_schedule",
-        JSON.stringify(scheduleData)
-    );
-
-    localStorage.setItem(
-        "timeflow_tasks",
-        JSON.stringify(taskData)
-    );
-
-    localStorage.setItem(
-        "timeflow_sound",
-        selectedAlarmSound
-    );
-
+.vip-timetable-page{
+    padding-bottom:20px;
 }
 
-
-function loadAppData(){
-
-    try{
-
-        timetableData =
-            JSON.parse(
-                localStorage.getItem(
-                    "timeflow_timetable"
-                )
-            ) || [];
-
-        scheduleData =
-            JSON.parse(
-                localStorage.getItem(
-                    "timeflow_schedule"
-                )
-            ) || [];
-
-        taskData =
-            JSON.parse(
-                localStorage.getItem(
-                    "timeflow_tasks"
-                )
-            ) || [];
-
-        selectedAlarmSound =
-            localStorage.getItem(
-                "timeflow_sound"
-            ) || "";
-
-    }catch(error){
-
-        console.error(
-            "Storage Load Error:",
-            error
+.vip-lock{
+    background:
+        linear-gradient(
+            145deg,
+            #171b24,
+            #0f131a
         );
 
-    }
+    border:1px solid rgba(245,196,81,.15);
 
+    border-radius:22px;
+
+    padding:25px 18px;
+
+    text-align:center;
+
+    margin-top:15px;
+}
+
+.vip-lock-icon{
+    font-size:42px;
+
+    margin-bottom:12px;
+}
+
+.vip-lock h3{
+    font-size:18px;
+
+    margin-bottom:8px;
+}
+
+.vip-lock p{
+    color:var(--muted);
+
+    font-size:11px;
+
+    line-height:1.6;
+
+    margin-bottom:18px;
+}
+
+.vip-upgrade-btn{
+    border:0;
+
+    border-radius:13px;
+
+    padding:13px 22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--gold),
+            var(--gold2)
+        );
+
+    color:#111;
+
+    font-weight:900;
+
+    cursor:pointer;
 }
 
 
 /* =========================================================
-   PATCH P4-A SAVE FUNCTIONS
+   GRID SETUP
 ========================================================= */
 
-const oldSaveTimetable =
-    window.saveTimetable;
+.vip-settings-card{
+    background:var(--card);
 
-window.saveTimetable =
-function(event){
+    border:1px solid var(--border);
 
-    oldSaveTimetable(event);
+    border-radius:20px;
 
-    saveAppData();
+    padding:16px;
 
-    updateProgress();
+    margin-top:15px;
+}
 
-};
+.vip-settings-card h3{
+    font-size:15px;
 
+    margin-bottom:15px;
+}
 
-const oldUpdateTimetable =
-    window.updateTimetable;
+.vip-grid-inputs{
+    display:grid;
 
-window.updateTimetable =
-function(event){
+    grid-template-columns:1fr 1fr;
 
-    oldUpdateTimetable(event);
+    gap:10px;
+}
 
-    saveAppData();
+.vip-input-group label{
+    display:block;
 
-};
+    color:var(--muted);
 
+    font-size:9px;
 
-const oldDeleteTimetable =
-    window.deleteTimetable;
+    margin-bottom:6px;
+}
 
-window.deleteTimetable =
-function(id){
+.vip-input-group input{
+    width:100%;
 
-    oldDeleteTimetable(id);
+    padding:12px;
 
-    saveAppData();
+    border-radius:11px;
 
-};
+    border:1px solid var(--border);
+
+    background:#090c11;
+
+    color:white;
+
+    outline:none;
+}
+
+.vip-create-grid-btn{
+    width:100%;
+
+    margin-top:12px;
+
+    padding:13px;
+
+    border:0;
+
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--gold),
+            var(--gold2)
+        );
+
+    color:#111;
+
+    font-weight:900;
+
+    cursor:pointer;
+}
 
 
 /* =========================================================
-   SCHEDULE MODAL
+   CUSTOM GRID
 ========================================================= */
 
-function createScheduleModal(){
+.vip-grid-wrapper{
+    margin-top:15px;
 
-    if(document.getElementById(
-        "scheduleModal"
-    )){
+    background:#0c1016;
 
-        return;
+    border:1px solid var(--border);
 
+    border-radius:20px;
+
+    overflow:auto;
+
+    -webkit-overflow-scrolling:touch;
+}
+
+.vip-grid{
+    display:grid;
+
+    gap:1px;
+
+    min-width:max-content;
+
+    background:#252b35;
+}
+
+.vip-cell{
+    min-width:105px;
+
+    min-height:80px;
+
+    background:#11161f;
+
+    padding:9px;
+
+    position:relative;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.vip-cell:hover{
+    background:#171d27;
+}
+
+.vip-header-cell{
+    background:#1b202a;
+
+    min-height:45px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-align:center;
+
+    color:var(--gold);
+
+    font-size:10px;
+
+    font-weight:900;
+
+    cursor:pointer;
+}
+
+.vip-time-cell{
+    background:#171c25;
+
+    color:var(--gold);
+
+    font-size:10px;
+
+    font-weight:900;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-align:center;
+}
+
+.vip-task-cell{
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:flex-start;
+
+    gap:5px;
+}
+
+.vip-cell-title{
+    font-size:11px;
+
+    font-weight:900;
+
+    color:white;
+
+    line-height:1.3;
+}
+
+.vip-cell-category{
+    font-size:8px;
+
+    color:var(--muted);
+}
+
+.vip-cell-status{
+    margin-top:auto;
+
+    font-size:8px;
+
+    color:var(--gold);
+}
+
+.vip-empty-cell{
+    color:#555d6b;
+
+    font-size:18px;
+
+    text-align:center;
+}
+
+
+/* =========================================================
+   GRID TOOLBAR
+========================================================= */
+
+.vip-grid-toolbar{
+    display:flex;
+
+    gap:7px;
+
+    margin-top:12px;
+
+    overflow-x:auto;
+
+    scrollbar-width:none;
+}
+
+.vip-grid-toolbar::-webkit-scrollbar{
+    display:none;
+}
+
+.vip-tool-btn{
+    flex:0 0 auto;
+
+    padding:10px 13px;
+
+    border:1px solid var(--border);
+
+    border-radius:11px;
+
+    background:#171c25;
+
+    color:white;
+
+    font-size:10px;
+
+    cursor:pointer;
+}
+
+.vip-tool-btn.gold{
+    background:
+        linear-gradient(
+            135deg,
+            var(--gold),
+            var(--gold2)
+        );
+
+    color:#111;
+
+    border:0;
+
+    font-weight:900;
+}
+
+
+/* =========================================================
+   CELL MODAL
+========================================================= */
+
+.vip-cell-info{
+    background:#0a0e14;
+
+    border:1px solid var(--border);
+
+    border-radius:12px;
+
+    padding:12px;
+
+    margin-bottom:15px;
+
+    font-size:10px;
+
+    color:var(--muted);
+
+    line-height:1.7;
+}
+
+.vip-cell-info strong{
+    color:var(--gold);
+}
+
+.vip-delete-cell-btn{
+    width:100%;
+
+    padding:12px;
+
+    margin-top:9px;
+
+    border:0;
+
+    border-radius:12px;
+
+    background:#2a2024;
+
+    color:#ff6262;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+
+/* =========================================================
+   VIP BADGE
+========================================================= */
+
+.vip-title-badge{
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:5px;
+
+    padding:5px 9px;
+
+    border-radius:20px;
+
+    background:
+        rgba(245,196,81,.1);
+
+    color:var(--gold);
+
+    font-size:9px;
+
+    font-weight:900;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:430px){
+
+    .vip-cell{
+        min-width:100px;
+
+        min-height:78px;
     }
 
+}
 
-    const modal =
-        document.createElement("div");
-
-    modal.className = "modal";
-
-    modal.id = "scheduleModal";
+</style>
 
 
-    modal.innerHTML = `
+<!-- =======================================================
+     VIP TIMETABLE PAGE
+======================================================= -->
 
-        <div class="modal-box">
+<section
+    class="page"
+    id="vipTimetable">
 
-            <div class="modal-header">
+    <div class="section-title">
 
-                <h2>
-                    ⏰ Add Schedule
-                </h2>
+        <div>
 
-                <button
-                    class="close"
-                    onclick="closeScheduleModal()">
+            <h2>
+                👑 Custom Timetable
+            </h2>
 
-                    ✕
+            <span class="vip-title-badge">
+                👑 VIP ONLY
+            </span>
 
-                </button>
+        </div>
 
-            </div>
-
-
-            <form
-                onsubmit="saveSchedule(event)">
-
-
-                <div class="form-group">
-
-                    <label>
-                        DATE
-                    </label>
-
-                    <input
-                        type="date"
-                        id="scheduleDate"
-                        required>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        TIME
-                    </label>
-
-                    <input
-                        type="time"
-                        id="scheduleTime"
-                        required>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        TITLE
-                    </label>
-
-                    <input
-                        type="text"
-                        id="scheduleTitle"
-                        placeholder="ဥပမာ - Physics Study"
-                        required>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        NOTE
-                    </label>
-
-                    <textarea
-                        id="scheduleNote"
-                        placeholder="Schedule မှတ်ချက်...">
-                    </textarea>            </div>
-
-
-            <div class="form-group">
-
-                <label>
-                    NOTIFICATION
-                </label>
-
-                <select
-                    id="scheduleNotify">
-
-                    <option value="yes">
-                        🔔 ON
-                    </option>
-
-                    <option value="no">
-                        🔕 OFF
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <button
-                type="button"
-                class="small-btn"
-                style="
-                    width:100%;
-                    margin-bottom:12px;
-                "
-                onclick="requestNotificationPermission()">
-
-                🔔 Notification Permission
-
-            </button>
-
-
-            <button
-                type="submit"
-                class="save-btn">
-
-                ⏰ Save Schedule
-
-            </button>
-
-        </form>
+        <span id="vipGridInfo">
+            0 × 0
+        </span>
 
     </div>
 
-`;
+
+    <!-- VIP LOCK -->
+
+    <div
+        class="vip-lock"
+        id="vipTimetableLock">
+
+        <div class="vip-lock-icon">
+            🔒
+        </div>
+
+        <h3>
+            VIP Feature
+        </h3>
+
+        <p>
+            Custom Timetable ကို
+            VIP User များအတွက်သာ
+            အသုံးပြုနိုင်ပါတယ်။
+            <br>
+            Grid size၊ Day name၊ Time label
+            နဲ့ Cell တစ်ခုချင်းစီကို
+            စိတ်ကြိုက်ပြင်နိုင်ပါတယ်။
+        </p>
+
+        <button
+            class="vip-upgrade-btn"
+            onclick="showToast('👑 VIP ဖြစ်မှ အသုံးပြုနိုင်ပါတယ်')">
+
+            👑 Get VIP
+
+        </button>
+
+    </div>
 
 
-document.body.appendChild(modal);
+    <!-- VIP CONTENT -->
 
-}
+    <div
+        id="vipTimetableContent"
+        style="display:none;">
 
-window.openScheduleModal =
-function(){
+        <div class="vip-settings-card">
 
-createScheduleModal();
-
-const modal =
-    document.getElementById(
-        "scheduleModal"
-    );
-
-modal.classList.add("show");
-
-};
-
-window.closeScheduleModal =
-function(){
-
-const modal =
-    document.getElementById(
-        "scheduleModal"
-    );
-
-if(modal){
-
-    modal.classList.remove("show");
-
-}
-
-};
-
-/* =========================================================
-SCHEDULE SAVE
-========================================================= */
-
-window.saveSchedule =
-function(event){
-
-event.preventDefault();
+            <h3>
+                ⚙️ Grid Setup
+            </h3>
 
 
-const item = {
+            <div class="vip-grid-inputs">
 
-    id:Date.now(),
+                <div class="vip-input-group">
 
-    date:
-        document.getElementById(
-            "scheduleDate"
-        ).value,
+                    <label>
+                        DAYS / COLUMNS
+                    </label>
 
-    time:
-        document.getElementById(
-            "scheduleTime"
-        ).value,
+                    <input
+                        type="number"
+                        id="vipColumns"
+                        min="1"
+                        max="20"
+                        value="7">
 
-    title:
-        document.getElementById(
-            "scheduleTitle"
-        ).value.trim(),
-
-    note:
-        document.getElementById(
-            "scheduleNote"
-        ).value.trim(),
-
-    notify:
-        document.getElementById(
-            "scheduleNotify"
-        ).value === "yes",
-
-    completed:false,
-
-    missed:false
-
-};
+                </div>
 
 
-scheduleData.push(item);
+                <div class="vip-input-group">
+
+                    <label>
+                        TIME SLOTS / ROWS
+                    </label>
+
+                    <input
+                        type="number"
+                        id="vipRows"
+                        min="1"
+                        max="50"
+                        value="24">
+
+                </div>
+
+            </div>
 
 
-saveAppData();
+            <button
+                class="vip-create-grid-btn"
+                onclick="createVipGrid()">
 
-renderSchedule();
+                ✨ Create Custom Grid
 
-updateProgress();
-
-closeScheduleModal();
-
-
-showToast(
-    "⏰ Schedule သိမ်းပြီးပါပြီ!"
-);
-
-
-if(item.notify){
-
-    requestNotificationPermission();
-
-}
-
-};
-
-/* =========================================================
-RENDER SCHEDULE
-========================================================= */
-
-function renderSchedule(){
-
-const container =
-    document.getElementById(
-        "scheduleList"
-    );
-
-
-if(!container){
-
-    return;
-
-}
-
-
-const sorted =
-    [...scheduleData].sort(
-        (a,b) => {
-
-            const A =
-                `${a.date} ${a.time}`;
-
-            const B =
-                `${b.date} ${b.time}`;
-
-            return A.localeCompare(B);
-
-        }
-    );
-
-
-if(sorted.length === 0){
-
-    container.innerHTML = `
-
-        <div class="empty">
-
-            ⏰ Schedule မရှိသေးပါ။
-
-            <br><br>
-
-            + ခလုတ်ကိုနှိပ်ပြီး
-            Schedule ထည့်ပါ။
+            </button>
 
         </div>
 
-    `;
-
-    return;
-
-}
-
-
-container.innerHTML = "";
-
-
-sorted.forEach(item => {
-
-    const status =
-        item.completed
-        ? "DONE"
-        : item.missed
-        ? "MISSED"
-        : "UPCOMING";
-
-
-    const statusColor =
-        item.completed
-        ? "var(--green)"
-        : item.missed
-        ? "var(--red)"
-        : "var(--gold)";
-
-
-    container.innerHTML += `
 
         <div
-            class="timetable-card">
+            class="vip-grid-toolbar">
+
+            <button
+                class="vip-tool-btn"
+                onclick="renameVipDays()">
+
+                ✏️ Day Names
+
+            </button>
+
+
+            <button
+                class="vip-tool-btn"
+                onclick="renameVipTimes()">
+
+                🕐 Time Labels
+
+            </button>
+
+
+            <button
+                class="vip-tool-btn"
+                onclick="clearVipGrid()">
+
+                🗑️ Clear
+
+            </button>
+
+        </div>
+
+
+        <div
+            class="vip-grid-wrapper"
+            id="vipGridWrapper">
 
             <div
-                class="timetable-top">
+                class="empty">
 
-                <div>
+                👑 Custom Timetable
+                Grid မရှိသေးပါ။
 
-                    <div
-                        class="timetable-time">
+                <br><br>
 
-                        ${formatTime(item.time)}
-
-                    </div>
-
-                    <div
-                        class="timetable-period">
-
-                        ${item.date}
-
-                    </div>
-
-                </div>
-
-
-                <div
-                    style="
-                        display:flex;
-                        gap:5px;
-                    ">
-
-                    <button
-                        class="small-btn"
-                        onclick="
-                            toggleScheduleDone(
-                                ${item.id}
-                            )
-                        ">
-
-                        ${item.completed
-                            ? "↩️"
-                            : "✓"}
-
-                    </button>
-
-
-                    <button
-                        class="small-btn"
-                        onclick="
-                            deleteSchedule(
-                                ${item.id}
-                            )
-                        ">
-
-                        🗑️
-
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <div
-                class="timetable-name">
-
-                ${escapeHtml(item.title)}
-
-            </div>
-
-
-            ${
-                item.note
-                ? `
-                    <div
-                        class="timetable-note">
-
-                        📝
-                        ${escapeHtml(item.note)}
-
-                    </div>
-                  `
-                : ""
-            }
-
-
-            <div
-                style="
-                    margin-top:10px;
-                    font-size:9px;
-                    font-weight:bold;
-                    color:${statusColor};
-                ">
-
-                ${item.notify ? "🔔" : "🔕"}
-                ${status}
+                Grid Setup မှာ
+                Create Custom Grid ကိုနှိပ်ပါ။
 
             </div>
 
         </div>
 
-    `;
+    </div>
 
-});
-
-}
-
-/* =========================================================
-SCHEDULE COMPLETE
-========================================================= */
-
-window.toggleScheduleDone =
-function(id){
-
-const item =
-    scheduleData.find(
-        x => x.id === id
-    );
+</section>
 
 
-if(!item){
+<!-- =======================================================
+     VIP CELL MODAL
+======================================================= -->
 
-    return;
-
-}
-
-
-item.completed =
-    !item.completed;
-
-
-item.missed = false;
-
-
-saveAppData();
-
-renderSchedule();
-
-updateProgress();
-
-
-showToast(
-    item.completed
-    ? "✅ Schedule ပြီးပါပြီ!"
-    : "↩️ ပြန်ဖွင့်ပြီးပါပြီ"
-);
-
-};
-
-/* =========================================================
-DELETE SCHEDULE
-========================================================= */
-
-window.deleteSchedule =
-function(id){
-
-const item =
-    scheduleData.find(
-        x => x.id === id
-    );
-
-
-if(!item){
-
-    return;
-
-}
-
-
-if(
-    !confirm(
-        `"${item.title}" ကို ဖျက်မှာသေချာလား?`
-    )
-){
-
-    return;
-
-}
-
-
-scheduleData =
-    scheduleData.filter(
-        x => x.id !== id
-    );
-
-
-saveAppData();
-
-renderSchedule();
-
-updateProgress();
-
-
-showToast(
-    "🗑️ Schedule ဖျက်ပြီးပါပြီ"
-);
-
-};
-
-/* =========================================================
-TASK MODAL
-========================================================= */
-
-function createTaskModal(){
-
-if(document.getElementById(
-    "taskModal"
-)){
-
-    return;
-
-}
-
-
-const modal =
-    document.createElement("div");
-
-modal.className = "modal";
-
-modal.id = "taskModal";
-
-
-modal.innerHTML = `
+<div
+    class="modal"
+    id="vipCellModal">
 
     <div class="modal-box">
 
         <div class="modal-header">
 
             <h2>
-                📋 Add Task
+                👑 Add Cell Task
             </h2>
 
             <button
                 class="close"
-                onclick="closeTaskModal()">
+                onclick="closeVipCellModal()">
 
                 ✕
 
@@ -3302,20 +3216,41 @@ modal.innerHTML = `
         </div>
 
 
+        <div
+            class="vip-cell-info"
+            id="vipCellInfo">
+
+            Day:
+            <strong>-</strong>
+
+            <br>
+
+            Time:
+            <strong>-</strong>
+
+        </div>
+
+
         <form
-            onsubmit="saveTask(event)">
+            id="vipCellForm"
+            onsubmit="saveVipCellTask(event)">
+
+
+            <input
+                type="hidden"
+                id="vipCellIndex">
 
 
             <div class="form-group">
 
                 <label>
-                    TASK
+                    TASK NAME
                 </label>
 
                 <input
                     type="text"
-                    id="taskTitle"
-                    placeholder="ဥပမာ - Chemistry Chapter 3"
+                    id="vipCellTaskName"
+                    placeholder="ဥပမာ - Physics"
                     required>
 
             </div>
@@ -3324,25 +3259,13 @@ modal.innerHTML = `
             <div class="form-group">
 
                 <label>
-                    PRIORITY
+                    CATEGORY
                 </label>
 
-                <select
-                    id="taskPriority">
-
-                    <option value="Normal">
-                        Normal
-                    </option>
-
-                    <option value="High">
-                        🔥 High
-                    </option>
-
-                    <option value="Low">
-                        Low
-                    </option>
-
-                </select>
+                <input
+                    type="text"
+                    id="vipCellCategory"
+                    placeholder="Study / Workout / Work">
 
             </div>
 
@@ -3350,12 +3273,13 @@ modal.innerHTML = `
             <div class="form-group">
 
                 <label>
-                    DUE DATE
+                    WORKSITE LINK
                 </label>
 
                 <input
-                    type="date"
-                    id="taskDate">
+                    type="url"
+                    id="vipCellLink"
+                    placeholder="https://...">
 
             </div>
 
@@ -3367,8 +3291,8 @@ modal.innerHTML = `
                 </label>
 
                 <textarea
-                    id="taskNote"
-                    placeholder="Task မှတ်ချက်...">
+                    id="vipCellNote"
+                    placeholder="မှတ်ချက်...">
                 </textarea>
 
             </div>
@@ -3378,7 +3302,17 @@ modal.innerHTML = `
                 type="submit"
                 class="save-btn">
 
-                📋 Save Task
+                💾 Save Cell
+
+            </button>
+
+
+            <button
+                type="button"
+                class="vip-delete-cell-btn"
+                onclick="deleteVipCellTask()">
+
+                🗑️ Remove Task
 
             </button>
 
@@ -3386,800 +3320,263 @@ modal.innerHTML = `
 
     </div>
 
-`;
+</div>
 
 
-document.body.appendChild(modal);
-
-}
-
-window.openTaskModal =
-function(){
-
-createTaskModal();
-
-document.getElementById(
-    "taskModal"
-).classList.add("show");
-
-};
-
-window.closeTaskModal =
-function(){
-
-const modal =
-    document.getElementById(
-        "taskModal"
-    );
-
-if(modal){
-
-    modal.classList.remove("show");
-
-}
-
-};
+<script>
 
 /* =========================================================
-TASK SAVE
+   VIP TIMETABLE DATA
 ========================================================= */
 
-window.saveTask =
-function(event){
+let vipTimetable = {
 
-event.preventDefault();
+    rows:24,
 
+    columns:7,
 
-const item = {
+    days:[
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+    ],
 
-    id:Date.now(),
+    times:[],
 
-    title:
-        document.getElementById(
-            "taskTitle"
-        ).value.trim(),
-
-    priority:
-        document.getElementById(
-            "taskPriority"
-        ).value,
-
-    date:
-        document.getElementById(
-            "taskDate"
-        ).value,
-
-    note:
-        document.getElementById(
-            "taskNote"
-        ).value.trim(),
-
-    completed:false
+    cells:{}
 
 };
 
 
-taskData.push(item);
+let currentVipCell = null;
 
-
-saveAppData();
-
-renderTasks();
-
-updateProgress();
-
-closeTaskModal();
-
-
-showToast(
-    "📋 Task သိမ်းပြီးပါပြီ!"
-);
-
-};
 
 /* =========================================================
-RENDER TASKS
+   DEFAULT TIME LABELS
 ========================================================= */
 
-function renderTasks(){
+function createDefaultVipTimes(){
 
-const container =
-    document.getElementById(
-        "taskList"
-    );
+    vipTimetable.times = [];
 
+    for(
+        let i = 0;
+        i < vipTimetable.rows;
+        i++
+    ){
 
-const count =
-    document.getElementById(
-        "taskCount"
-    );
+        const hour =
+            String(i)
+                .padStart(2,"0");
 
-
-if(!container){
-
-    return;
-
-}
-
-
-if(count){
-
-    count.innerText =
-        `${taskData.length} TASKS`;
-
-}
-
-
-if(taskData.length === 0){
-
-    container.innerHTML = `
-
-        <div class="empty">
-
-            📭 Task မရှိသေးပါ။
-
-            <br><br>
-
-            + ခလုတ်ကိုနှိပ်ပြီး
-            Task ထည့်ပါ။
-
-        </div>
-
-    `;
-
-    return;
-
-}
-
-
-container.innerHTML = "";
-
-
-taskData.forEach(item => {
-
-    const priority =
-        item.priority === "High"
-        ? "🔥 HIGH"
-        : item.priority === "Low"
-        ? "LOW"
-        : "NORMAL";
-
-
-    container.innerHTML += `
-
-        <div
-            class="timetable-card"
-            style="
-                opacity:
-                ${item.completed ? ".55" : "1"};
-            ">
-
-            <div
-                class="timetable-top">
-
-                <div>
-
-                    <div
-                        class="timetable-name"
-                        style="
-                            margin-top:0;
-                            text-decoration:
-                            ${item.completed
-                                ? "line-through"
-                                : "none"};
-                        ">
-
-                        ${escapeHtml(item.title)}
-
-                    </div>
-
-
-                    <div
-                        class="timetable-category">
-
-                        ${priority}
-
-                        ${
-                            item.date
-                            ? ` • ${item.date}`
-                            : ""
-                        }
-
-                    </div>
-
-                </div>
-
-
-                <div
-                    style="
-                        display:flex;
-                        gap:5px;
-                    ">
-
-                    <button
-                        class="small-btn"
-                        onclick="
-                            toggleTask(
-                                ${item.id}
-                            )
-                        ">
-
-                        ${item.completed
-                            ? "↩️"
-                            : "✓"}
-
-                    </button>
-
-
-                    <button
-                        class="small-btn"
-                        onclick="
-                            deleteTask(
-                                ${item.id}
-                            )
-                        ">
-
-                        🗑️
-
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            ${
-                item.note
-                ? `
-                    <div
-                        class="timetable-note">
-
-                        📝
-                        ${escapeHtml(item.note)}
-
-                    </div>
-                  `
-                : ""
-            }
-
-        </div>
-
-    `;
-
-});
-
-}
-
-/* =========================================================
-TASK COMPLETE
-========================================================= */
-
-window.toggleTask =
-function(id){
-
-const item =
-    taskData.find(
-        x => x.id === id
-    );
-
-
-if(!item){
-
-    return;
-
-}
-
-
-item.completed =
-    !item.completed;
-
-
-saveAppData();
-
-renderTasks();
-
-updateProgress();
-
-
-showToast(
-    item.completed
-    ? "✅ Task ပြီးပါပြီ!"
-    : "↩️ Task ပြန်ဖွင့်ပြီးပါပြီ"
-);
-
-};
-
-/* =========================================================
-DELETE TASK
-========================================================= */
-
-window.deleteTask =
-function(id){
-
-const item =
-    taskData.find(
-        x => x.id === id
-    );
-
-
-if(!item){
-
-    return;
-
-}
-
-
-if(
-    !confirm(
-        `"${item.title}" ကို ဖျက်မှာသေချာလား?`
-    )
-){
-
-    return;
-
-}
-
-
-taskData =
-    taskData.filter(
-        x => x.id !== id
-    );
-
-
-saveAppData();
-
-renderTasks();
-
-updateProgress();
-
-
-showToast(
-    "🗑️ Task ဖျက်ပြီးပါပြီ"
-);
-
-};
-
-/* =========================================================
-NOTIFICATION PERMISSION
-========================================================= */
-
-window.requestNotificationPermission =
-async function(){
-
-if(
-    !("Notification" in window)
-){
-
-    showToast(
-        "⚠️ ဒီ Browser မှာ Notification မထောက်ပံ့ပါ"
-    );
-
-    return false;
-
-}
-
-
-if(
-    Notification.permission === "granted"
-){
-
-    notificationGranted = true;
-
-    showToast(
-        "🔔 Notification ခွင့်ပြုထားပြီးပါပြီ"
-    );
-
-    return true;
-
-}
-
-
-if(
-    Notification.permission === "denied"
-){
-
-    showToast(
-        "❌ Notification ကို Block လုပ်ထားပါတယ်။ Browser Settings မှာ Allow ပြန်လုပ်ပါ။"
-    );
-
-    return false;
-
-}
-
-
-try{
-
-    const permission =
-        await Notification.requestPermission();
-
-
-    notificationGranted =
-        permission === "granted";
-
-
-    if(notificationGranted){
-
-        showToast(
-            "🔔 Notification Permission ရပါပြီ!"
+        vipTimetable.times.push(
+            `${hour}:00`
         );
+
+    }
+
+}
+
+
+/* =========================================================
+   VIP ACCESS
+========================================================= */
+
+function isVipUser(){
+
+    /*
+       Firebase P4-F မှာ
+       window.currentUserPlan
+       ကို "vip" / "free"
+       အဖြစ်ချိတ်ပေးမယ်။
+
+       အခု test အတွက် false ထားထားတယ်။
+    */
+
+    return (
+        window.currentUserPlan === "vip"
+    );
+
+}
+
+
+function updateVipAccess(){
+
+    const lock =
+        document.getElementById(
+            "vipTimetableLock"
+        );
+
+    const content =
+        document.getElementById(
+            "vipTimetableContent"
+        );
+
+
+    if(!lock || !content){
+
+        return;
+
+    }
+
+
+    if(isVipUser()){
+
+        lock.style.display =
+            "none";
+
+        content.style.display =
+            "block";
+
+        renderVipGrid();
 
     }else{
 
+        lock.style.display =
+            "block";
+
+        content.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* =========================================================
+   CREATE GRID
+========================================================= */
+
+window.createVipGrid =
+function(){
+
+    if(!isVipUser()){
+
         showToast(
-            "⚠️ Notification Permission မရသေးပါ"
+            "🔒 VIP User Only"
         );
+
+        return;
 
     }
 
 
-    return notificationGranted;
-
-}catch(error){
-
-    console.error(error);
-
-    showToast(
-        "⚠️ Notification Permission တောင်းမရပါ"
-    );
-
-    return false;
-
-}
-
-};
-
-/* =========================================================
-TEST NOTIFICATION
-========================================================= */
-
-window.testNotification =
-async function(){
-
-const allowed =
-    await requestNotificationPermission();
-
-
-if(!allowed){
-
-    return;
-
-}
-
-
-new Notification(
-    "⚡ TimeFlow",
-    {
-        body:
-            "Notification အလုပ်လုပ်နေပါပြီ! 🔔",
-        icon:
-            "",
-        tag:
-            "timeflow-test"
-    }
-);
-
-};
-
-/* =========================================================
-ALARM SOUND PICKER
-========================================================= */
-
-function createSoundPicker(){
-
-if(document.getElementById(
-    "soundModal"
-)){
-
-    return;
-
-}
-
-
-const modal =
-    document.createElement("div");
-
-modal.className = "modal";
-
-modal.id = "soundModal";
-
-
-modal.innerHTML = `
-
-    <div class="modal-box">
-
-        <div class="modal-header">
-
-            <h2>
-                🔊 Alarm Sound
-            </h2>
-
-            <button
-                class="close"
-                onclick="closeSoundModal()">
-
-                ✕
-
-            </button>
-
-        </div>
-
-
-        <div
-            class="form-group">
-
-            <label>
-                SELECT SOUND FILE
-            </label>
-
-            <input
-                type="file"
-                id="soundFile"
-                accept="audio/*">
-
-        </div>
-
-
-        <div
-            class="timetable-card">
-
-            <div
-                class="timetable-name">
-
-                ${selectedAlarmSound
-                    ? "🔊 Sound Selected"
-                    : "🔕 No Sound Selected"}
-
-            </div>
-
-        </div>
-
-
-        <button
-            class="save-btn"
-            onclick="saveAlarmSound()">
-
-            💾 Save Sound
-
-        </button>
-
-    </div>
-
-`;
-
-
-document.body.appendChild(modal);
-
-}
-
-window.openSoundModal =
-function(){
-
-createSoundPicker();
-
-document.getElementById(
-    "soundModal"
-).classList.add("show");
-
-};
-
-window.closeSoundModal =
-function(){
-
-const modal =
-    document.getElementById(
-        "soundModal"
-    );
-
-if(modal){
-
-    modal.classList.remove("show");
-
-}
-
-};
-
-/* =========================================================
-SAVE SOUND
-========================================================= */
-
-window.saveAlarmSound =
-function(){
-
-const input =
-    document.getElementById(
-        "soundFile"
-    );
-
-
-if(
-    !input ||
-    !input.files ||
-    !input.files[0]
-){
-
-    showToast(
-        "🔊 Sound file ရွေးပါ"
-    );
-
-    return;
-
-}
-
-
-const file =
-    input.files[0];
-
-
-const reader =
-    new FileReader();
-
-
-reader.onload =
-function(event){
-
-    selectedAlarmSound =
-        event.target.result;
-
-
-    saveAppData();
-
-
-    closeSoundModal();
-
-
-    showToast(
-        "🔊 Alarm Sound သိမ်းပြီးပါပြီ!"
-    );
-
-};
-
-
-reader.readAsDataURL(file);
-
-};
-
-/* =========================================================
-PLAY ALARM SOUND
-========================================================= */
-
-function playAlarmSound(){
-
-if(!selectedAlarmSound){
-
-    return;
-
-}
-
-
-try{
-
-    const audio =
-        new Audio(
-            selectedAlarmSound
+    const columns =
+        parseInt(
+            document.getElementById(
+                "vipColumns"
+            ).value
         );
 
-    audio.play();
 
-}catch(error){
+    const rows =
+        parseInt(
+            document.getElementById(
+                "vipRows"
+            ).value
+        );
 
-    console.error(
-        "Audio Error:",
-        error
-    );
-
-}
-
-}
-
-/* =========================================================
-SCHEDULE CHECKER
-========================================================= */
-
-function checkSchedules(){
-
-const now =
-    new Date();
-
-
-const date =
-    now.toISOString()
-        .slice(0,10);
-
-
-const hours =
-    String(
-        now.getHours()
-    ).padStart(2,"0");
-
-
-const minutes =
-    String(
-        now.getMinutes()
-    ).padStart(2,"0");
-
-
-const currentTime =
-    `${hours}:${minutes}`;
-
-
-scheduleData.forEach(item => {
 
     if(
-        item.date === date &&
-        item.time === currentTime &&
-        item.notify &&
-        !item.completed
+        !columns ||
+        !rows ||
+        columns < 1 ||
+        rows < 1
     ){
 
-        sendScheduleNotification(
-            item
+        showToast(
+            "⚠️ Grid size မမှန်ပါ"
         );
+
+        return;
 
     }
 
-});
+
+    vipTimetable.columns =
+        columns;
+
+    vipTimetable.rows =
+        rows;
 
 
-updateMissedSchedules();
+    /*
+       Default Day Names
+    */
 
-}
+    const defaultDays = [
 
-/* =========================================================
-SEND SCHEDULE NOTIFICATION
-========================================================= */
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
 
-function sendScheduleNotification(
-item
-){
-
-playAlarmSound();
+    ];
 
 
-if(
-    "Notification" in window &&
-    Notification.permission === "granted"
-){
+    vipTimetable.days =
+        Array.from(
+            {
+                length:columns
+            },
+            (_,i) =>
+                defaultDays[i]
+                ||
+                `Day ${i + 1}`
+        );
 
-    new Notification(
-        `⏰ ${item.title}`,
-        {
-            body:
-                item.note ||
-                "TimeFlow Schedule အချိန်ရောက်ပါပြီ!",
-            tag:
-                `schedule-${item.id}`
-        }
+
+    createDefaultVipTimes();
+
+
+    vipTimetable.cells = {};
+
+
+    renderVipGrid();
+
+
+    showToast(
+        `👑 ${columns} × ${rows} Grid ပြီးပါပြီ`
     );
 
-}
+};
 
-
-showToast(
-    `⏰ ${item.title}`
-);
-
-}
 
 /* =========================================================
-MISSED SCHEDULE
+   RENDER GRID
 ========================================================= */
 
-function updateMissedSchedules(){
+function renderVipGrid(){
 
-const now =
-    new Date();
+    const wrapper =
+        document.getElementById(
+            "vipGridWrapper"
+        );
 
 
-let changed = false;
+    const info =
+        document.getElementById(
+            "vipGridInfo"
+        );
 
 
-scheduleData.forEach(item => {
+    if(!wrapper){
+
+        return;
+
+    }
+
 
     if(
-        item.completed ||
-        item.missed ||
-        !item.date ||
-        !item.time
+        !vipTimetable.columns ||
+        !vipTimetable.rows
     ){
 
         return;
@@ -4187,865 +3584,719 @@ scheduleData.forEach(item => {
     }
 
 
-    const scheduleDate =
-        new Date(
-            `${item.date}T${item.time}:00`
+    info.innerText =
+        `${vipTimetable.columns} × ${vipTimetable.rows}`;
+
+
+    const grid =
+        document.createElement(
+            "div"
         );
 
 
-    if(
-        scheduleDate < now
-    ){
-
-        item.missed = true;
-
-        changed = true;
-
-    }
-
-});
+    grid.className =
+        "vip-grid";
 
 
-if(changed){
-
-    saveAppData();
-
-    renderSchedule();
-
-    updateProgress();
-
-}
-
-}
-
-/* =========================================================
-PROGRESS
-========================================================= */
-
-function updateProgress(){
-
-const done =
-    scheduleData.filter(
-        x => x.completed
-    ).length
-    +
-    taskData.filter(
-        x => x.completed
-    ).length;
+    grid.style.gridTemplateColumns =
+        `110px repeat(${vipTimetable.columns}, 105px)`;
 
 
-const missed =
-    scheduleData.filter(
-        x => x.missed &&
-        !x.completed
-    ).length;
+    /*
+       Corner cell
+    */
 
-
-const total =
-    scheduleData.length +
-    taskData.length;
-
-
-const percent =
-    total > 0
-    ? Math.round(
-        (done / total) * 100
-    )
-    : 0;
-
-
-const doneEl =
-    document.getElementById(
-        "doneCount"
-    );
-
-
-const missedEl =
-    document.getElementById(
-        "missedCount"
-    );
-
-
-const totalEl =
-    document.getElementById(
-        "totalCount"
-    );
-
-
-const percentEl =
-    document.getElementById(
-        "progressPercent"
-    );
-
-
-const fillEl =
-    document.getElementById(
-        "progressFill"
-    );
-
-
-if(doneEl){
-
-    doneEl.innerText =
-        done;
-
-}
-
-
-if(missedEl){
-
-    missedEl.innerText =
-        missed;
-
-}
-
-
-if(totalEl){
-
-    totalEl.innerText =
-        total;
-
-}
-
-
-if(percentEl){
-
-    percentEl.innerText =
-        `${percent}%`;
-
-}
-
-
-if(fillEl){
-
-    fillEl.style.width =
-        `${percent}%`;
-
-}
-
-}
-
-/* =========================================================
-ADD BUTTON SMART ACTION
-========================================================= */
-
-const originalAddButton =
-document.querySelector(
-".add-btn"
-);
-
-if(originalAddButton){
-
-originalAddButton.onclick =
-function(){
-
-    const activePage =
-        document.querySelector(
-            ".page.active"
+    const corner =
+        document.createElement(
+            "div"
         );
 
+    corner.className =
+        "vip-cell vip-header-cell";
 
-    if(
-        activePage &&
-        activePage.id === "timetable"
+    corner.innerText =
+        "TIME";
+
+    grid.appendChild(corner);
+
+
+    /*
+       Day Headers
+    */
+
+    for(
+        let col = 0;
+        col < vipTimetable.columns;
+        col++
     ){
 
-        openAddTimetableModal();
-
-    }
-    else if(
-        activePage &&
-        activePage.id === "schedule"
-    ){
-
-        openScheduleModal();
-
-    }
-    else if(
-        activePage &&
-        activePage.id === "tasksPage"
-    ){
-
-        openTaskModal();
-
-    }
-    else if(
-        activePage &&
-        activePage.id === "progress"
-    ){
-
-        openScheduleModal();
-
-    }
-
-};
-
-}
-
-/* =========================================================
-NAVIGATION PATCH
-========================================================= */
-
-const originalSwitchPage =
-window.switchPage;
-
-window.switchPage =
-function(pageId,btn){
-
-originalSwitchPage(
-    pageId,
-    btn
-);
-
-
-const addButton =
-    document.querySelector(
-        ".add-btn"
-    );
-
-
-if(!addButton){
-
-    return;
-
-}
-
-
-if(pageId === "progress"){
-
-    addButton.style.display =
-        "none";
-
-}else{
-
-    addButton.style.display =
-        "flex";
-
-    addButton.style.alignItems =
-        "center";
-
-    addButton.style.justifyContent =
-        "center";
-
-}
-
-
-if(pageId === "schedule"){
-
-    renderSchedule();
-
-}
-
-
-if(pageId === "tasksPage"){
-
-    renderTasks();
-
-}
-
-
-if(pageId === "progress"){
-
-    updateProgress();
-
-}
-
-};
-
-/* =========================================================
-GOOGLE LOGIN HOOK
-========================================================= */
-
-window.googleLogin =
-async function(){
-
-/*
-   P4-B Firebase Auth Hook
-
-   Firebase SDK မထည့်ရသေးရင်
-   ဒီ function က demo message ပြမယ်။
-
-   Firebase config + SDK ကို
-   နောက်ဆုံး integration အပိုင်းမှာ
-   ထည့်နိုင်ပါတယ်။
-*/
-
-
-showToast(
-    "🔐 Google Login ကို Firebase နဲ့ ချိတ်နေပါတယ်..."
-);
-
-
-if(
-    typeof firebase === "undefined"
-){
-
-    setTimeout(
-        function(){
-
-            showToast(
-                "⚠️ Firebase SDK မတွေ့သေးပါ"
+        const header =
+            document.createElement(
+                "div"
             );
 
-        },
-        800
-    );
+        header.className =
+            "vip-cell vip-header-cell";
 
-    return;
-
-}
-
-
-try{
-
-    const provider =
-        new firebase.auth.GoogleAuthProvider();
+        header.innerText =
+            vipTimetable.days[col]
+            ||
+            `Day ${col + 1}`;
 
 
-    const result =
-        await firebase.auth()
-            .signInWithPopup(
-                provider
-            );
+        header.onclick =
+            function(){
+
+                renameSingleVipDay(col);
+
+            };
 
 
-    currentUser =
-        result.user;
+        grid.appendChild(header);
+
+    }
 
 
-    updateAccountUI(
-        currentUser
-    );
+    /*
+       Rows + Cells
+    */
 
-
-    showToast(
-        "✅ Google Login အောင်မြင်ပါပြီ!"
-    );
-
-}catch(error){
-
-    console.error(error);
-
-
-    showToast(
-        "❌ Google Login မအောင်မြင်ပါ"
-    );
-
-}
-
-};
-
-/* =========================================================
-GOOGLE LOGOUT
-========================================================= */
-
-window.googleLogout =
-async function(){
-
-try{
-
-    if(
-        typeof firebase !== "undefined" &&
-        firebase.auth()
+    for(
+        let row = 0;
+        row < vipTimetable.rows;
+        row++
     ){
 
-        await firebase.auth()
-            .signOut();
+        const timeCell =
+            document.createElement(
+                "div"
+            );
 
-    }
+        timeCell.className =
+            "vip-cell vip-time-cell";
 
+        timeCell.innerText =
+            vipTimetable.times[row]
+            ||
+            `${row}:00`;
 
-    currentUser = null;
 
-    userPlan = "FREE";
+        timeCell.onclick =
+            function(){
 
+                renameSingleVipTime(row);
 
-    updateAccountUI(
-        null
-    );
+            };
 
 
-    showToast(
-        "🚪 Sign Out လုပ်ပြီးပါပြီ"
-    );
+        grid.appendChild(timeCell);
 
-}catch(error){
 
-    console.error(error);
+        for(
+            let col = 0;
+            col < vipTimetable.columns;
+            col++
+        ){
 
-}
+            const cellIndex =
+                `${row}_${col}`;
 
-};
 
-/* =========================================================
-ACCOUNT UI
-========================================================= */
-
-function updateAccountUI(
-user
-){
-
-const name =
-    document.getElementById(
-        "accountName"
-    );
-
-
-const email =
-    document.getElementById(
-        "accountEmail"
-    );
-
-
-const avatar =
-    document.getElementById(
-        "accountAvatar"
-    );
-
-
-const button =
-    document.getElementById(
-        "accountButton"
-    );
-
-
-const loginBtn =
-    document.getElementById(
-        "googleLoginBtn"
-    );
-
-
-const logoutBtn =
-    document.getElementById(
-        "logoutBtn"
-    );
-
-
-if(!user){
-
-    if(name){
-
-        name.innerText =
-            "Guest User";
-
-    }
-
-
-    if(email){
-
-        email.innerText =
-            "Not signed in";
-
-    }
-
-
-    if(avatar){
-
-        avatar.innerHTML =
-            "👤";
-
-    }
-
-
-    if(button){
-
-        button.innerHTML =
-            "👤";
-
-    }
-
-
-    if(loginBtn){
-
-        loginBtn.style.display =
-            "block";
-
-    }
-
-
-    if(logoutBtn){
-
-        logoutBtn.style.display =
-            "none";
-
-    }
-
-
-    return;
-
-}
-
-
-if(name){
-
-    name.innerText =
-        user.displayName ||
-        "Google User";
-
-}
-
-
-if(email){
-
-    email.innerText =
-        user.email ||
-        "";
-
-}
-
-
-if(user.photoURL){
-
-    if(avatar){
-
-        avatar.innerHTML =
-            `<img src="${user.photoURL}">`;
-
-    }
-
-
-    if(button){
-
-        button.innerHTML =
-            `<img src="${user.photoURL}">`;
-
-    }
-
-}
-
-
-if(loginBtn){
-
-    loginBtn.style.display =
-        "none";
-
-}
-
-
-if(logoutBtn){
-
-    logoutBtn.style.display =
-        "block";
-
-}
-
-}
-
-/* =========================================================
-FIREBASE AUTH STATE
-========================================================= */
-
-function initializeFirebaseAuth(){
-
-if(
-    typeof firebase === "undefined"
-){
-
-    return;
-
-}
-
-
-try{
-
-    firebase.auth()
-        .onAuthStateChanged(
-            function(user){
-
-                currentUser =
-                    user;
-
-
-                updateAccountUI(
-                    user
+            const cell =
+                document.createElement(
+                    "div"
                 );
 
+            cell.className =
+                "vip-cell vip-task-cell";
+
+
+            const data =
+                vipTimetable.cells[
+                    cellIndex
+                ];
+
+
+            if(data){
+
+                cell.innerHTML = `
+
+                    <div class="vip-cell-title">
+
+                        ${escapeHtml(
+                            data.task
+                        )}
+
+                    </div>
+
+                    <div
+                        class="vip-cell-category">
+
+                        ${escapeHtml(
+                            data.category
+                            || "General"
+                        )}
+
+                    </div>
+
+                    <div
+                        class="vip-cell-status">
+
+                        ${
+                            data.status
+                            || "Waiting"
+                        }
+
+                    </div>
+
+                `;
+
+            }else{
+
+                cell.innerHTML = `
+
+                    <div
+                        class="vip-empty-cell">
+
+                        +
+
+                    </div>
+
+                `;
+
             }
+
+
+            cell.onclick =
+                function(){
+
+                    openVipCellModal(
+                        row,
+                        col
+                    );
+
+                };
+
+
+            grid.appendChild(cell);
+
+        }
+
+    }
+
+
+    wrapper.innerHTML = "";
+
+    wrapper.appendChild(grid);
+
+}
+
+
+/* =========================================================
+   OPEN CELL
+========================================================= */
+
+window.openVipCellModal =
+function(row,col){
+
+    if(!isVipUser()){
+
+        showToast(
+            "🔒 VIP User Only"
         );
 
-}catch(error){
-
-    console.error(
-        "Firebase Auth:",
-        error
-    );
-
-}
-
-}
-
-/* =========================================================
-PLAN UI
-========================================================= */
-
-function updatePlanUI(){
-
-const headerPlan =
-    document.getElementById(
-        "headerPlan"
-    );
-
-
-const accountPlan =
-    document.getElementById(
-        "accountPlan"
-    );
-
-
-if(userPlan === "VIP"){
-
-    if(headerPlan){
-
-        headerPlan.className =
-            "plan-badge vip-badge";
-
-        headerPlan.innerText =
-            "👑 VIP";
+        return;
 
     }
 
 
-    if(accountPlan){
+    currentVipCell = {
 
-        accountPlan.className =
-            "plan-badge vip-badge";
+        row:row,
 
-        accountPlan.innerText =
-            "👑 VIP";
+        col:col,
 
-    }
+        index:
+            `${row}_${col}`
 
-}else{
-
-    if(headerPlan){
-
-        headerPlan.className =
-            "plan-badge free-badge";
-
-        headerPlan.innerText =
-            "🆓 FREE";
-
-    }
+    };
 
 
-    if(accountPlan){
-
-        accountPlan.className =
-            "plan-badge free-badge";
-
-        accountPlan.innerText =
-            "🆓 FREE";
-
-    }
-
-}
-
-}
-
-/* =========================================================
-SETTINGS HELPER
-========================================================= */
-
-function createSettingsButton(){
-
-if(
     document.getElementById(
-        "settingsModal"
-    )
-){
-
-    return;
-
-}
+        "vipCellIndex"
+    ).value =
+        currentVipCell.index;
 
 
-const modal =
-    document.createElement(
-        "div"
-    );
+    const day =
+        vipTimetable.days[col]
+        ||
+        `Day ${col + 1}`;
 
 
-modal.className =
-    "modal";
+    const time =
+        vipTimetable.times[row]
+        ||
+        `${row}:00`;
 
 
-modal.id =
-    "settingsModal";
-
-
-modal.innerHTML = `
-
-    <div class="modal-box">
-
-        <div class="modal-header">
-
-            <h2>
-                ⚙️ Settings
-            </h2>
-
-            <button
-                class="close"
-                onclick="closeSettings()">
-
-                ✕
-
-            </button>
-
-        </div>
-
-
-        <button
-            class="small-btn"
-            style="
-                width:100%;
-                margin-bottom:10px;
-            "
-            onclick="
-                requestNotificationPermission()
-            ">
-
-            🔔 Notification Permission
-
-        </button>
-
-
-        <button
-            class="small-btn"
-            style="
-                width:100%;
-                margin-bottom:10px;
-            "
-            onclick="
-                testNotification()
-            ">
-
-            🧪 Test Notification
-
-        </button>
-
-
-        <button
-            class="small-btn"
-            style="
-                width:100%;
-                margin-bottom:10px;
-            "
-            onclick="
-                openSoundModal()
-            ">
-
-            🔊 Alarm Sound
-
-        </button>
-
-
-        <div
-            class="timetable-card"
-            style="
-                margin-top:15px;
-            ">
-
-            <strong>
-                Account Plan
-            </strong>
-
-            <div
-                style="
-                    margin-top:8px;
-                    color:var(--gold);
-                    font-weight:bold;
-                "
-                id="settingsPlan">
-
-                🆓 FREE
-
-            </div>
-
-        </div>
-
-    </div>
-
-`;
-
-
-document.body.appendChild(
-    modal
-);
-
-}
-
-window.openSettings =
-function(){
-
-createSettingsButton();
-
-
-document.getElementById(
-    "settingsModal"
-).classList.add("show");
-
-
-const plan =
     document.getElementById(
-        "settingsPlan"
-    );
+        "vipCellInfo"
+    ).innerHTML = `
+
+        Day:
+        <strong>
+            ${escapeHtml(day)}
+        </strong>
+
+        <br>
+
+        Time:
+        <strong>
+            ${escapeHtml(time)}
+        </strong>
+
+    `;
 
 
-if(plan){
+    const existing =
+        vipTimetable.cells[
+            currentVipCell.index
+        ];
 
-    plan.innerText =
-        userPlan === "VIP"
-        ? "👑 VIP"
-        : "🆓 FREE";
 
-}
+    document.getElementById(
+        "vipCellTaskName"
+    ).value =
+        existing?.task || "";
+
+
+    document.getElementById(
+        "vipCellCategory"
+    ).value =
+        existing?.category || "";
+
+
+    document.getElementById(
+        "vipCellLink"
+    ).value =
+        existing?.link || "";
+
+
+    document.getElementById(
+        "vipCellNote"
+    ).value =
+        existing?.note || "";
+
+
+    document.getElementById(
+        "vipCellModal"
+    ).classList.add("show");
 
 };
 
-window.closeSettings =
+
+/* =========================================================
+   CLOSE CELL
+========================================================= */
+
+window.closeVipCellModal =
 function(){
 
-const modal =
     document.getElementById(
-        "settingsModal"
-    );
-
-
-if(modal){
-
-    modal.classList.remove(
-        "show"
-    );
-
-}
+        "vipCellModal"
+    ).classList.remove("show");
 
 };
 
+
 /* =========================================================
-ACCOUNT MODAL EXTRA SETTINGS
+   SAVE CELL TASK
 ========================================================= */
 
-const oldOpenAccountModal =
-window.openAccountModal;
+window.saveVipCellTask =
+function(event){
 
-window.openAccountModal =
-function(){
-
-oldOpenAccountModal();
+    event.preventDefault();
 
 
-const modalBox =
-    document.querySelector(
-        "#accountModal .modal-box"
+    if(!currentVipCell){
+
+        return;
+
+    }
+
+
+    const index =
+        currentVipCell.index;
+
+
+    vipTimetable.cells[index] = {
+
+        task:
+            document.getElementById(
+                "vipCellTaskName"
+            ).value.trim(),
+
+        category:
+            document.getElementById(
+                "vipCellCategory"
+            ).value.trim()
+            ||
+            "General",
+
+        link:
+            document.getElementById(
+                "vipCellLink"
+            ).value.trim(),
+
+        note:
+            document.getElementById(
+                "vipCellNote"
+            ).value.trim(),
+
+        status:
+            "Waiting"
+
+    };
+
+
+    renderVipGrid();
+
+
+    closeVipCellModal();
+
+
+    showToast(
+        "👑 Cell Task သိမ်းပြီးပါပြီ!"
     );
 
+};
 
-if(
-    modalBox &&
-    !document.getElementById(
-        "accountSettingsButton"
-    )
-){
+
+/* =========================================================
+   DELETE CELL TASK
+========================================================= */
+
+window.deleteVipCellTask =
+function(){
+
+    if(!currentVipCell){
+
+        return;
+
+    }
+
+
+    const index =
+        currentVipCell.index;
+
+
+    if(
+        vipTimetable.cells[index]
+    ){
+
+        delete
+            vipTimetable.cells[index];
+
+    }
+
+
+    renderVipGrid();
+
+    closeVipCellModal();
+
+
+    showToast(
+        "🗑️ Cell Task ဖျက်ပြီးပါပြီ"
+    );
+
+};
+
+
+/* =========================================================
+   RENAME DAYS
+========================================================= */
+
+window.renameVipDays =
+function(){
+
+    if(!isVipUser()){
+
+        showToast(
+            "🔒 VIP User Only"
+        );
+
+        return;
+
+    }
+
+
+    for(
+        let i = 0;
+        i < vipTimetable.columns;
+        i++
+    ){
+
+        const current =
+            vipTimetable.days[i]
+            ||
+            `Day ${i + 1}`;
+
+
+        const value =
+            prompt(
+                `Day ${i + 1} Name`,
+                current
+            );
+
+
+        if(value !== null){
+
+            const clean =
+                value.trim();
+
+
+            if(clean){
+
+                vipTimetable.days[i] =
+                    clean;
+
+            }
+
+        }
+
+    }
+
+
+    renderVipGrid();
+
+
+    showToast(
+        "✏️ Day Names ပြင်ပြီးပါပြီ"
+    );
+
+};
+
+
+/* =========================================================
+   RENAME SINGLE DAY
+========================================================= */
+
+window.renameSingleVipDay =
+function(index){
+
+    const current =
+        vipTimetable.days[index]
+        ||
+        `Day ${index + 1}`;
+
+
+    const value =
+        prompt(
+            "Day Name",
+            current
+        );
+
+
+    if(value !== null){
+
+        const clean =
+            value.trim();
+
+
+        if(clean){
+
+            vipTimetable.days[index] =
+                clean;
+
+            renderVipGrid();
+
+        }
+
+    }
+
+};
+
+
+/* =========================================================
+   RENAME TIMES
+========================================================= */
+
+window.renameVipTimes =
+function(){
+
+    if(!isVipUser()){
+
+        showToast(
+            "🔒 VIP User Only"
+        );
+
+        return;
+
+    }
+
+
+    for(
+        let i = 0;
+        i < vipTimetable.rows;
+        i++
+    ){
+
+        const current =
+            vipTimetable.times[i]
+            ||
+            `${i}:00`;
+
+
+        const value =
+            prompt(
+                `Time ${i + 1}`,
+                current
+            );
+
+
+        if(value !== null){
+
+            const clean =
+                value.trim();
+
+
+            if(clean){
+
+                vipTimetable.times[i] =
+                    clean;
+
+            }
+
+        }
+
+    }
+
+
+    renderVipGrid();
+
+
+    showToast(
+        "🕐 Time Labels ပြင်ပြီးပါပြီ"
+    );
+
+};
+
+
+/* =========================================================
+   RENAME SINGLE TIME
+========================================================= */
+
+window.renameSingleVipTime =
+function(index){
+
+    const current =
+        vipTimetable.times[index]
+        ||
+        `${index}:00`;
+
+
+    const value =
+        prompt(
+            "Time Label",
+            current
+        );
+
+
+    if(value !== null){
+
+        const clean =
+            value.trim();
+
+
+        if(clean){
+
+            vipTimetable.times[index] =
+                clean;
+
+            renderVipGrid();
+
+        }
+
+    }
+
+};
+
+
+/* =========================================================
+   CLEAR GRID
+========================================================= */
+
+window.clearVipGrid =
+function(){
+
+    if(!isVipUser()){
+
+        showToast(
+            "🔒 VIP User Only"
+        );
+
+        return;
+
+    }
+
+
+    const confirmed =
+        confirm(
+            "Custom Timetable ထဲက Task အားလုံးကို ဖျက်မှာသေချာလား?"
+        );
+
+
+    if(!confirmed){
+
+        return;
+
+    }
+
+
+    vipTimetable.cells = {};
+
+
+    renderVipGrid();
+
+
+    showToast(
+        "🗑️ Grid Tasks အားလုံးဖျက်ပြီးပါပြီ"
+    );
+
+};
+
+
+/* =========================================================
+   VIP NAV
+========================================================= */
+
+function addVipNavButton(){
+
+    const nav =
+        document.querySelector(
+            ".bottom-nav"
+        );
+
+
+    if(!nav){
+
+        return;
+
+    }
+
+
+    if(
+        document.getElementById(
+            "vipNavButton"
+        )
+    ){
+
+        return;
+
+    }
+
 
     const button =
         document.createElement(
@@ -5053,118 +4304,81 @@ if(
         );
 
 
-    button.id =
-        "accountSettingsButton";
-
-
     button.className =
-        "small-btn";
+        "nav";
 
 
-    button.style.width =
-        "100%";
-
-
-    button.style.marginTop =
-        "10px";
-
-
-    button.innerText =
-        "⚙️ Settings";
+    button.id =
+        "vipNavButton";
 
 
     button.onclick =
         function(){
 
-            closeAccountModal();
+            switchPage(
+                "vipTimetable",
+                button
+            );
 
-            openSettings();
+            updateVipAccess();
 
         };
 
 
-    modalBox.appendChild(
-        button
-    );
+    button.innerHTML = `
+
+        <div>
+            👑
+        </div>
+
+        VIP Table
+
+    `;
+
+
+    nav.appendChild(button);
 
 }
 
-};
 
 /* =========================================================
-LOAD DATA
+   INITIAL VIP SETUP
 ========================================================= */
 
-loadAppData();
+window.currentUserPlan =
+    window.currentUserPlan || "free";
 
-/* =========================================================
-INITIAL RENDER
-========================================================= */
 
-renderTimetable();
+createDefaultVipTimes();
 
-renderSchedule();
+addVipNavButton();
 
-renderTasks();
+updateVipAccess();
 
-updateProgress();
 
-updatePlanUI();
+/*
+=========================================================
+IMPORTANT P4-F CONNECTION
+=========================================================
 
-initializeFirebaseAuth();
+Google/Firebase Login ပြီးတဲ့အခါ
+ဒီလိုပဲ သတ်မှတ်ပေးရမယ် -
 
-/* =========================================================
-NOTIFICATION STATUS
-========================================================= */
+window.currentUserPlan = "free";
 
-if(
-"Notification" in window
-){
+or
 
-notificationGranted =
-    Notification.permission ===
-    "granted";
+window.currentUserPlan = "vip";
 
-}
+ပြီးရင် -
 
-/* =========================================================
-SCHEDULE CLOCK
-========================================================= */
+updateVipAccess();
 
-setInterval(
-checkSchedules,
-30000
-);
-
-/* =========================================================
-FIRST CHECK
-========================================================= */
-
-setTimeout(
-function(){
-
-    checkSchedules();
-
-    renderSchedule();
-
-    renderTasks();
-
-    updateProgress();
-
-},
-500
-
-);
-
-/* =========================================================
-P4-B READY
-========================================================= */
-
-console.log(
-"⚡ TimeFlow P4-B Loaded"
-);
+=========================================================
+*/
 
 </script>
+
 <!-- =======================================================
-     END OF TIMEFLOW P4-B
+     P4-B END
 ======================================================= -->
