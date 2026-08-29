@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="my">
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>TimeFlow</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TimeFlow P3</title>
 
 <style>
-
 *{
     box-sizing:border-box;
     margin:0;
@@ -25,33 +22,27 @@
     --muted:#858d9c;
     --green:#4ade80;
     --red:#ff6262;
+    --blue:#60a5fa;
     --border:rgba(255,255,255,.07);
-}
-
-html{
-    scroll-behavior:smooth;
 }
 
 body{
     font-family:Arial,"Noto Sans Myanmar",sans-serif;
     background:
-        radial-gradient(
-            circle at 50% -10%,
-            rgba(245,196,81,.13),
-            transparent 35%
-        ),
+        radial-gradient(circle at 50% -10%,rgba(245,196,81,.13),transparent 35%),
         var(--bg);
     color:var(--text);
     min-height:100vh;
-    padding-bottom:95px;
+    padding-bottom:100px;
 }
 
-button,
-input{
+button,input{
     font-family:inherit;
 }
 
-/* HEADER */
+button{
+    cursor:pointer;
+}
 
 .header{
     padding:28px 20px 18px;
@@ -93,12 +84,7 @@ input{
 }
 
 .vip-badge{
-    background:
-        linear-gradient(
-            135deg,
-            var(--gold),
-            var(--gold2)
-        );
+    background:linear-gradient(135deg,var(--gold),var(--gold2));
     color:#111;
 }
 
@@ -109,12 +95,11 @@ input{
     border-radius:50%;
     background:#171c25;
     color:white;
-    cursor:pointer;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:18px;
     overflow:hidden;
+    font-size:18px;
 }
 
 .account-btn img{
@@ -138,8 +123,6 @@ input{
     font-size:26px;
 }
 
-/* PAGE */
-
 .page{
     display:none;
     padding:0 16px;
@@ -151,20 +134,15 @@ input{
 }
 
 @keyframes fade{
-
     from{
         opacity:0;
         transform:translateY(8px);
     }
-
     to{
         opacity:1;
         transform:translateY(0);
     }
-
 }
-
-/* PROGRESS */
 
 .progress-card{
     margin:8px 0 22px;
@@ -172,11 +150,7 @@ input{
     border:1px solid rgba(245,196,81,.15);
     border-radius:24px;
     background:
-        linear-gradient(
-            145deg,
-            rgba(245,196,81,.09),
-            transparent
-        ),
+        linear-gradient(145deg,rgba(245,196,81,.09),transparent),
         var(--card);
 }
 
@@ -209,16 +183,12 @@ input{
     display:flex;
     align-items:center;
     justify-content:center;
-    background:
-        conic-gradient(
-            var(--gold) 0deg,
-            #292d35 0deg
-        );
+    background:conic-gradient(var(--gold) 0deg,#292d35 0deg);
     position:relative;
     flex-shrink:0;
 }
 
-.circle::before{
+.circle:before{
     content:"";
     position:absolute;
     width:66px;
@@ -252,18 +222,11 @@ input{
 
 .fill{
     height:100%;
-    width:0%;
-    background:
-        linear-gradient(
-            90deg,
-            var(--gold),
-            var(--gold2)
-        );
+    width:0;
+    background:linear-gradient(90deg,var(--gold),var(--gold2));
     border-radius:20px;
     transition:.5s;
 }
-
-/* SECTION */
 
 .section-title{
     display:flex;
@@ -281,8 +244,6 @@ input{
     font-size:10px;
 }
 
-/* TASK */
-
 .task-list{
     display:flex;
     flex-direction:column;
@@ -293,13 +254,8 @@ input{
     display:grid;
     grid-template-columns:62px 1fr auto auto;
     align-items:center;
-    gap:10px;
-    background:
-        linear-gradient(
-            145deg,
-            var(--card2),
-            var(--card)
-        );
+    gap:8px;
+    background:linear-gradient(145deg,var(--card2),var(--card));
     border:1px solid var(--border);
     padding:14px 12px;
     border-radius:18px;
@@ -354,7 +310,7 @@ input{
 
 .task-actions{
     display:flex;
-    gap:5px;
+    gap:4px;
 }
 
 .icon-btn{
@@ -364,10 +320,7 @@ input{
     border-radius:9px;
     background:#242a34;
     color:white;
-    cursor:pointer;
 }
-
-/* EMPTY */
 
 .empty{
     text-align:center;
@@ -378,14 +331,12 @@ input{
     font-size:13px;
 }
 
-/* TIMELINE */
-
 .timeline{
     position:relative;
     margin-top:10px;
 }
 
-.timeline::before{
+.timeline:before{
     content:"";
     position:absolute;
     left:25px;
@@ -437,8 +388,6 @@ input{
     font-size:10px;
 }
 
-/* STATS */
-
 .stats-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
@@ -465,8 +414,6 @@ input{
     font-size:9px;
 }
 
-/* BIG PROGRESS */
-
 .big-progress{
     margin-top:15px;
     padding:20px;
@@ -479,8 +426,6 @@ input{
     font-size:15px;
 }
 
-/* ADD */
-
 .add-btn{
     position:fixed;
     right:20px;
@@ -489,20 +434,12 @@ input{
     height:58px;
     border:0;
     border-radius:50%;
-    background:
-        linear-gradient(
-            135deg,
-            var(--gold),
-            var(--gold2)
-        );
+    background:linear-gradient(135deg,var(--gold),var(--gold2));
     color:#111;
     font-size:30px;
     box-shadow:0 8px 30px rgba(245,196,81,.25);
-    cursor:pointer;
     z-index:20;
 }
-
-/* NAV */
 
 .bottom-nav{
     position:fixed;
@@ -521,13 +458,12 @@ input{
 }
 
 .nav{
-    width:30%;
+    width:25%;
     height:54px;
     border:0;
     background:none;
     color:var(--muted);
     font-size:10px;
-    cursor:pointer;
     border-radius:15px;
 }
 
@@ -540,8 +476,6 @@ input{
     background:rgba(245,196,81,.1);
     color:var(--gold);
 }
-
-/* MODAL */
 
 .modal{
     position:fixed;
@@ -557,7 +491,6 @@ input{
 
 .modal.show{
     display:flex;
-    animation:fade .25s ease;
 }
 
 .modal-box{
@@ -569,7 +502,6 @@ input{
     border:1px solid rgba(245,196,81,.15);
     border-radius:25px;
     padding:22px;
-    box-shadow:0 25px 80px rgba(0,0,0,.6);
 }
 
 .modal-header{
@@ -590,10 +522,7 @@ input{
     border-radius:10px;
     background:#252b35;
     color:white;
-    cursor:pointer;
 }
-
-/* FORM */
 
 .form-group{
     margin-bottom:16px;
@@ -618,23 +547,36 @@ input{
     outline:none;
 }
 
-.save-btn{
+.save-btn,
+.google-btn{
     width:100%;
     padding:14px;
     border:0;
     border-radius:13px;
-    background:
-        linear-gradient(
-            135deg,
-            var(--gold),
-            var(--gold2)
-        );
-    color:#111;
     font-weight:900;
-    cursor:pointer;
 }
 
-/* ACCOUNT */
+.save-btn{
+    background:linear-gradient(135deg,var(--gold),var(--gold2));
+    color:#111;
+}
+
+.google-btn{
+    background:white;
+    color:#111;
+}
+
+.logout-btn{
+    width:100%;
+    padding:13px;
+    border:0;
+    border-radius:13px;
+    background:#252b35;
+    color:white;
+    font-weight:bold;
+    margin-top:10px;
+    display:none;
+}
 
 .account-avatar{
     width:76px;
@@ -672,53 +614,95 @@ input{
     word-break:break-all;
 }
 
-.google-btn{
-    width:100%;
-    padding:14px;
-    border:0;
-    border-radius:13px;
-    background:white;
-    color:#111;
-    font-weight:900;
-    cursor:pointer;
-}
-
-.logout-btn{
-    width:100%;
-    padding:13px;
-    border:0;
-    border-radius:13px;
-    background:#252b35;
-    color:white;
-    font-weight:bold;
-    cursor:pointer;
-    margin-top:10px;
-    display:none;
-}
-
-.user-only{
-    display:none;
-}
-
-/* LOGIN STATUS */
-
 .login-status{
     text-align:center;
-    font-size:10px;
     color:var(--muted);
-    margin-top:12px;
+    font-size:10px;
     line-height:1.6;
+    margin-top:12px;
 }
 
-/* TOAST */
+.sound-box{
+    padding:14px;
+    border:1px solid var(--border);
+    border-radius:14px;
+    background:#090c11;
+}
+
+.sound-box input{
+    margin-top:10px;
+}
+
+.setting-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.setting-row:last-child{
+    border-bottom:0;
+}
+
+.setting-row span{
+    font-size:13px;
+}
+
+.switch{
+    width:46px;
+    height:25px;
+    border-radius:20px;
+    background:#303641;
+    position:relative;
+    border:0;
+}
+
+.switch:after{
+    content:"";
+    position:absolute;
+    width:19px;
+    height:19px;
+    border-radius:50%;
+    background:white;
+    left:3px;
+    top:3px;
+    transition:.2s;
+}
+
+.switch.on{
+    background:var(--gold);
+}
+
+.switch.on:after{
+    left:24px;
+    background:#111;
+}
+
+.vip-card{
+    padding:18px;
+    border-radius:18px;
+    background:linear-gradient(135deg,rgba(245,196,81,.16),rgba(245,196,81,.03));
+    border:1px solid rgba(245,196,81,.2);
+    margin-bottom:15px;
+}
+
+.vip-card h3{
+    color:var(--gold);
+    margin-bottom:8px;
+}
+
+.vip-card p{
+    color:var(--muted);
+    font-size:11px;
+    line-height:1.6;
+}
 
 .toast{
     position:fixed;
     left:50%;
     bottom:92px;
-    transform:
-        translateX(-50%)
-        translateY(20px);
+    transform:translateX(-50%) translateY(20px);
     background:#202631;
     border:1px solid rgba(245,196,81,.2);
     color:white;
@@ -729,40 +713,32 @@ input{
     pointer-events:none;
     transition:.3s;
     z-index:200;
+    white-space:nowrap;
 }
 
 .toast.show{
     opacity:1;
-    transform:
-        translateX(-50%)
-        translateY(0);
+    transform:translateX(-50%) translateY(0);
 }
-
-/* MOBILE */
 
 @media(max-width:430px){
 
     .task{
-        grid-template-columns:
-            57px
-            1fr
-            auto;
+        grid-template-columns:57px 1fr auto;
     }
 
     .task .status{
         display:none;
     }
 
-    .greeting h1{
-        font-size:24px;
-    }
-
     .header-actions .plan-badge{
         display:none;
     }
 
+    .greeting h1{
+        font-size:24px;
+    }
 }
-
 </style>
 </head>
 
@@ -778,19 +754,14 @@ input{
 
         <div class="header-actions">
 
-            <div
-                class="plan-badge free-badge"
-                id="headerPlan">
+            <div class="plan-badge free-badge" id="headerPlan">
                 🆓 FREE
             </div>
 
-            <button
-                class="account-btn"
-                id="accountButton"
-                onclick="openAccountModal()">
-
+            <button class="account-btn"
+                    id="accountButton"
+                    onclick="openAccountModal()">
                 👤
-
             </button>
 
         </div>
@@ -799,9 +770,7 @@ input{
 
     <div class="greeting">
 
-        <small>
-            WELCOME BACK
-        </small>
+        <small>WELCOME BACK</small>
 
         <h1 id="greetingTitle">
             Let's get things done. 🚀
@@ -812,31 +781,21 @@ input{
 </header>
 
 
-<!-- HOME -->
-
-<section
-    class="page active"
-    id="home">
+<section class="page active" id="home">
 
     <div class="progress-card">
 
         <div class="progress-head">
 
-            <h3>
-                Today's Progress
-            </h3>
+            <h3>Today's Progress</h3>
 
-            <span id="percent">
-                0%
-            </span>
+            <span id="percent">0%</span>
 
         </div>
 
         <div class="progress-number">
 
-            <div
-                class="circle"
-                id="progressCircle">
+            <div class="circle" id="progressCircle">
 
                 <strong id="circlePercent">
                     0%
@@ -853,9 +812,8 @@ input{
 
                 <div class="bar">
 
-                    <div
-                        class="fill"
-                        id="progressFill">
+                    <div class="fill"
+                         id="progressFill">
                     </div>
 
                 </div>
@@ -869,9 +827,7 @@ input{
 
     <div class="section-title">
 
-        <h2>
-            📋 Today's Tasks
-        </h2>
+        <h2>📋 Today's Tasks</h2>
 
         <span id="taskCount">
             0 TASKS
@@ -879,9 +835,9 @@ input{
 
     </div>
 
-    <div
-        class="task-list"
-        id="taskList">
+
+    <div class="task-list"
+         id="taskList">
 
         <div class="empty">
             📭 Task မရှိသေးပါ။
@@ -895,19 +851,15 @@ input{
 
     <div class="section-title">
 
-        <h2>
-            ⏰ Daily Schedule
-        </h2>
+        <h2>⏰ Daily Schedule</h2>
 
-        <span>
-            ALARMS
-        </span>
+        <span>ALARMS</span>
 
     </div>
 
-    <div
-        class="timeline"
-        id="scheduleList">
+
+    <div class="timeline"
+         id="scheduleList">
 
         <div class="empty">
             ⏰ Schedule မရှိသေးပါ။
@@ -918,15 +870,12 @@ input{
 
     <div class="section-title">
 
-        <h2>
-            📊 Progress Overview
-        </h2>
+        <h2>📊 Progress Overview</h2>
 
-        <span>
-            STATISTICS
-        </span>
+        <span>STATISTICS</span>
 
     </div>
+
 
     <div class="stats-grid">
 
@@ -950,27 +899,18 @@ input{
 </section>
 
 
-<!-- SCHEDULE -->
-
-<section
-    class="page"
-    id="schedule">
+<section class="page" id="schedule">
 
     <div class="section-title">
 
-        <h2>
-            ⏰ Schedule
-        </h2>
+        <h2>⏰ Schedule</h2>
 
-        <span>
-            TODAY
-        </span>
+        <span>TODAY</span>
 
     </div>
 
-    <div
-        class="timeline"
-        id="schedulePageList">
+    <div class="timeline"
+         id="schedulePageList">
 
         <div class="empty">
             ⏰ Schedule မရှိသေးပါ။
@@ -981,21 +921,13 @@ input{
 </section>
 
 
-<!-- PROGRESS -->
-
-<section
-    class="page"
-    id="progress">
+<section class="page" id="progress">
 
     <div class="section-title">
 
-        <h2>
-            📊 Progress
-        </h2>
+        <h2>📊 Progress</h2>
 
-        <span>
-            STATISTICS
-        </span>
+        <span>STATISTICS</span>
 
     </div>
 
@@ -1025,12 +957,8 @@ input{
 
             Overall Completion
 
-            <span
-                id="progressPercent"
-                style="
-                    float:right;
-                    color:#f5c451;
-                ">
+            <span id="progressPercent"
+                  style="float:right;color:#f5c451">
                 0%
             </span>
 
@@ -1038,23 +966,15 @@ input{
 
         <div class="bar">
 
-            <div
-                class="fill"
-                id="progressPageFill">
+            <div class="fill"
+                 id="progressPageFill">
             </div>
 
         </div>
 
-        <p
-            style="
-                color:#858d9c;
-                font-size:11px;
-                margin-top:12px;
-            ">
-
+        <p style="color:#858d9c;font-size:11px;margin-top:12px">
             Small progress every day becomes
             big results. 🔥
-
         </p>
 
     </div>
@@ -1062,71 +982,149 @@ input{
 </section>
 
 
-<!-- ADD -->
+<section class="page" id="settings">
 
-<button
-    class="add-btn"
-    onclick="openAddModal()">
+    <div class="section-title">
 
+        <h2>⚙️ Settings</h2>
+
+        <span>APP</span>
+
+    </div>
+
+
+    <div class="big-progress">
+
+        <div class="setting-row">
+
+            <span>🔔 Notifications</span>
+
+            <button class="switch"
+                    id="notificationSwitch"
+                    onclick="toggleNotifications()">
+            </button>
+
+        </div>
+
+
+        <div class="setting-row">
+
+            <span>🔊 Alarm Sound</span>
+
+            <button class="switch on"
+                    id="soundSwitch"
+                    onclick="toggleSound()">
+            </button>
+
+        </div>
+
+
+        <div class="setting-row">
+
+            <span>📳 Vibration</span>
+
+            <button class="switch"
+                    id="vibrationSwitch"
+                    onclick="toggleVibration()">
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="big-progress">
+
+        <h3>🔊 Alarm Sound File</h3>
+
+        <p style="color:#858d9c;font-size:11px;line-height:1.6;margin-top:8px">
+            Phone ထဲက audio file တစ်ခုရွေးပြီး
+            Alarm အတွက်အသုံးပြုနိုင်ပါတယ်။
+        </p>
+
+        <div class="sound-box" style="margin-top:14px">
+
+            <input type="file"
+                   id="soundFile"
+                   accept="audio/*"
+                   onchange="loadSoundFile(event)">
+
+            <p id="soundName"
+               style="color:#858d9c;font-size:10px;margin-top:8px">
+                Default alarm sound
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="vip-card">
+
+        <h3>👑 TimeFlow VIP</h3>
+
+        <p>
+            VIP version မှာ Auto alarm,
+            advanced schedule,
+            cloud sync,
+            advanced statistics
+            စတဲ့ feature တွေကို unlock လုပ်နိုင်မယ်။
+        </p>
+
+    </div>
+
+</section>
+
+
+<button class="add-btn"
+        onclick="openAddModal()">
     +
-
 </button>
 
 
-<!-- NAV -->
-
 <nav class="bottom-nav">
 
-    <button
-        class="nav active"
-        onclick="switchPage('home',this)">
-
+    <button class="nav active"
+            onclick="switchPage('home',this)">
         <div>🏠</div>
         Home
-
     </button>
 
-    <button
-        class="nav"
-        onclick="switchPage('schedule',this)">
-
+    <button class="nav"
+            onclick="switchPage('schedule',this)">
         <div>⏰</div>
         Schedule
-
     </button>
 
-    <button
-        class="nav"
-        onclick="switchPage('progress',this)">
-
+    <button class="nav"
+            onclick="switchPage('progress',this)">
         <div>📊</div>
         Progress
+    </button>
 
+    <button class="nav"
+            onclick="switchPage('settings',this)">
+        <div>⚙️</div>
+        Settings
     </button>
 
 </nav>
 
 
-<!-- ACCOUNT MODAL -->
+<!-- ACCOUNT -->
 
-<div
-    class="modal"
-    id="accountModal">
+<div class="modal"
+     id="accountModal">
 
     <div class="modal-box">
 
         <div class="modal-header">
 
-            <h2>
-                👤 Account
-            </h2>
+            <h2>👤 Account</h2>
 
-            <button
-                class="close"
-                onclick="closeAccountModal()">
-
+            <button class="close"
+                    onclick="closeAccountModal()">
                 ✕
-
             </button>
 
         </div>
@@ -1134,65 +1132,50 @@ input{
 
         <div class="account-modal-user">
 
-            <div
-                class="account-avatar"
-                id="accountAvatar">
-
+            <div class="account-avatar"
+                 id="accountAvatar">
                 👤
-
             </div>
 
-            <div
-                class="account-name"
-                id="accountName">
-
+            <div class="account-name"
+                 id="accountName">
                 Guest User
-
             </div>
 
-            <div
-                class="account-email"
-                id="accountEmail">
-
+            <div class="account-email"
+                 id="accountEmail">
                 Not signed in
-
             </div>
 
-            <div
-                class="plan-badge free-badge"
-                id="accountPlan"
-                style="margin-top:10px;">
-
+            <div class="plan-badge free-badge"
+                 id="accountPlan"
+                 style="margin-top:10px">
                 🆓 FREE
-
             </div>
 
         </div>
 
 
-        <button
-            class="google-btn"
-            id="googleLoginBtn"
-            onclick="googleLogin()">
+        <button class="google-btn"
+                id="googleLoginBtn"
+                onclick="googleLogin()">
 
             🔐 Continue with Google
 
         </button>
 
 
-        <button
-            class="logout-btn"
-            id="logoutBtn"
-            onclick="googleLogout()">
+        <button class="logout-btn"
+                id="logoutBtn"
+                onclick="googleLogout()">
 
             🚪 Sign Out
 
         </button>
 
 
-        <div
-            class="login-status"
-            id="loginStatus">
+        <div class="login-status"
+             id="loginStatus">
 
             Google Account Login
             နဲ့ Firebase Auth ချိတ်ထားပါတယ်။
@@ -1206,81 +1189,65 @@ input{
 
 <!-- ADD TASK -->
 
-<div
-    class="modal"
-    id="addTaskModal">
+<div class="modal"
+     id="addTaskModal">
 
     <div class="modal-box">
 
         <div class="modal-header">
 
-            <h2>
+            <h2 id="taskModalTitle">
                 ✨ New Task
             </h2>
 
-            <button
-                class="close"
-                onclick="closeAddModal()">
-
+            <button class="close"
+                    onclick="closeAddModal()">
                 ✕
-
             </button>
 
         </div>
 
 
-        <form
-            onsubmit="saveTask(event)">
+        <form onsubmit="saveTask(event)">
 
             <div class="form-group">
 
-                <label>
-                    TIME
-                </label>
+                <label>TIME</label>
 
-                <input
-                    type="time"
-                    id="taskTime"
-                    required>
+                <input type="time"
+                       id="taskTime"
+                       required>
 
             </div>
 
 
             <div class="form-group">
 
-                <label>
-                    TASK NAME
-                </label>
+                <label>TASK NAME</label>
 
-                <input
-                    type="text"
-                    id="taskName"
-                    placeholder="ဥပမာ - Physics Study"
-                    required>
+                <input type="text"
+                       id="taskName"
+                       placeholder="ဥပမာ - Physics Study"
+                       required>
 
             </div>
 
 
             <div class="form-group">
 
-                <label>
-                    CATEGORY
-                </label>
+                <label>CATEGORY</label>
 
-                <input
-                    type="text"
-                    id="taskCategory"
-                    placeholder="Study / Meal / Workout">
+                <input type="text"
+                       id="taskCategory"
+                       placeholder="Study / Meal / Workout">
 
             </div>
 
 
-            <button
-                type="submit"
-                class="save-btn">
-
+            <button type="submit"
+                    class="save-btn"
+                    id="saveTaskButton">
                 ✨ Save Task
-
             </button>
 
         </form>
@@ -1290,20 +1257,13 @@ input{
 </div>
 
 
-<!-- TOAST -->
-
-<div
-    class="toast"
-    id="toast">
-
+<div class="toast"
+     id="toast">
     Saved!
-
 </div>
 
 
-<!-- =====================================================
-     FIREBASE
-===================================================== -->
+<!-- FIREBASE -->
 
 <script type="module">
 
@@ -1319,8 +1279,6 @@ import {
     onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-
-/* FIREBASE CONFIG */
 
 const firebaseConfig = {
 
@@ -1344,11 +1302,8 @@ const firebaseConfig = {
 
     measurementId:
         "G-FYVSE71BM1"
-
 };
 
-
-/* INIT */
 
 const app =
     initializeApp(firebaseConfig);
@@ -1360,19 +1315,13 @@ const provider =
     new GoogleAuthProvider();
 
 
-/* GOOGLE LOGIN */
-
 window.googleLogin = async function(){
 
     const button =
-        document.getElementById(
-            "googleLoginBtn"
-        );
+        document.getElementById("googleLoginBtn");
 
     const status =
-        document.getElementById(
-            "loginStatus"
-        );
+        document.getElementById("loginStatus");
 
     button.disabled = true;
 
@@ -1391,66 +1340,44 @@ window.googleLogin = async function(){
                 provider
             );
 
-
-        const user =
-            result.user;
-
-
-        updateUserUI(user);
+        updateUserUI(result.user);
 
         showToast(
             "✅ Google Login အောင်မြင်ပါပြီ!"
         );
 
-
     }catch(error){
 
-        console.error(
-            "Google Login Error:",
-            error
-        );
-
+        console.error(error);
 
         let message =
             "❌ Login မအောင်မြင်ပါ။";
 
-
-        if(
-            error.code ===
-            "auth/unauthorized-domain"
-        ){
+        if(error.code === "auth/unauthorized-domain"){
 
             message =
                 "❌ Firebase Authorized Domain မထည့်ရသေးပါ။";
 
-        }
-
-        else if(
-            error.code ===
-            "auth/popup-closed-by-user"
-        ){
+        }else if(error.code === "auth/popup-closed-by-user"){
 
             message =
                 "⚠️ Google Login ပိတ်လိုက်ပါတယ်။";
 
-        }
-
-        else if(
-            error.code ===
-            "auth/popup-blocked"
-        ){
+        }else if(error.code === "auth/popup-blocked"){
 
             message =
-                "⚠️ Browser က popup ကိုပိတ်ထားပါတယ်။";
+                "⚠️ Browser popup ကိုပိတ်ထားပါတယ်။";
+
+        }else if(error.code === "auth/cancelled-popup-request"){
+
+            message =
+                "⚠️ Login request တစ်ခုရှိနေပြီးသားပါ။";
 
         }
 
-
-        status.innerText =
-            message;
+        status.innerText = message;
 
         showToast(message);
-
 
     }finally{
 
@@ -1463,8 +1390,6 @@ window.googleLogin = async function(){
 
 };
 
-
-/* LOGOUT */
 
 window.googleLogout = async function(){
 
@@ -1489,8 +1414,6 @@ window.googleLogout = async function(){
 };
 
 
-/* AUTH STATE */
-
 onAuthStateChanged(
     auth,
     function(user){
@@ -1509,42 +1432,25 @@ onAuthStateChanged(
 );
 
 
-/* USER UI */
-
 function updateUserUI(user){
 
     const name =
-        user.displayName
-        || "Google User";
+        user.displayName || "Google User";
 
     const email =
-        user.email
-        || "No email";
+        user.email || "No email";
 
+    document.getElementById("accountName")
+        .innerText = name;
 
-    document.getElementById(
-        "accountName"
-    ).innerText =
-        name;
-
-
-    document.getElementById(
-        "accountEmail"
-    ).innerText =
-        email;
-
+    document.getElementById("accountEmail")
+        .innerText = email;
 
     const avatar =
-        document.getElementById(
-            "accountAvatar"
-        );
-
+        document.getElementById("accountAvatar");
 
     const button =
-        document.getElementById(
-            "accountButton"
-        );
-
+        document.getElementById("accountButton");
 
     if(user.photoURL){
 
@@ -1556,145 +1462,90 @@ function updateUserUI(user){
 
     }else{
 
-        avatar.innerHTML =
-            "👤";
-
-        button.innerHTML =
-            "👤";
+        avatar.innerHTML = "👤";
+        button.innerHTML = "👤";
 
     }
 
+    document.getElementById("googleLoginBtn")
+        .style.display = "none";
 
-    document.getElementById(
-        "googleLoginBtn"
-    ).style.display =
-        "none";
+    document.getElementById("logoutBtn")
+        .style.display = "block";
 
-
-    document.getElementById(
-        "logoutBtn"
-    ).style.display =
-        "block";
-
-
-    document.getElementById(
-        "loginStatus"
-    ).innerText =
+    document.getElementById("loginStatus")
+        .innerText =
         "Google Account နဲ့ Login ဝင်ထားပါတယ်။";
 
-
-    document.getElementById(
-        "greetingTitle"
-    ).innerText =
+    document.getElementById("greetingTitle")
+        .innerText =
         "Welcome, " + name + " 👋";
 
 }
 
 
-/* GUEST UI */
-
 function updateGuestUI(){
 
-    document.getElementById(
-        "accountName"
-    ).innerText =
-        "Guest User";
+    document.getElementById("accountName")
+        .innerText = "Guest User";
 
+    document.getElementById("accountEmail")
+        .innerText = "Not signed in";
 
-    document.getElementById(
-        "accountEmail"
-    ).innerText =
-        "Not signed in";
+    document.getElementById("accountAvatar")
+        .innerHTML = "👤";
 
+    document.getElementById("accountButton")
+        .innerHTML = "👤";
 
-    document.getElementById(
-        "accountAvatar"
-    ).innerHTML =
-        "👤";
+    document.getElementById("googleLoginBtn")
+        .style.display = "block";
 
+    document.getElementById("logoutBtn")
+        .style.display = "none";
 
-    document.getElementById(
-        "accountButton"
-    ).innerHTML =
-        "👤";
-
-
-    document.getElementById(
-        "googleLoginBtn"
-    ).style.display =
-        "block";
-
-
-    document.getElementById(
-        "logoutBtn"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "loginStatus"
-    ).innerText =
+    document.getElementById("loginStatus")
+        .innerText =
         "Google Account Login နဲ့ Firebase Auth ချိတ်ထားပါတယ်။";
 
-
-    document.getElementById(
-        "greetingTitle"
-    ).innerText =
+    document.getElementById("greetingTitle")
+        .innerText =
         "Let's get things done. 🚀";
 
 }
 
 
-/* PAGE SWITCH */
-
-window.switchPage = function(
-    pageId,
-    btn
-){
+window.switchPage =
+function(pageId,btn){
 
     document.querySelectorAll(".page")
-        .forEach(
-            page =>
-                page.classList.remove("active")
+        .forEach(page =>
+            page.classList.remove("active")
         );
 
-
-    document.querySelectorAll(
-        ".bottom-nav .nav"
-    )
-    .forEach(
-        nav =>
+    document.querySelectorAll(".bottom-nav .nav")
+        .forEach(nav =>
             nav.classList.remove("active")
-    );
-
+        );
 
     const page =
         document.getElementById(pageId);
 
-
     if(page){
-
         page.classList.add("active");
-
     }
 
-
     if(btn){
-
         btn.classList.add("active");
-
     }
 
 };
 
 
-/* ACCOUNT */
-
 window.openAccountModal =
 function(){
 
-    document
-        .getElementById("accountModal")
+    document.getElementById("accountModal")
         .classList.add("show");
 
 };
@@ -1703,20 +1554,24 @@ function(){
 window.closeAccountModal =
 function(){
 
-    document
-        .getElementById("accountModal")
+    document.getElementById("accountModal")
         .classList.remove("show");
 
 };
 
 
-/* ADD TASK */
-
 window.openAddModal =
 function(){
 
-    document
-        .getElementById("addTaskModal")
+    editingTaskId = null;
+
+    document.getElementById("taskModalTitle")
+        .innerText = "✨ New Task";
+
+    document.getElementById("saveTaskButton")
+        .innerText = "✨ Save Task";
+
+    document.getElementById("addTaskModal")
         .classList.add("show");
 
 };
@@ -1725,61 +1580,142 @@ function(){
 window.closeAddModal =
 function(){
 
-    document
-        .getElementById("addTaskModal")
+    document.getElementById("addTaskModal")
         .classList.remove("show");
 
 };
 
 
-/* TASK STATE */
+window.editTask =
+function(id){
 
-let tasks = [];
+    const task =
+        tasks.find(t => t.id === id);
+
+    if(!task) return;
+
+    editingTaskId = id;
+
+    document.getElementById("taskTime")
+        .value = task.time;
+
+    document.getElementById("taskName")
+        .value = task.name;
+
+    document.getElementById("taskCategory")
+        .value = task.category;
+
+    document.getElementById("taskModalTitle")
+        .innerText = "✏️ Edit Task";
+
+    document.getElementById("saveTaskButton")
+        .innerText = "💾 Update Task";
+
+    document.getElementById("addTaskModal")
+        .classList.add("show");
+
+};
 
 
-/* SAVE TASK */
+window.deleteTask =
+function(id){
+
+    const task =
+        tasks.find(t => t.id === id);
+
+    if(!task) return;
+
+    if(!confirm("ဒီ Task ကိုဖျက်မလား?")){
+        return;
+    }
+
+    tasks =
+        tasks.filter(t => t.id !== id);
+
+    saveTasks();
+
+    renderTasks();
+
+    showToast("🗑️ Task ဖျက်ပြီးပါပြီ");
+
+};
+
+
+let tasks =
+    JSON.parse(
+        localStorage.getItem("timeflow_tasks") || "[]"
+    );
+
+let editingTaskId = null;
+
+
+function saveTasks(){
+
+    localStorage.setItem(
+        "timeflow_tasks",
+        JSON.stringify(tasks)
+    );
+
+}
+
 
 window.saveTask =
 function(event){
 
     event.preventDefault();
 
-
     const time =
-        document.getElementById(
-            "taskTime"
-        ).value;
-
+        document.getElementById("taskTime").value;
 
     const name =
-        document.getElementById(
-            "taskName"
-        ).value;
-
+        document.getElementById("taskName").value.trim();
 
     const category =
-        document.getElementById(
-            "taskCategory"
-        ).value
+        document.getElementById("taskCategory").value.trim()
         || "General";
 
 
-    tasks.push({
+    if(editingTaskId){
 
-        id:Date.now(),
+        const task =
+            tasks.find(t => t.id === editingTaskId);
 
-        time:time,
+        if(task){
 
-        name:name,
+            task.time = time;
+            task.name = name;
+            task.category = category;
 
-        category:category,
+        }
 
-        done:false,
+        showToast("✏️ Task ပြင်ပြီးပါပြီ");
 
-        status:"waiting"
+    }else{
 
-    });
+        tasks.push({
 
+            id:Date.now(),
+
+            time:time,
+
+            name:name,
+
+            category:category,
+
+            done:false,
+
+            status:"waiting",
+
+            createdAt:new Date().toISOString()
+
+        });
+
+        showToast("✨ Task သိမ်းပြီးပါပြီ");
+
+    }
+
+
+    saveTasks();
 
     renderTasks();
 
@@ -1787,36 +1723,55 @@ function(event){
 
     event.target.reset();
 
+    editingTaskId = null;
+
+};
+
+
+window.toggleTask =
+function(id){
+
+    const task =
+        tasks.find(t => t.id === id);
+
+    if(!task) return;
+
+    task.done =
+        !task.done;
+
+    task.status =
+        task.done
+        ? "done"
+        : "waiting";
+
+    saveTasks();
+
+    renderTasks();
+
     showToast(
-        "✨ Task သိမ်းပြီးပါပြီ!"
+        task.done
+        ? "✅ Task Completed!"
+        : "↩️ Task ပြန်ဖွင့်ပြီးပါပြီ"
     );
 
 };
 
 
-/* RENDER */
-
 function renderTasks(){
 
     const taskList =
-        document.getElementById(
-            "taskList"
-        );
+        document.getElementById("taskList");
 
     const scheduleList =
-        document.getElementById(
-            "scheduleList"
-        );
+        document.getElementById("scheduleList");
 
     const schedulePageList =
-        document.getElementById(
-            "schedulePageList"
-        );
+        document.getElementById("schedulePageList");
 
 
     if(tasks.length === 0){
 
-        taskList.innerHTML =
+        const empty =
             `
             <div class="empty">
                 📭 Task မရှိသေးပါ။
@@ -1826,22 +1781,17 @@ function renderTasks(){
             </div>
             `;
 
+        taskList.innerHTML = empty;
 
         scheduleList.innerHTML =
-            `
-            <div class="empty">
+            `<div class="empty">
                 ⏰ Schedule မရှိသေးပါ။
-            </div>
-            `;
-
+            </div>`;
 
         schedulePageList.innerHTML =
-            `
-            <div class="empty">
+            `<div class="empty">
                 ⏰ Schedule မရှိသေးပါ။
-            </div>
-            `;
-
+            </div>`;
 
         updateProgress();
 
@@ -1863,95 +1813,91 @@ function renderTasks(){
     schedulePageList.innerHTML = "";
 
 
-    tasks.forEach(
-        task => {
+    tasks.forEach(task => {
 
-            const time =
-                formatTime(task.time);
+        const time =
+            formatTime(task.time);
+
+        taskList.innerHTML += `
+
+            <div class="task">
+
+                <div class="time">
+                    ${time}
+                </div>
+
+                <div class="task-info">
+
+                    <strong>
+                        ${escapeHtml(task.name)}
+                    </strong>
+
+                    <small>
+                        ${escapeHtml(task.category)}
+                    </small>
+
+                </div>
+
+                <div class="status ${task.status}">
+                    ${task.status.toUpperCase()}
+                </div>
+
+                <div class="task-actions">
+
+                    <button class="icon-btn"
+                            onclick="toggleTask(${task.id})">
+                        ✓
+                    </button>
+
+                    <button class="icon-btn"
+                            onclick="editTask(${task.id})">
+                        ✏️
+                    </button>
+
+                    <button class="icon-btn"
+                            onclick="deleteTask(${task.id})">
+                        🗑️
+                    </button>
+
+                </div>
+
+            </div>
+        `;
 
 
-            taskList.innerHTML += `
+        const timelineHTML = `
 
-                <div class="task">
+            <div class="timeline-item">
 
-                    <div class="time">
+                <div class="timeline-dot"></div>
+
+                <div class="timeline-card">
+
+                    <div class="schedule-time">
                         ${time}
                     </div>
 
-                    <div class="task-info">
+                    <h3>
+                        ${escapeHtml(task.name)}
+                    </h3>
 
-                        <strong>
-                            ${escapeHtml(task.name)}
-                        </strong>
-
-                        <small>
-                            ${escapeHtml(task.category)}
-                        </small>
-
-                    </div>
-
-                    <div
-                        class="status ${task.status}">
-
-                        ${task.status.toUpperCase()}
-
-                    </div>
-
-                    <div class="task-actions">
-
-                        <button
-                            class="icon-btn"
-                            onclick="
-                                toggleTask(${task.id})
-                            ">
-
-                            ✓
-
-                        </button>
-
-                    </div>
+                    <small>
+                        ${escapeHtml(task.category)}
+                    </small>
 
                 </div>
 
-            `;
+            </div>
+        `;
 
 
-            const timelineHTML = `
+        scheduleList.innerHTML +=
+            timelineHTML;
 
-                <div class="timeline-item">
+        schedulePageList.innerHTML +=
+            timelineHTML;
 
-                    <div class="timeline-dot"></div>
-
-                    <div class="timeline-card">
-
-                        <div class="schedule-time">
-                            ${time}
-                        </div>
-
-                        <h3>
-                            ${escapeHtml(task.name)}
-                        </h3>
-
-                        <small>
-                            ${escapeHtml(task.category)}
-                        </small>
-
-                    </div>
-
-                </div>
-
-            `;
-
-
-            scheduleList.innerHTML +=
-                timelineHTML;
-
-
-            schedulePageList.innerHTML +=
-                timelineHTML;
-
-        }
-    );
+    });
 
 
     updateProgress();
@@ -1959,260 +1905,477 @@ function renderTasks(){
 }
 
 
-/* TOGGLE */
-
-window.toggleTask =
-function(id){
-
-    const task =
-        tasks.find(
-            t => t.id === id
-        );
-
-
-    if(!task) return;
-
-
-    task.done =
-        !task.done;
-
-
-    task.status =
-        task.done
-        ? "done"
-        : "waiting";
-
-
-    renderTasks();
-
-
-    showToast(
-        task.done
-        ? "✅ Task Completed!"
-        : "↩️ Task ပြန်ဖွင့်ပြီးပါပြီ"
-    );
-
-};
-
-
-/* PROGRESS */
-
 function updateProgress(){
 
     const total =
         tasks.length;
 
-
     const done =
-        tasks.filter(
-            task => task.done
-        ).length;
-
+        tasks.filter(t => t.done).length;
 
     const missed =
         tasks.filter(
-            task =>
-                task.status === "missed"
+            t => t.status === "missed"
         ).length;
-
 
     const percent =
         total === 0
         ? 0
         : Math.round(
-            (done / total) * 100
+            done / total * 100
         );
 
 
-    document.getElementById(
-        "percent"
-    ).innerText =
-        percent + "%";
+    document.getElementById("percent")
+        .innerText = percent + "%";
 
+    document.getElementById("circlePercent")
+        .innerText = percent + "%";
 
-    document.getElementById(
-        "circlePercent"
-    ).innerText =
-        percent + "%";
+    document.getElementById("progressPercent")
+        .innerText = percent + "%";
 
+    document.getElementById("progressFill")
+        .style.width = percent + "%";
 
-    document.getElementById(
-        "progressPercent"
-    ).innerText =
-        percent + "%";
+    document.getElementById("progressPageFill")
+        .style.width = percent + "%";
 
+    document.getElementById("taskCount")
+        .innerText = total + " TASKS";
 
-    document.getElementById(
-        "progressFill"
-    ).style.width =
-        percent + "%";
+    document.getElementById("pDone")
+        .innerText = done;
 
+    document.getElementById("pMissed")
+        .innerText = missed;
 
-    document.getElementById(
-        "progressPageFill"
-    ).style.width =
-        percent + "%";
+    document.getElementById("pTotal")
+        .innerText = total;
 
+    document.getElementById("pageDone")
+        .innerText = done;
 
-    document.getElementById(
-        "taskCount"
-    ).innerText =
-        total + " TASKS";
+    document.getElementById("pageMissed")
+        .innerText = missed;
 
+    document.getElementById("pageTotal")
+        .innerText = total;
 
-    document.getElementById(
-        "pDone"
-    ).innerText =
-        done;
-
-
-    document.getElementById(
-        "pMissed"
-    ).innerText =
-        missed;
-
-
-    document.getElementById(
-        "pTotal"
-    ).innerText =
-        total;
-
-
-    document.getElementById(
-        "pageDone"
-    ).innerText =
-        done;
-
-
-    document.getElementById(
-        "pageMissed"
-    ).innerText =
-        missed;
-
-
-    document.getElementById(
-        "pageTotal"
-    ).innerText =
-        total;
-
-
-    document.getElementById(
-        "progressCircle"
-    ).style.background = `
-
+    document.getElementById("progressCircle")
+        .style.background =
+        `
         conic-gradient(
             var(--gold)
             ${percent * 3.6}deg,
-
             #292d35
             ${percent * 3.6}deg
         )
-
-    `;
+        `;
 
 }
 
 
-/* TIME */
-
 function formatTime(time){
 
-    if(!time){
-
-        return "";
-
-    }
-
+    if(!time) return "";
 
     const parts =
         time.split(":");
 
-
     let hours =
         parseInt(parts[0]);
-
 
     const minutes =
         parts[1];
 
-
     const ampm =
-        hours >= 12
-        ? "PM"
-        : "AM";
-
+        hours >= 12 ? "PM" : "AM";
 
     hours =
         hours % 12;
 
-
     if(hours === 0){
-
         hours = 12;
-
     }
-
 
     return `${hours}:${minutes} ${ampm}`;
 
 }
 
 
-/* ESCAPE */
-
 function escapeHtml(text){
 
     const div =
-        document.createElement(
-            "div"
-        );
-
+        document.createElement("div");
 
     div.textContent =
         text ?? "";
-
 
     return div.innerHTML;
 
 }
 
 
-/* TOAST */
+let notificationEnabled =
+    localStorage.getItem(
+        "timeflow_notifications"
+    ) === "true";
+
+
+let soundEnabled =
+    localStorage.getItem(
+        "timeflow_sound"
+    ) !== "false";
+
+
+let vibrationEnabled =
+    localStorage.getItem(
+        "timeflow_vibration"
+    ) === "true";
+
+
+window.toggleNotifications =
+async function(){
+
+    if(!notificationEnabled){
+
+        if("Notification" in window){
+
+            const permission =
+                await Notification.requestPermission();
+
+            if(permission !== "granted"){
+
+                showToast(
+                    "⚠️ Notification permission မရသေးပါ"
+                );
+
+                return;
+
+            }
+
+        }
+
+        notificationEnabled = true;
+
+    }else{
+
+        notificationEnabled = false;
+
+    }
+
+
+    localStorage.setItem(
+        "timeflow_notifications",
+        notificationEnabled
+    );
+
+    updateSettingsUI();
+
+};
+
+
+window.toggleSound =
+function(){
+
+    soundEnabled =
+        !soundEnabled;
+
+    localStorage.setItem(
+        "timeflow_sound",
+        soundEnabled
+    );
+
+    updateSettingsUI();
+
+};
+
+
+window.toggleVibration =
+function(){
+
+    vibrationEnabled =
+        !vibrationEnabled;
+
+    localStorage.setItem(
+        "timeflow_vibration",
+        vibrationEnabled
+    );
+
+    updateSettingsUI();
+
+};
+
+
+function updateSettingsUI(){
+
+    document.getElementById(
+        "notificationSwitch"
+    ).classList.toggle(
+        "on",
+        notificationEnabled
+    );
+
+    document.getElementById(
+        "soundSwitch"
+    ).classList.toggle(
+        "on",
+        soundEnabled
+    );
+
+    document.getElementById(
+        "vibrationSwitch"
+    ).classList.toggle(
+        "on",
+        vibrationEnabled
+    );
+
+}
+
+
+let alarmAudio = null;
+
+
+window.loadSoundFile =
+function(event){
+
+    const file =
+        event.target.files[0];
+
+    if(!file) return;
+
+    if(!file.type.startsWith("audio/")){
+
+        showToast("❌ Audio file မဟုတ်ပါ");
+
+        return;
+
+    }
+
+    if(alarmAudio){
+
+        URL.revokeObjectURL(
+            alarmAudio.src
+        );
+
+    }
+
+    alarmAudio =
+        new Audio(
+            URL.createObjectURL(file)
+        );
+
+    alarmAudio.loop = true;
+
+    document.getElementById(
+        "soundName"
+    ).innerText =
+        "🔊 " + file.name;
+
+    showToast(
+        "🔊 Alarm sound ရွေးပြီးပါပြီ"
+    );
+
+};
+
+
+function checkAlarms(){
+
+    if(tasks.length === 0){
+        return;
+    }
+
+    const now =
+        new Date();
+
+    const currentTime =
+        String(now.getHours()).padStart(2,"0")
+        + ":"
+        + String(now.getMinutes()).padStart(2,"0");
+
+
+    tasks.forEach(task => {
+
+        if(
+            task.time === currentTime &&
+            !task.done &&
+            task.lastAlarmDate !==
+            now.toDateString()
+        ){
+
+            task.lastAlarmDate =
+                now.toDateString();
+
+            saveTasks();
+
+            fireAlarm(task);
+
+        }
+
+    });
+
+}
+
+
+function fireAlarm(task){
+
+    showToast(
+        "⏰ " + task.name
+    );
+
+
+    if(soundEnabled){
+
+        if(alarmAudio){
+
+            alarmAudio.currentTime = 0;
+
+            alarmAudio.play()
+                .catch(() => {});
+
+        }else{
+
+            playDefaultAlarm();
+
+        }
+
+    }
+
+
+    if(vibrationEnabled &&
+       navigator.vibrate){
+
+        navigator.vibrate(
+            [500,300,500,300,800]
+        );
+
+    }
+
+
+    if(
+        notificationEnabled &&
+        "Notification" in window &&
+        Notification.permission === "granted"
+    ){
+
+        new Notification(
+            "⏰ TimeFlow Alarm",
+            {
+                body:
+                    task.name +
+                    " — " +
+                    formatTime(task.time)
+            }
+        );
+
+    }
+
+
+    setTimeout(
+        stopAlarm,
+        30000
+    );
+
+}
+
+
+function playDefaultAlarm(){
+
+    try{
+
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+        const context =
+            new AudioContext();
+
+        const oscillator =
+            context.createOscillator();
+
+        const gain =
+            context.createGain();
+
+        oscillator.type = "sine";
+
+        oscillator.frequency.value =
+            880;
+
+        gain.gain.value =
+            .12;
+
+        oscillator.connect(gain);
+
+        gain.connect(
+            context.destination
+        );
+
+        oscillator.start();
+
+        setTimeout(() => {
+
+            oscillator.stop();
+
+            context.close();
+
+        },1200);
+
+    }catch(error){
+
+        console.log(error);
+
+    }
+
+}
+
+
+function stopAlarm(){
+
+    if(alarmAudio){
+
+        alarmAudio.pause();
+
+        alarmAudio.currentTime = 0;
+
+    }
+
+    if(
+        navigator.vibrate
+    ){
+
+        navigator.vibrate(0);
+
+    }
+
+}
+
+
+setInterval(
+    checkAlarms,
+    15000
+);
+
 
 let toastTimer = null;
-
 
 window.showToast =
 function(message){
 
     const toast =
-        document.getElementById(
-            "toast"
-        );
-
+        document.getElementById("toast");
 
     toast.innerText =
         message;
 
-
     toast.classList.add("show");
 
-
-    if(toastTimer){
-
-        clearTimeout(toastTimer);
-
-    }
-
+    clearTimeout(toastTimer);
 
     toastTimer =
         setTimeout(
             () => {
-
-                toast.classList.remove(
-                    "show"
-                );
-
+                toast.classList.remove("show");
             },
             2500
         );
@@ -2220,21 +2383,15 @@ function(message){
 };
 
 
-/* BACKDROP */
-
 document.addEventListener(
     "click",
     function(event){
 
         if(
-            event.target.classList.contains(
-                "modal"
-            )
+            event.target.classList.contains("modal")
         ){
 
-            event.target.classList.remove(
-                "show"
-            );
+            event.target.classList.remove("show");
 
         }
 
@@ -2242,7 +2399,7 @@ document.addEventListener(
 );
 
 
-/* INITIALIZE */
+updateSettingsUI();
 
 renderTasks();
 
