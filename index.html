@@ -4382,3 +4382,2180 @@ updateVipAccess();
 <!-- =======================================================
      P4-B END
 ======================================================= -->
+
+   <!-- =======================================================
+     TIMEFLOW P4-C
+     🔐 FIREBASE + GOOGLE LOGIN + ACCOUNT + FREE/VIP
+======================================================= -->
+
+<!-- =======================================================
+     FIREBASE SDK
+======================================================= -->
+
+<script type="module">
+
+import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+    getAuth,
+    GoogleAuthProvider,
+    signInWithPopup,
+    signOut,
+    onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+/* =========================================================
+   FIREBASE CONFIG
+========================================================= */
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyCw72aOGSLvdf3q221gF0yIM63RiSqpkcJ",
+
+    authDomain:
+        "my-productivity-7ae74.firebaseapp.com",
+
+    projectId:
+        "my-productivity-7ae74",
+
+    storageBucket:
+        "my-productivity-7ae74.firebasestorage.app",
+
+    messagingSenderId:
+        "955389154479",
+
+    appId:
+        "1:955389154479:web:e2b46c690d7e9b1610305a",
+
+    measurementId:
+        "G-FYVSE71BM1"
+
+};
+
+
+/* =========================================================
+   INITIALIZE FIREBASE
+========================================================= */
+
+const app =
+    initializeApp(firebaseConfig);
+
+
+const auth =
+    getAuth(app);
+
+
+const provider =
+    new GoogleAuthProvider();
+
+
+/*
+   Google account selection ကို
+   login တိုင်း ပြနိုင်အောင်
+*/
+
+provider.setCustomParameters({
+
+    prompt:"select_account"
+
+});
+
+
+/* =========================================================
+   GOOGLE LOGIN
+========================================================= */
+
+window.googleLogin =
+async function(){
+
+    const status =
+        document.getElementById(
+            "loginStatus"
+        );
+
+
+    try{
+
+        if(status){
+
+            status.innerText =
+                "🔐 Google Login လုပ်နေပါတယ်...";
+
+        }
+
+
+        const result =
+            await signInWithPopup(
+                auth,
+                provider
+            );
+
+
+        const user =
+            result.user;
+
+
+        /*
+           Default plan
+           အခု FREE ဖြစ်မယ်။
+
+           နောက် P4-F မှာ
+           Firebase user data ကနေ
+           VIP / FREE ကို အလိုအလျောက်
+           သတ်မှတ်ပေးမယ်။
+        */
+
+        if(
+            !window.currentUserPlan
+        ){
+
+            window.currentUserPlan =
+                "free";
+
+        }
+
+
+        updateAccountUI(user);
+
+
+        updateVipAccess();
+
+
+        showToast(
+            "✅ Google Login အောင်မြင်ပါပြီ!"
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "Google Login Error:",
+            error
+        );
+
+
+        let message =
+            "❌ Google Login မအောင်မြင်ပါ။";
+
+
+        if(
+            error.code ===
+            "auth/popup-closed-by-user"
+        ){
+
+            message =
+                "⚠️ Login window ပိတ်လိုက်ပါတယ်။";
+
+        }
+
+
+        if(
+            error.code ===
+            "auth/unauthorized-domain"
+        ){
+
+            message =
+                "⚠️ Firebase Authorized Domain မထည့်ရသေးပါ။";
+
+        }
+
+
+        if(
+            error.code ===
+            "auth/popup-blocked"
+        ){
+
+            message =
+                "⚠️ Browser က Login popup ကိုပိတ်ထားပါတယ်။";
+
+        }
+
+
+        if(status){
+
+            status.innerText =
+                message;
+
+        }
+
+
+        showToast(message);
+
+    }
+
+};
+
+
+/* =========================================================
+   GOOGLE LOGOUT
+========================================================= */
+
+window.googleLogout =
+async function(){
+
+    try{
+
+        await signOut(auth);
+
+
+        window.currentUserPlan =
+            "free";
+
+
+        updateVipAccess();
+
+
+        showToast(
+            "🚪 Google Account Sign Out လုပ်ပြီးပါပြီ"
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "Logout Error:",
+            error
+        );
+
+
+        showToast(
+            "❌ Sign Out မအောင်မြင်ပါ"
+        );
+
+    }
+
+};
+
+
+/* =========================================================
+   UPDATE ACCOUNT UI
+========================================================= */
+
+function updateAccountUI(user){
+
+    const name =
+        document.getElementById(
+            "accountName"
+        );
+
+
+    const email =
+        document.getElementById(
+            "accountEmail"
+        );
+
+
+    const avatar =
+        document.getElementById(
+            "accountAvatar"
+        );
+
+
+    const accountButton =
+        document.getElementById(
+            "accountButton"
+        );
+
+
+    const loginBtn =
+        document.getElementById(
+            "googleLoginBtn"
+        );
+
+
+    const logoutBtn =
+        document.getElementById(
+            "logoutBtn"
+        );
+
+
+    const status =
+        document.getElementById(
+            "loginStatus"
+        );
+
+
+    if(!user){
+
+        if(name){
+
+            name.innerText =
+                "Guest User";
+
+        }
+
+
+        if(email){
+
+            email.innerText =
+                "Not signed in";
+
+        }
+
+
+        if(avatar){
+
+            avatar.innerHTML =
+                "👤";
+
+        }
+
+
+        if(accountButton){
+
+            accountButton.innerHTML =
+                "👤";
+
+        }
+
+
+        if(loginBtn){
+
+            loginBtn.style.display =
+                "block";
+
+        }
+
+
+        if(logoutBtn){
+
+            logoutBtn.style.display =
+                "none";
+
+        }
+
+
+        if(status){
+
+            status.innerText =
+                "Google Account Login နဲ့ Firebase Auth ချိတ်ထားပါတယ်။";
+
+        }
+
+
+        updatePlanUI(
+            "free"
+        );
+
+        return;
+
+    }
+
+
+    if(name){
+
+        name.innerText =
+            user.displayName
+            ||
+            "Google User";
+
+    }
+
+
+    if(email){
+
+        email.innerText =
+            user.email
+            ||
+            "No email";
+
+    }
+
+
+    if(
+        avatar &&
+        user.photoURL
+    ){
+
+        avatar.innerHTML = `
+
+            <img
+                src="${escapeHtml(user.photoURL)}"
+                alt="Profile">
+
+        `;
+
+    }
+
+
+    if(
+        accountButton &&
+        user.photoURL
+    ){
+
+        accountButton.innerHTML = `
+
+            <img
+                src="${escapeHtml(user.photoURL)}"
+                alt="Profile">
+
+        `;
+
+    }
+
+
+    if(loginBtn){
+
+        loginBtn.style.display =
+            "none";
+
+    }
+
+
+    if(logoutBtn){
+
+        logoutBtn.style.display =
+            "block";
+
+    }
+
+
+    if(status){
+
+        status.innerText =
+            "✅ Google Account Connected";
+
+    }
+
+
+    updatePlanUI(
+        window.currentUserPlan || "free"
+    );
+
+}
+
+
+/* =========================================================
+   PLAN UI
+========================================================= */
+
+function updatePlanUI(plan){
+
+    const headerPlan =
+        document.getElementById(
+            "headerPlan"
+        );
+
+
+    const accountPlan =
+        document.getElementById(
+            "accountPlan"
+        );
+
+
+    const isVip =
+        plan === "vip";
+
+
+    if(headerPlan){
+
+        headerPlan.className =
+            "plan-badge " +
+            (
+                isVip
+                ? "vip-badge"
+                : "free-badge"
+            );
+
+
+        headerPlan.innerText =
+            isVip
+            ? "👑 VIP"
+            : "🆓 FREE";
+
+    }
+
+
+    if(accountPlan){
+
+        accountPlan.className =
+            "plan-badge " +
+            (
+                isVip
+                ? "vip-badge"
+                : "free-badge"
+            );
+
+
+        accountPlan.innerText =
+            isVip
+            ? "👑 VIP"
+            : "🆓 FREE";
+
+    }
+
+
+    updateVipAccess();
+
+}
+
+
+/* =========================================================
+   SET PLAN
+========================================================= */
+
+window.setUserPlan =
+function(plan){
+
+    plan =
+        String(plan)
+            .toLowerCase();
+
+
+    if(
+        plan !== "vip" &&
+        plan !== "free"
+    ){
+
+        plan = "free";
+
+    }
+
+
+    window.currentUserPlan =
+        plan;
+
+
+    updatePlanUI(
+        plan
+    );
+
+
+    showToast(
+        plan === "vip"
+        ? "👑 VIP Account"
+        : "🆓 Free Account"
+    );
+
+};
+
+
+/* =========================================================
+   FIREBASE AUTH STATE
+========================================================= */
+
+onAuthStateChanged(
+    auth,
+    function(user){
+
+        if(user){
+
+            /*
+               Login ဝင်ထားတယ်
+            */
+
+            updateAccountUI(
+                user
+            );
+
+
+            /*
+               လောလောဆယ် FREE
+               P4-F မှာ Firebase
+               user plan ကို load မယ်
+            */
+
+            window.currentUserPlan =
+                window.currentUserPlan
+                || "free";
+
+
+            updatePlanUI(
+                window.currentUserPlan
+            );
+
+
+        }else{
+
+            /*
+               Login မဝင်ထားဘူး
+            */
+
+            window.currentUserPlan =
+                "free";
+
+
+            updateAccountUI(
+                null
+            );
+
+
+            updateVipAccess();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   EXPOSE FIREBASE AUTH
+========================================================= */
+
+window.timeflowAuth =
+    auth;
+
+
+window.timeflowGoogleProvider =
+    provider;
+
+
+</script>
+
+
+<!-- =======================================================
+     P4-C END
+======================================================= END
+   <!-- =======================================================
+     TIMEFLOW P4-D
+     🔔 NOTIFICATION + 🔊 CUSTOM ALARM SOUND
+======================================================= -->
+
+<style>
+
+/* =========================================================
+   NOTIFICATION / SOUND SETTINGS
+========================================================= */
+
+.p4d-card{
+    background:var(--card);
+
+    border:1px solid var(--border);
+
+    border-radius:20px;
+
+    padding:16px;
+
+    margin-top:15px;
+}
+
+.p4d-card-title{
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:14px;
+}
+
+.p4d-card-title strong{
+    font-size:15px;
+}
+
+.p4d-status{
+    font-size:9px;
+
+    color:var(--muted);
+}
+
+.p4d-row{
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:12px;
+
+    padding:13px 0;
+
+    border-bottom:1px solid var(--border);
+}
+
+.p4d-row:last-child{
+    border-bottom:0;
+}
+
+.p4d-row-info{
+    min-width:0;
+}
+
+.p4d-row-title{
+    font-size:12px;
+
+    font-weight:800;
+}
+
+.p4d-row-sub{
+    margin-top:4px;
+
+    color:var(--muted);
+
+    font-size:9px;
+
+    line-height:1.5;
+}
+
+.p4d-btn{
+    flex:0 0 auto;
+
+    padding:10px 12px;
+
+    border:0;
+
+    border-radius:10px;
+
+    background:#252b35;
+
+    color:white;
+
+    font-size:10px;
+
+    font-weight:800;
+
+    cursor:pointer;
+}
+
+.p4d-btn.gold{
+    background:
+        linear-gradient(
+            135deg,
+            var(--gold),
+            var(--gold2)
+        );
+
+    color:#111;
+}
+
+.p4d-btn.red{
+    background:#2a2024;
+
+    color:#ff6262;
+}
+
+.p4d-sound-name{
+    margin-top:12px;
+
+    padding:11px;
+
+    border-radius:11px;
+
+    background:#090c11;
+
+    border:1px solid var(--border);
+
+    color:var(--gold);
+
+    font-size:10px;
+
+    word-break:break-all;
+}
+
+.p4d-file-input{
+    display:none;
+}
+
+.p4d-test-box{
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:8px;
+
+    margin-top:12px;
+}
+
+.p4d-test-box button{
+    padding:12px;
+
+    border:1px solid var(--border);
+
+    border-radius:11px;
+
+    background:#171c25;
+
+    color:white;
+
+    font-size:10px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+.p4d-permission{
+    border-radius:14px;
+
+    padding:12px;
+
+    margin-top:12px;
+
+    background:#171c25;
+
+    border:1px solid var(--border);
+
+    font-size:10px;
+
+    line-height:1.6;
+}
+
+.p4d-permission.ok{
+    border-color:
+        rgba(74,222,128,.25);
+
+    color:var(--green);
+}
+
+.p4d-permission.warn{
+    border-color:
+        rgba(245,196,81,.25);
+
+    color:var(--gold);
+}
+
+.p4d-permission.denied{
+    border-color:
+        rgba(255,98,98,.25);
+
+    color:var(--red);
+}
+
+</style>
+
+
+<!-- =======================================================
+     SETTINGS PAGE
+======================================================= -->
+
+<section
+    class="page"
+    id="settingsPage">
+
+    <div class="section-title">
+
+        <h2>
+            ⚙️ Settings
+        </h2>
+
+        <span>
+            PREFERENCES
+        </span>
+
+    </div>
+
+
+    <!-- =====================================================
+         NOTIFICATION
+    ====================================================== -->
+
+    <div class="p4d-card">
+
+        <div class="p4d-card-title">
+
+            <strong>
+                🔔 Notifications
+            </strong>
+
+            <span
+                class="p4d-status"
+                id="notificationStatus">
+
+                Checking...
+
+            </span>
+
+        </div>
+
+
+        <div class="p4d-row">
+
+            <div class="p4d-row-info">
+
+                <div class="p4d-row-title">
+
+                    Notification Permission
+
+                </div>
+
+                <div class="p4d-row-sub">
+
+                    Schedule ရောက်တဲ့အချိန်
+                    Notification ပြဖို့
+                    Permission လိုပါတယ်။
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="p4d-btn gold"
+                id="notificationPermissionBtn"
+                onclick="requestNotificationPermission()">
+
+                Allow
+
+            </button>
+
+        </div>
+
+
+        <div
+            class="p4d-permission warn"
+            id="notificationMessage">
+
+            🔔 Notification Permission
+            စစ်နေပါတယ်...
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         CUSTOM SOUND
+    ====================================================== -->
+
+    <div class="p4d-card">
+
+        <div class="p4d-card-title">
+
+            <strong>
+                🔊 Alarm Sound
+            </strong>
+
+            <span
+                class="p4d-status">
+
+                CUSTOM
+
+            </span>
+
+        </div>
+
+
+        <div class="p4d-row">
+
+            <div class="p4d-row-info">
+
+                <div class="p4d-row-title">
+
+                    Choose Sound
+
+                </div>
+
+                <div class="p4d-row-sub">
+
+                    Phone ထဲက Audio File
+                    တစ်ခုရွေးနိုင်ပါတယ်။
+
+                </div>
+
+            </div>
+
+
+            <label
+                class="p4d-btn gold"
+                for="alarmSoundFile">
+
+                📁 Choose
+
+            </label>
+
+
+            <input
+                class="p4d-file-input"
+                type="file"
+                id="alarmSoundFile"
+                accept="audio/*">
+
+        </div>
+
+
+        <div
+            class="p4d-sound-name"
+            id="selectedSoundName">
+
+            🔊 Default Alarm Sound
+
+        </div>
+
+
+        <div class="p4d-test-box">
+
+            <button
+                onclick="testAlarmSound()">
+
+                ▶️ Test Sound
+
+            </button>
+
+
+            <button
+                onclick="stopAlarmSound()">
+
+                ⏹ Stop
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ALARM STATUS
+    ====================================================== -->
+
+    <div class="p4d-card">
+
+        <div class="p4d-card-title">
+
+            <strong>
+                ⏰ Alarm Engine
+            </strong>
+
+            <span
+                id="alarmEngineStatus"
+                class="p4d-status">
+
+                OFF
+
+            </span>
+
+        </div>
+
+
+        <div class="p4d-row">
+
+            <div class="p4d-row-info">
+
+                <div class="p4d-row-title">
+
+                    Background Alarm Check
+
+                </div>
+
+                <div class="p4d-row-sub">
+
+                    App ဖွင့်ထားချိန်မှာ
+                    Schedule ကို စစ်ပေးပါမယ်။
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="p4d-btn"
+                id="alarmEngineButton"
+                onclick="toggleAlarmEngine()">
+
+                Start
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =======================================================
+     P4-D JAVASCRIPT
+======================================================= -->
+
+<script>
+
+/* =========================================================
+   P4-D STATE
+========================================================= */
+
+let alarmAudio = null;
+
+let alarmSoundUrl = null;
+
+let alarmEngineRunning = false;
+
+let alarmEngineTimer = null;
+
+let firedAlarmKeys = new Set();
+
+
+/* =========================================================
+   NOTIFICATION SUPPORT
+========================================================= */
+
+function notificationSupported(){
+
+    return (
+        "Notification" in window
+    );
+
+}
+
+
+/* =========================================================
+   UPDATE NOTIFICATION STATUS
+========================================================= */
+
+function updateNotificationStatus(){
+
+    const status =
+        document.getElementById(
+            "notificationStatus"
+        );
+
+    const message =
+        document.getElementById(
+            "notificationMessage"
+        );
+
+    const button =
+        document.getElementById(
+            "notificationPermissionBtn"
+        );
+
+
+    if(
+        !notificationSupported()
+    ){
+
+        if(status){
+
+            status.innerText =
+                "NOT SUPPORTED";
+
+        }
+
+        if(message){
+
+            message.className =
+                "p4d-permission denied";
+
+            message.innerText =
+                "❌ ဒီ Browser မှာ Notification မထောက်ပံ့ပါ။";
+
+        }
+
+        if(button){
+
+            button.style.display =
+                "none";
+
+        }
+
+        return;
+
+    }
+
+
+    const permission =
+        Notification.permission;
+
+
+    if(permission === "granted"){
+
+        if(status){
+
+            status.innerText =
+                "ALLOWED";
+
+        }
+
+        if(message){
+
+            message.className =
+                "p4d-permission ok";
+
+            message.innerText =
+                "✅ Notification Permission ရပြီးပါပြီ။";
+
+        }
+
+        if(button){
+
+            button.innerText =
+                "✓ Allowed";
+
+            button.classList.remove(
+                "gold"
+            );
+
+        }
+
+    }
+    else if(permission === "denied"){
+
+        if(status){
+
+            status.innerText =
+                "BLOCKED";
+
+        }
+
+        if(message){
+
+            message.className =
+                "p4d-permission denied";
+
+            message.innerText =
+                "❌ Notification ကို Browser Settings မှာ
+                Allow ပြန်လုပ်ပေးရပါမယ်။";
+
+        }
+
+        if(button){
+
+            button.innerText =
+                "Blocked";
+
+        }
+
+    }
+    else{
+
+        if(status){
+
+            status.innerText =
+                "NOT SET";
+
+        }
+
+        if(message){
+
+            message.className =
+                "p4d-permission warn";
+
+            message.innerText =
+                "⚠️ Notification Permission မရသေးပါ။";
+
+        }
+
+        if(button){
+
+            button.innerText =
+                "Allow";
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   REQUEST NOTIFICATION
+========================================================= */
+
+window.requestNotificationPermission =
+async function(){
+
+    if(
+        !notificationSupported()
+    ){
+
+        showToast(
+            "❌ Notification မထောက်ပံ့ပါ"
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        const permission =
+            await Notification.requestPermission();
+
+
+        updateNotificationStatus();
+
+
+        if(permission === "granted"){
+
+            showToast(
+                "🔔 Notification Permission ရပါပြီ!"
+            );
+
+
+            sendTestNotification();
+
+        }
+        else if(
+            permission === "denied"
+        ){
+
+            showToast(
+                "❌ Notification Permission ပိတ်ထားပါတယ်"
+            );
+
+        }
+        else{
+
+            showToast(
+                "⚠️ Permission မပေးရသေးပါ"
+            );
+
+        }
+
+    }catch(error){
+
+        console.error(
+            "Notification Permission Error:",
+            error
+        );
+
+        showToast(
+            "❌ Notification Permission Error"
+        );
+
+    }
+
+};
+
+
+/* =========================================================
+   TEST NOTIFICATION
+========================================================= */
+
+function sendTestNotification(){
+
+    if(
+        !notificationSupported()
+    ){
+
+        return;
+
+    }
+
+
+    if(
+        Notification.permission !==
+        "granted"
+    ){
+
+        return;
+
+    }
+
+
+    try{
+
+        new Notification(
+            "⚡ TimeFlow",
+            {
+
+                body:
+                    "🔔 Notification အလုပ်လုပ်နေပါပြီ!",
+
+                icon:
+                    ""
+
+            }
+        );
+
+    }catch(error){
+
+        console.error(
+            "Test Notification Error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CUSTOM SOUND FILE
+========================================================= */
+
+document
+    .getElementById(
+        "alarmSoundFile"
+    )
+    .addEventListener(
+        "change",
+        function(event){
+
+            const file =
+                event.target.files[0];
+
+
+            if(!file){
+
+                return;
+
+            }
+
+
+            if(
+                !file.type.startsWith(
+                    "audio/"
+                )
+            ){
+
+                showToast(
+                    "❌ Audio File မဟုတ်ပါ"
+                );
+
+                return;
+
+            }
+
+
+            /*
+               အရင် Object URL ရှိရင်
+               memory release လုပ်မယ်
+            */
+
+            if(alarmSoundUrl){
+
+                URL.revokeObjectURL(
+                    alarmSoundUrl
+                );
+
+            }
+
+
+            alarmSoundUrl =
+                URL.createObjectURL(
+                    file
+                );
+
+
+            alarmAudio =
+                new Audio(
+                    alarmSoundUrl
+                );
+
+
+            alarmAudio.preload =
+                "auto";
+
+
+            document.getElementById(
+                "selectedSoundName"
+            ).innerText =
+                "🔊 " + file.name;
+
+
+            showToast(
+                "🔊 Alarm Sound ရွေးပြီးပါပြီ!"
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   TEST ALARM SOUND
+========================================================= */
+
+window.testAlarmSound =
+function(){
+
+    /*
+       Custom sound ရှိရင်
+       custom sound ကိုသုံးမယ်
+    */
+
+    if(alarmAudio){
+
+        try{
+
+            alarmAudio.currentTime =
+                0;
+
+            alarmAudio.loop =
+                false;
+
+            alarmAudio.play();
+
+            showToast(
+                "🔊 Custom Alarm Sound ဖွင့်နေပါတယ်"
+            );
+
+        }catch(error){
+
+            console.error(
+                "Audio Error:",
+                error
+            );
+
+            showToast(
+                "⚠️ Sound ဖွင့်မရပါ"
+            );
+
+        }
+
+        return;
+
+    }
+
+
+    /*
+       Custom sound မရွေးရသေးရင်
+       Browser beep အသုံးပြုမယ်
+    */
+
+    playDefaultAlarm();
+
+
+};
+
+
+/* =========================================================
+   STOP ALARM
+========================================================= */
+
+window.stopAlarmSound =
+function(){
+
+    if(alarmAudio){
+
+        alarmAudio.pause();
+
+        alarmAudio.currentTime =
+            0;
+
+    }
+
+
+    showToast(
+        "⏹ Alarm ရပ်လိုက်ပါပြီ"
+    );
+
+};
+
+
+/* =========================================================
+   DEFAULT ALARM
+========================================================= */
+
+function playDefaultAlarm(){
+
+    try{
+
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+
+        if(!AudioContext){
+
+            showToast(
+                "⚠️ Audio မထောက်ပံ့ပါ"
+            );
+
+            return;
+
+        }
+
+
+        const ctx =
+            new AudioContext();
+
+
+        const oscillator =
+            ctx.createOscillator();
+
+
+        const gain =
+            ctx.createGain();
+
+
+        oscillator.type =
+            "sine";
+
+
+        oscillator.frequency.value =
+            880;
+
+
+        gain.gain.value =
+            0.12;
+
+
+        oscillator.connect(
+            gain
+        );
+
+
+        gain.connect(
+            ctx.destination
+        );
+
+
+        oscillator.start();
+
+
+        setTimeout(
+            function(){
+
+                oscillator.stop();
+
+                ctx.close();
+
+            },
+            700
+        );
+
+
+        showToast(
+            "🔊 Default Alarm ဖွင့်နေပါတယ်"
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "Default Alarm Error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   PLAY ALARM
+========================================================= */
+
+function playAlarm(){
+
+    if(alarmAudio){
+
+        try{
+
+            alarmAudio.currentTime =
+                0;
+
+            alarmAudio.play();
+
+        }catch(error){
+
+            console.error(
+                "Custom Alarm Error:",
+                error
+            );
+
+            playDefaultAlarm();
+
+        }
+
+    }else{
+
+        playDefaultAlarm();
+
+    }
+
+}
+
+
+/* =========================================================
+   SHOW ALARM NOTIFICATION
+========================================================= */
+
+function showAlarmNotification(
+    title,
+    body
+){
+
+    if(
+        !notificationSupported()
+    ){
+
+        return;
+
+    }
+
+
+    if(
+        Notification.permission !==
+        "granted"
+    ){
+
+        return;
+
+    }
+
+
+    try{
+
+        new Notification(
+            title,
+            {
+
+                body:body
+
+            }
+        );
+
+    }catch(error){
+
+        console.error(
+            "Alarm Notification Error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   ALARM ENGINE
+========================================================= */
+
+window.toggleAlarmEngine =
+function(){
+
+    if(alarmEngineRunning){
+
+        stopAlarmEngine();
+
+    }else{
+
+        startAlarmEngine();
+
+    }
+
+};
+
+
+/* =========================================================
+   START ENGINE
+========================================================= */
+
+window.startAlarmEngine =
+function(){
+
+    if(alarmEngineRunning){
+
+        return;
+
+    }
+
+
+    alarmEngineRunning =
+        true;
+
+
+    const status =
+        document.getElementById(
+            "alarmEngineStatus"
+        );
+
+
+    const button =
+        document.getElementById(
+            "alarmEngineButton"
+        );
+
+
+    if(status){
+
+        status.innerText =
+            "ON";
+
+    }
+
+
+    if(button){
+
+        button.innerText =
+            "Stop";
+
+        button.classList.add(
+            "red"
+        );
+
+    }
+
+
+    checkAlarmSchedules();
+
+
+    alarmEngineTimer =
+        setInterval(
+            checkAlarmSchedules,
+            15000
+        );
+
+
+    showToast(
+        "⏰ Alarm Engine စပါပြီ"
+    );
+
+};
+
+
+/* =========================================================
+   STOP ENGINE
+========================================================= */
+
+window.stopAlarmEngine =
+function(){
+
+    alarmEngineRunning =
+        false;
+
+
+    if(alarmEngineTimer){
+
+        clearInterval(
+            alarmEngineTimer
+        );
+
+        alarmEngineTimer =
+            null;
+
+    }
+
+
+    const status =
+        document.getElementById(
+            "alarmEngineStatus"
+        );
+
+
+    const button =
+        document.getElementById(
+            "alarmEngineButton"
+        );
+
+
+    if(status){
+
+        status.innerText =
+            "OFF";
+
+    }
+
+
+    if(button){
+
+        button.innerText =
+            "Start";
+
+        button.classList.remove(
+            "red"
+        );
+
+    }
+
+
+    showToast(
+        "⏹ Alarm Engine ရပ်ပါပြီ"
+    );
+
+};
+
+
+/* =========================================================
+   CHECK SCHEDULE
+========================================================= */
+
+function checkAlarmSchedules(){
+
+    if(!alarmEngineRunning){
+
+        return;
+
+    }
+
+
+    /*
+       P4-E မှာ scheduleData ကို
+       တကယ်အသုံးပြုမယ်။
+
+       အခု scheduleData မရှိသေးရင်
+       return လုပ်မယ်။
+    */
+
+    if(
+        !Array.isArray(
+            window.scheduleData
+        )
+    ){
+
+        return;
+
+    }
+
+
+    const now =
+        new Date();
+
+
+    const hour =
+        String(
+            now.getHours()
+        ).padStart(2,"0");
+
+
+    const minute =
+        String(
+            now.getMinutes()
+        ).padStart(2,"0");
+
+
+    const currentTime =
+        `${hour}:${minute}`;
+
+
+    const today =
+        now.getDay();
+
+
+    const days = [
+
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+
+    ];
+
+
+    const currentDay =
+        days[today];
+
+
+    window.scheduleData.forEach(
+        function(item,index){
+
+            if(!item){
+
+                return;
+
+            }
+
+
+            /*
+               Schedule object က
+               P4-E မှာ start / time
+               support လုပ်မယ်။
+            */
+
+            const itemTime =
+                item.time ||
+                item.start;
+
+
+            if(
+                itemTime !==
+                currentTime
+            ){
+
+                return;
+
+            }
+
+
+            if(
+                item.day &&
+                item.day !==
+                currentDay
+            ){
+
+                return;
+
+            }
+
+
+            const alarmKey =
+                `${now.toDateString()}_${index}_${itemTime}`;
+
+
+            if(
+                firedAlarmKeys.has(
+                    alarmKey
+                )
+            ){
+
+                return;
+
+            }
+
+
+            firedAlarmKeys.add(
+                alarmKey
+            );
+
+
+            const title =
+                "⏰ TimeFlow Alarm";
+
+
+            const taskName =
+                item.name ||
+                item.task ||
+                "Scheduled Task";
+
+
+            const body =
+                `🔔 ${taskName}`;
+
+
+            playAlarm();
+
+
+            showAlarmNotification(
+                title,
+                body
+            );
+
+
+            showToast(
+                `🔔 ${taskName}`
+            );
+
+
+            /*
+               24 hours ကျော်ရင်
+               fired key တွေကို
+               နောက်ပိုင်း cleanup လုပ်နိုင်တယ်။
+            */
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   SETTINGS NAV
+========================================================= */
+
+function addSettingsNavButton(){
+
+    const nav =
+        document.querySelector(
+            ".bottom-nav"
+        );
+
+
+    if(!nav){
+
+        return;
+
+    }
+
+
+    if(
+        document.getElementById(
+            "settingsNavButton"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    const button =
+        document.createElement(
+            "button"
+        );
+
+
+    button.className =
+        "nav";
+
+
+    button.id =
+        "settingsNavButton";
+
+
+    button.onclick =
+        function(){
+
+            switchPage(
+                "settingsPage",
+                button
+            );
+
+        };
+
+
+    button.innerHTML = `
+
+        <div>
+            ⚙️
+        </div>
+
+        Settings
+
+    `;
+
+
+    nav.appendChild(
+        button
+    );
+
+}
+
+
+/* =========================================================
+   INITIALIZE P4-D
+========================================================= */
+
+window.scheduleData =
+    window.scheduleData || [];
+
+
+addSettingsNavButton();
+
+updateNotificationStatus();
+
+
+/*
+   Browser tab ပြန် active ဖြစ်တဲ့အခါ
+   Permission status ပြန်စစ်မယ်။
+*/
+
+document.addEventListener(
+    "visibilitychange",
+    function(){
+
+        if(
+            !document.hidden
+        ){
+
+            updateNotificationStatus();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   CLEANUP SOUND URL
+========================================================= */
+
+window.addEventListener(
+    "beforeunload",
+    function(){
+
+        if(alarmSoundUrl){
+
+            URL.revokeObjectURL(
+                alarmSoundUrl
+            );
+
+        }
+
+    }
+);
+
+</script>
+
+
+<!-- =======================================================
+     P4-D END
+======================================================= -->
