@@ -5,14 +5,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>VIP Productivity</title>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<title>TimeFlow</title>
 
 <style>
 
-/* ================= RESET ================= */
+/* =========================================================
+   TIMEFLOW — PART 1
+   BASE UI + APP STRUCTURE
+========================================================= */
 
 *{
     box-sizing:border-box;
@@ -30,7 +30,12 @@
     --muted:#858d9c;
     --green:#4ade80;
     --red:#ff6262;
+    --blue:#60a5fa;
     --border:rgba(255,255,255,.07);
+}
+
+html{
+    scroll-behavior:smooth;
 }
 
 body{
@@ -44,10 +49,12 @@ body{
         var(--bg);
     color:var(--text);
     min-height:100vh;
-    padding-bottom:90px;
+    padding-bottom:95px;
 }
 
-/* ================= HEADER ================= */
+/* =========================================================
+   HEADER
+========================================================= */
 
 .header{
     padding:28px 20px 18px;
@@ -61,7 +68,8 @@ body{
 
 .logo{
     font-size:22px;
-    font-weight:800;
+    font-weight:900;
+    letter-spacing:.2px;
 }
 
 .logo span{
@@ -74,32 +82,28 @@ body{
     gap:8px;
 }
 
-.vip-badge{
+.plan-badge{
     display:inline-flex;
     align-items:center;
-    gap:5px;
-    background:
-        linear-gradient(
-            135deg,
-            #f5c451,
-            #ffe69b
-        );
-    color:#111;
     padding:5px 10px;
     border-radius:20px;
-    font-size:11px;
+    font-size:10px;
     font-weight:900;
 }
 
 .free-badge{
-    display:inline-flex;
-    align-items:center;
     background:#242a34;
     color:#c5cad3;
-    padding:5px 10px;
-    border-radius:20px;
-    font-size:11px;
-    font-weight:900;
+}
+
+.vip-badge{
+    background:
+        linear-gradient(
+            135deg,
+            var(--gold),
+            var(--gold2)
+        );
+    color:#111;
 }
 
 .account-btn{
@@ -110,17 +114,10 @@ body{
     background:#171c25;
     color:white;
     cursor:pointer;
-    overflow:hidden;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:19px;
-}
-
-.account-btn img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
+    font-size:18px;
 }
 
 .greeting{
@@ -129,15 +126,18 @@ body{
 
 .greeting small{
     color:var(--muted);
-    font-size:13px;
+    font-size:11px;
+    letter-spacing:1px;
 }
 
 .greeting h1{
-    margin-top:5px;
-    font-size:27px;
+    margin-top:6px;
+    font-size:26px;
 }
 
-/* ================= PAGE ================= */
+/* =========================================================
+   PAGE
+========================================================= */
 
 .page{
     display:none;
@@ -150,17 +150,22 @@ body{
 }
 
 @keyframes fade{
+
     from{
         opacity:0;
         transform:translateY(8px);
     }
+
     to{
         opacity:1;
         transform:translateY(0);
     }
+
 }
 
-/* ================= PROGRESS ================= */
+/* =========================================================
+   PROGRESS CARD
+========================================================= */
 
 .progress-card{
     margin:8px 0 22px;
@@ -212,6 +217,7 @@ body{
             #292d35 0deg
         );
     position:relative;
+    flex-shrink:0;
 }
 
 .circle::before{
@@ -259,7 +265,9 @@ body{
     transition:.5s;
 }
 
-/* ================= TITLES ================= */
+/* =========================================================
+   SECTION TITLE
+========================================================= */
 
 .section-title{
     display:flex;
@@ -274,10 +282,12 @@ body{
 
 .section-title span{
     color:var(--muted);
-    font-size:11px;
+    font-size:10px;
 }
 
-/* ================= TASK ================= */
+/* =========================================================
+   TASK
+========================================================= */
 
 .task-list{
     display:flex;
@@ -299,15 +309,6 @@ body{
     border:1px solid var(--border);
     padding:14px 12px;
     border-radius:18px;
-    transition:.25s;
-}
-
-.task.completed{
-    opacity:.6;
-}
-
-.task.completed .task-info strong{
-    text-decoration:line-through;
 }
 
 .time{
@@ -347,14 +348,14 @@ body{
     color:#aeb5c1;
 }
 
-.status.done{
-    background:rgba(74,222,128,.12);
-    color:var(--green);
-}
-
 .status.active{
     background:rgba(245,196,81,.15);
     color:var(--gold);
+}
+
+.status.done{
+    background:rgba(74,222,128,.12);
+    color:var(--green);
 }
 
 .status.missed{
@@ -377,11 +378,9 @@ body{
     cursor:pointer;
 }
 
-.icon-btn.delete:hover{
-    background:var(--red);
-}
-
-/* ================= EMPTY ================= */
+/* =========================================================
+   EMPTY
+========================================================= */
 
 .empty{
     text-align:center;
@@ -392,7 +391,116 @@ body{
     font-size:13px;
 }
 
-/* ================= ADD ================= */
+/* =========================================================
+   TIMELINE
+========================================================= */
+
+.timeline{
+    position:relative;
+    margin-top:10px;
+}
+
+.timeline::before{
+    content:"";
+    position:absolute;
+    left:25px;
+    top:10px;
+    bottom:10px;
+    width:2px;
+    background:#282d35;
+}
+
+.timeline-item{
+    position:relative;
+    display:flex;
+    gap:16px;
+    margin-bottom:14px;
+}
+
+.timeline-dot{
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:var(--gold);
+    margin-top:20px;
+    margin-left:19px;
+    z-index:2;
+    flex-shrink:0;
+}
+
+.timeline-card{
+    flex:1;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:17px;
+    padding:15px;
+}
+
+.schedule-time{
+    color:var(--gold);
+    font-size:11px;
+    font-weight:bold;
+}
+
+.timeline-card h3{
+    font-size:14px;
+    margin:5px 0;
+}
+
+.timeline-card small{
+    color:var(--muted);
+    font-size:10px;
+}
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+    margin-top:15px;
+}
+
+.stat{
+    padding:18px 8px;
+    text-align:center;
+    border-radius:17px;
+    background:var(--card);
+    border:1px solid var(--border);
+}
+
+.stat strong{
+    display:block;
+    font-size:22px;
+    color:var(--gold);
+}
+
+.stat small{
+    color:var(--muted);
+    font-size:9px;
+}
+
+/* =========================================================
+   BIG PROGRESS
+========================================================= */
+
+.big-progress{
+    margin-top:15px;
+    padding:20px;
+    background:var(--card);
+    border-radius:20px;
+    border:1px solid var(--border);
+}
+
+.big-progress h3{
+    font-size:15px;
+}
+
+/* =========================================================
+   ADD BUTTON
+========================================================= */
 
 .add-btn{
     position:fixed;
@@ -415,7 +523,9 @@ body{
     z-index:20;
 }
 
-/* ================= NAV ================= */
+/* =========================================================
+   BOTTOM NAV
+========================================================= */
 
 .bottom-nav{
     position:fixed;
@@ -454,11 +564,11 @@ body{
     color:var(--gold);
 }
 
-/* ================= MODALS ================= */
+/* =========================================================
+   MODAL BASE
+========================================================= */
 
-.modal,
-.alarm-overlay,
-.work-overlay{
+.modal{
     position:fixed;
     inset:0;
     background:rgba(0,0,0,.78);
@@ -470,16 +580,12 @@ body{
     z-index:100;
 }
 
-.modal.show,
-.alarm-overlay.show,
-.work-overlay.show{
+.modal.show{
     display:flex;
     animation:fade .25s ease;
 }
 
-.modal-box,
-.alarm-box,
-.work-box{
+.modal-box{
     width:100%;
     max-width:430px;
     max-height:90vh;
@@ -512,7 +618,9 @@ body{
     cursor:pointer;
 }
 
-/* ================= FORM ================= */
+/* =========================================================
+   FORM
+========================================================= */
 
 .form-group{
     margin-bottom:16px;
@@ -527,7 +635,8 @@ body{
     letter-spacing:1px;
 }
 
-.form-group input{
+.form-group input,
+.form-group select{
     width:100%;
     padding:13px;
     border-radius:12px;
@@ -537,40 +646,7 @@ body{
     outline:none;
 }
 
-.vip-section{
-    padding:16px;
-    border-radius:17px;
-    background:rgba(245,196,81,.06);
-    border:1px solid rgba(245,196,81,.12);
-    margin-top:8px;
-}
-
-.vip-title{
-    color:var(--gold);
-    font-weight:bold;
-    font-size:13px;
-}
-
-.vip-note{
-    color:var(--muted);
-    font-size:10px;
-    line-height:1.6;
-    margin:7px 0 14px;
-}
-
-.repeat-box{
-    display:flex;
-    align-items:center;
-    gap:9px;
-    font-size:11px;
-}
-
-.repeat-box input{
-    width:auto;
-}
-
-.save-btn,
-.done-btn{
+.save-btn{
     width:100%;
     padding:14px;
     border:0;
@@ -586,202 +662,9 @@ body{
     cursor:pointer;
 }
 
-/* ================= SCHEDULE ================= */
-
-.timeline{
-    position:relative;
-    margin-top:10px;
-}
-
-.timeline::before{
-    content:"";
-    position:absolute;
-    left:25px;
-    top:10px;
-    bottom:10px;
-    width:2px;
-    background:#282d35;
-}
-
-.timeline-item{
-    position:relative;
-    display:flex;
-    gap:16px;
-    margin-bottom:14px;
-}
-
-.timeline-dot{
-    width:14px;
-    height:14px;
-    border-radius:50%;
-    background:var(--gold);
-    margin-top:20px;
-    margin-left:19px;
-    z-index:2;
-}
-
-.timeline-card{
-    flex:1;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:17px;
-    padding:15px;
-}
-
-.schedule-time{
-    color:var(--gold);
-    font-size:11px;
-    font-weight:bold;
-}
-
-.timeline-card h3{
-    font-size:14px;
-    margin:5px 0;
-}
-
-.timeline-card small{
-    color:var(--muted);
-    font-size:10px;
-}
-
-.schedule-test{
-    float:right;
-    border:0;
-    background:#242a34;
-    color:white;
-    border-radius:8px;
-    padding:7px 9px;
-    cursor:pointer;
-}
-
-/* ================= PROGRESS PAGE ================= */
-
-.stats-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:9px;
-    margin-top:15px;
-}
-
-.stat{
-    padding:18px 8px;
-    text-align:center;
-    border-radius:17px;
-    background:var(--card);
-    border:1px solid var(--border);
-}
-
-.stat strong{
-    display:block;
-    font-size:22px;
-    color:var(--gold);
-}
-
-.stat small{
-    color:var(--muted);
-    font-size:9px;
-}
-
-.big-progress{
-    margin-top:15px;
-    padding:20px;
-    background:var(--card);
-    border-radius:20px;
-}
-
-/* ================= ALARM ================= */
-
-.alarm-box,
-.work-box{
-    text-align:center;
-}
-
-.alarm-icon,
-.work-icon{
-    font-size:55px;
-    margin-bottom:12px;
-}
-
-.alarm-time{
-    color:var(--gold);
-    font-size:35px;
-    font-weight:900;
-}
-
-.alarm-task{
-    font-size:20px;
-    font-weight:bold;
-    margin-top:8px;
-}
-
-.alarm-category{
-    display:inline-block;
-    color:var(--gold);
-    background:rgba(245,196,81,.1);
-    padding:5px 10px;
-    border-radius:8px;
-    font-size:10px;
-    margin-top:8px;
-}
-
-.alarm-message,
-.work-box p{
-    color:var(--muted);
-    font-size:12px;
-    line-height:1.7;
-    margin:18px 0;
-}
-
-.alarm-buttons{
-    display:flex;
-    gap:9px;
-}
-
-.alarm-btn{
-    flex:1;
-    padding:13px;
-    border:0;
-    border-radius:12px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.cancel-btn{
-    background:#252b35;
-    color:white;
-}
-
-.start-btn{
-    background:
-        linear-gradient(
-            135deg,
-            var(--gold),
-            var(--gold2)
-        );
-    color:#111;
-}
-
-.links-container{
-    margin:15px 0;
-}
-
-.work-link{
-    display:block;
-    padding:13px;
-    background:#1c2430;
-    border-radius:12px;
-    color:var(--gold);
-    text-decoration:none;
-    font-size:11px;
-    word-break:break-all;
-}
-
-/* ================= ACCOUNT ================= */
-
-.account-modal-user{
-    text-align:center;
-    padding:10px 0 18px;
-}
+/* =========================================================
+   ACCOUNT
+========================================================= */
 
 .account-avatar{
     width:76px;
@@ -792,14 +675,12 @@ body{
     display:flex;
     align-items:center;
     justify-content:center;
-    overflow:hidden;
     font-size:30px;
 }
 
-.account-avatar img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
+.account-modal-user{
+    text-align:center;
+    padding:10px 0 20px;
 }
 
 .account-name{
@@ -811,31 +692,6 @@ body{
     color:var(--muted);
     font-size:11px;
     margin-top:5px;
-    word-break:break-all;
-}
-
-.plan-badge{
-    display:inline-flex;
-    margin-top:10px;
-    padding:6px 13px;
-    border-radius:20px;
-    font-size:10px;
-    font-weight:900;
-}
-
-.plan-free{
-    background:rgba(255,255,255,.08);
-    color:#c5cad3;
-}
-
-.plan-vip{
-    background:
-        linear-gradient(
-            135deg,
-            var(--gold),
-            var(--gold2)
-        );
-    color:#111;
 }
 
 .google-btn{
@@ -861,15 +717,9 @@ body{
     margin-top:10px;
 }
 
-.account-note{
-    text-align:center;
-    color:var(--muted);
-    font-size:10px;
-    line-height:1.6;
-    margin-top:12px;
-}
-
-/* ================= TOAST ================= */
+/* =========================================================
+   TOAST
+========================================================= */
 
 .toast{
     position:fixed;
@@ -897,7 +747,9 @@ body{
         translateY(0);
 }
 
-/* ================= MOBILE ================= */
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media(max-width:430px){
 
@@ -912,18 +764,14 @@ body{
         display:none;
     }
 
-    .task-actions{
-        grid-column:3;
-    }
-
     .greeting h1{
         font-size:24px;
     }
 
-    .header-actions .vip-badge,
-    .header-actions .free-badge{
+    .header-actions .plan-badge{
         display:none;
     }
+
 }
 
 </style>
@@ -931,90 +779,22 @@ body{
 
 <body>
 
-<!-- ================= LOGIN SCREEN ================= -->
-
-<div id="loginScreen" style="
-    position:fixed;
-    inset:0;
-    background:#07090d;
-    z-index:9999;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-">
-
-    <div style="
-        width:100%;
-        max-width:380px;
-        background:#10141c;
-        border:1px solid rgba(245,196,81,.15);
-        border-radius:25px;
-        padding:30px 22px;
-        text-align:center;
-    ">
-
-        <div style="font-size:55px;">
-            ⚡
-        </div>
-
-        <h1 style="
-            margin-top:12px;
-            font-size:25px;
-            color: #ffffff;
-        ">
-            My <span style="color:#f5c451;">
-                Productivity
-            </span>
-        </h1>
-
-        <p style="
-            color:#858d9c;
-            font-size:12px;
-            line-height:1.7;
-            margin:12px 0 25px;
-        ">
-            Login ဝင်ပြီး သင့် Productivity
-            Tasks တွေကို သိမ်းဆည်းလိုက်ပါ။
-        </p>
-
-        <button
-            id="googleLoginBtnMain"
-            onclick="loginWithGoogle()"
-            style="
-                width:100%;
-                padding:14px;
-                border:0;
-                border-radius:13px;
-                background:white;
-                color:#111;
-                font-weight:800;
-                font-size:14px;
-                cursor:pointer;
-            "
-        >
-            🔐 Continue with Google
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- ================= HEADER ================= -->
+<!-- =======================================================
+     HEADER
+======================================================= -->
 
 <header class="header">
 
     <div class="header-top">
 
         <div class="logo">
-            ⚡ My <span>Productivity</span>
+            ⚡ <span>TimeFlow</span>
         </div>
 
         <div class="header-actions">
 
             <div
-                class="free-badge"
+                class="plan-badge free-badge"
                 id="headerPlan">
                 🆓 FREE
             </div>
@@ -1032,7 +812,9 @@ body{
 
     <div class="greeting">
 
-        <small>WELCOME BACK</small>
+        <small>
+            WELCOME BACK
+        </small>
 
         <h1 id="greetingTitle">
             Let's get things done. 🚀
@@ -1043,7 +825,9 @@ body{
 </header>
 
 
-<!-- ================= HOME ================= -->
+<!-- =======================================================
+     HOME PAGE
+======================================================= -->
 
 <section
     class="page active"
@@ -1079,7 +863,7 @@ body{
 
                 <p>
                     Keep going! Complete your tasks
-                    and make today productive.
+                    and make today productive. 🔥
                 </p>
 
                 <div class="bar">
@@ -1113,6 +897,14 @@ body{
     <div
         class="task-list"
         id="taskList">
+
+        <div class="empty">
+            📭 Task မရှိသေးပါ။
+            <br><br>
+            + ခလုတ်ကိုနှိပ်ပြီး
+            Task အသစ်ထည့်ပါ။
+        </div>
+
     </div>
 
 
@@ -1131,6 +923,11 @@ body{
     <div
         class="timeline"
         id="scheduleList">
+
+        <div class="empty">
+            ⏰ Schedule မရှိသေးပါ။
+        </div>
+
     </div>
 
 
@@ -1189,7 +986,9 @@ body{
 </section>
 
 
-<!-- ================= SCHEDULE PAGE ================= -->
+<!-- =======================================================
+     SCHEDULE PAGE
+======================================================= -->
 
 <section
     class="page"
@@ -1210,12 +1009,19 @@ body{
     <div
         class="timeline"
         id="schedulePageList">
+
+        <div class="empty">
+            ⏰ Schedule မရှိသေးပါ။
+        </div>
+
     </div>
 
 </section>
 
 
-<!-- ================= PROGRESS PAGE ================= -->
+<!-- =======================================================
+     PROGRESS PAGE
+======================================================= -->
 
 <section
     class="page"
@@ -1273,6 +1079,7 @@ body{
 
     </div>
 
+
     <div class="big-progress">
 
         <h3>
@@ -1282,11 +1089,10 @@ body{
             <span
                 id="progressPercent"
                 style="
-                float:right;
-                color:#f5c451;">
-
+                    float:right;
+                    color:#f5c451;
+                ">
                 0%
-
             </span>
 
         </h3>
@@ -1302,9 +1108,10 @@ body{
 
         <p
             style="
-            color:#858d9c;
-            font-size:11px;
-            margin-top:12px;">
+                color:#858d9c;
+                font-size:11px;
+                margin-top:12px;
+            ">
 
             Small progress every day becomes
             big results. 🔥
@@ -1316,16 +1123,22 @@ body{
 </section>
 
 
-<!-- ================= ADD BUTTON ================= -->
+<!-- =======================================================
+     ADD BUTTON
+======================================================= -->
 
 <button
     class="add-btn"
     onclick="openAddModal()">
+
     +
+
 </button>
 
 
-<!-- ================= NAV ================= -->
+<!-- =======================================================
+     BOTTOM NAVIGATION
+======================================================= -->
 
 <nav class="bottom-nav">
 
@@ -1333,25 +1146,36 @@ body{
         class="nav active"
         onclick="switchPage('home',this)">
 
-        <div>🏠</div>
+        <div>
+            🏠
+        </div>
+
         Home
 
     </button>
+
 
     <button
         class="nav"
         onclick="switchPage('schedule',this)">
 
-        <div>⏰</div>
+        <div>
+            ⏰
+        </div>
+
         Schedule
 
     </button>
+
 
     <button
         class="nav"
         onclick="switchPage('progress',this)">
 
-        <div>📊</div>
+        <div>
+            📊
+        </div>
+
         Progress
 
     </button>
@@ -1359,7 +1183,9 @@ body{
 </nav>
 
 
-<!-- ================= ACCOUNT MODAL ================= -->
+<!-- =======================================================
+     ACCOUNT MODAL
+======================================================= -->
 
 <div
     class="modal"
@@ -1383,35 +1209,24 @@ body{
 
         </div>
 
+
         <div class="account-modal-user">
 
-            <div
-                class="account-avatar"
-                id="accountAvatar">
-
+            <div class="account-avatar">
                 👤
-
             </div>
 
-            <div
-                class="account-name"
-                id="accountName">
-
+            <div class="account-name">
                 Guest User
-
             </div>
 
-            <div
-                class="account-email"
-                id="accountEmail">
-
+            <div class="account-email">
                 Not signed in
-
             </div>
 
             <div
-                class="plan-badge plan-free"
-                id="accountPlan">
+                class="plan-badge free-badge"
+                style="margin-top:10px;">
 
                 🆓 FREE
 
@@ -1419,30 +1234,28 @@ body{
 
         </div>
 
+
         <button
             class="google-btn"
-            id="googleLoginBtn"
-            onclick="loginWithGoogle()">
+            onclick="showToast('🔐 Google Login — P2 မှာထည့်မယ်')">
 
             🔐 Continue with Google
 
         </button>
 
-        <button
-            class="logout-btn"
-            id="logoutBtn"
-            onclick="logoutUser()"
-            style="display:none;">
 
-            🚪 Sign Out
+        <div
+            style="
+                text-align:center;
+                color:#858d9c;
+                font-size:10px;
+                line-height:1.6;
+                margin-top:12px;
+            ">
 
-        </button>
-
-        <div class="account-note">
-
-            Google Account နဲ့ Login ဝင်ထားရင်
-            နောက်ပိုင်းမှာ Task / Timetable data ကို
-            Account အလိုက် သိမ်းနိုင်မယ်။
+            Google Account Login,
+            User Profile နဲ့ Firebase
+            ကို Part 2 မှာ ချိတ်ဆက်မယ်။
 
         </div>
 
@@ -1451,7 +1264,9 @@ body{
 </div>
 
 
-<!-- ================= ADD MODAL ================= -->
+<!-- =======================================================
+     ADD TASK MODAL
+======================================================= -->
 
 <div
     class="modal"
@@ -1475,9 +1290,9 @@ body{
 
         </div>
 
+
         <form
-            id="taskForm"
-            onsubmit="saveTask(event)">
+            onsubmit="demoSaveTask(event)">
 
             <div class="form-group">
 
@@ -1491,6 +1306,7 @@ body{
                     required>
 
             </div>
+
 
             <div class="form-group">
 
@@ -1506,6 +1322,7 @@ body{
 
             </div>
 
+
             <div class="form-group">
 
                 <label>
@@ -1519,60 +1336,6 @@ body{
 
             </div>
 
-            <div class="vip-section">
-
-                <div class="vip-title">
-                    👑 VIP Link Integration
-                </div>
-
-                <div class="vip-note">
-
-                    VIP User များအတွက်
-                    Alarm အချိန်ရောက်တဲ့အခါ
-                    Worksite link ကိုဖွင့်နိုင်ပါတယ်။
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>
-                        WORKSITE / PLATFORM LINK
-                    </label>
-
-                    <input
-                        type="url"
-                        id="taskLink"
-                        placeholder="https://youtube.com">
-
-                </div>
-
-            </div>
-
-            <div
-                class="form-group"
-                style="margin-top:15px;">
-
-                <div class="repeat-box">
-
-                    <input
-                        type="checkbox"
-                        id="taskRepeat"
-                        checked>
-
-                    <label
-                        for="taskRepeat"
-                        style="
-                        margin:0;
-                        color:white;
-                        cursor:pointer;">
-
-                        နေ့စဉ် Repeat
-
-                    </label>
-
-                </div>
-
-            </div>
 
             <button
                 type="submit"
@@ -1589,117 +1352,9 @@ body{
 </div>
 
 
-<!-- ================= ALARM ================= -->
-
-<div
-    class="alarm-overlay"
-    id="alarmOverlay">
-
-    <div class="alarm-box">
-
-        <div class="alarm-icon">
-            ⏰
-        </div>
-
-        <div
-            class="alarm-time"
-            id="alarmTimeText">
-
-            06:00 AM
-
-        </div>
-
-        <div
-            class="alarm-task"
-            id="alarmTaskText">
-
-            Task Name
-
-        </div>
-
-        <div
-            class="alarm-category"
-            id="alarmCatText">
-
-            Category
-
-        </div>
-
-        <p class="alarm-message">
-
-            🔔 Task အချိန်ရောက်ပါပြီ။
-            အလုပ်စတင်ဖို့ Accept & Start ကိုနှိပ်ပါ။
-
-        </p>
-
-        <div class="alarm-buttons">
-
-            <button
-                class="alarm-btn cancel-btn"
-                onclick="dismissAlarm()">
-
-                ✕ Dismiss
-
-            </button>
-
-            <button
-                class="alarm-btn start-btn"
-                id="alarmAcceptBtn"
-                onclick="acceptAlarm()">
-
-                ✓ Accept & Start
-
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- ================= WORK ================= -->
-
-<div
-    class="work-overlay"
-    id="workOverlay">
-
-    <div class="work-box">
-
-        <div class="work-icon">
-            🚀
-        </div>
-
-        <h2 id="workTitle">
-            Work Time
-        </h2>
-
-        <p>
-
-            သတ်မှတ်ထားတဲ့ Worksite ကိုဖွင့်ပြီး
-            အလုပ်ပြီးတဲ့အခါ Work Done ကိုနှိပ်ပါ။
-
-        </p>
-
-        <div
-            class="links-container"
-            id="workLinksContainer">
-        </div>
-
-        <button
-            class="done-btn"
-            onclick="completeActiveTask()">
-
-            ✅ Work Done
-
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- ================= TOAST ================= -->
+<!-- =======================================================
+     TOAST
+======================================================= -->
 
 <div
     class="toast"
@@ -1710,476 +1365,153 @@ body{
 </div>
 
 
-<!-- ================= SCRIPTS ================= -->
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
+<!-- =======================================================
+     PART 1 JAVASCRIPT
+======================================================= -->
 
 <script>
 
-/* ================= FIREBASE ================= */
+/* =========================================================
+   BASIC APP STATE
+========================================================= */
 
-const firebaseConfig = {
-    apiKey: "AIzaSyCw72aOGSLvdf3q221gF0yIM63RiSqpkJc",
-    authDomain: "my-productivity-7ae74.firebaseapp.com",
-    projectId: "my-productivity-7ae74",
-    storageBucket: "my-productivity-7ae74.firebasestorage.app",
-    messagingSenderId: "955389154479",
-    appId: "1:955389154479:web:e2b46c690d7e9b1610305a",
-    measurementId: "G-FYVSE71BM1"
-};
-
-firebase.initializeApp(firebaseConfig);
-
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-let firebaseReady = true;
+let tasks = [];
 
 
-/* ================= ACCOUNT ================= */
+/* =========================================================
+   PAGE SWITCH
+========================================================= */
 
-let currentUser = null;
-let userPlan = "free";
+function switchPage(pageId,btn){
 
+    document.querySelectorAll(".page")
+        .forEach(page => {
+            page.classList.remove("active");
+        });
 
-/* ================= DATA ================= */
+    document.querySelectorAll(".bottom-nav .nav")
+        .forEach(nav => {
+            nav.classList.remove("active");
+        });
 
-let tasks =
-JSON.parse(
-    localStorage.getItem("vip_tasks")
-) || [
+    const page =
+        document.getElementById(pageId);
 
-    {
-        id:1,
-        time:"06:00",
-        name:"ထမင်းစားချိန်",
-        category:"Meal",
-        link:"",
-        done:false,
-        status:"waiting",
-        repeat:true
-    },
-
-    {
-        id:2,
-        time:"08:00",
-        name:"မနက်ပိုင်းစာလုပ်ချိန် / Coding",
-        category:"Study",
-        link:"",
-        done:false,
-        status:"waiting",
-        repeat:true
+    if(page){
+        page.classList.add("active");
     }
 
-];
+    if(btn){
+        btn.classList.add("active");
+    }
+
+}
 
 
-let activeAlarmTask = null;
-let alarmAudio = null;
-let alarmTimer = null;
-
-
-/* ================= ACCOUNT MODAL ================= */
+/* =========================================================
+   ACCOUNT MODAL
+========================================================= */
 
 function openAccountModal(){
-    document.getElementById("accountModal").classList.add("show");
-    renderAccountUI();
+
+    document
+        .getElementById("accountModal")
+        .classList.add("show");
+
 }
 
 function closeAccountModal(){
-    document.getElementById("accountModal").classList.remove("show");
-}
 
-
-/* ================= ACCOUNT UI ================= */
-
-function renderAccountUI(){
-
-    const name = document.getElementById("accountName");
-    const email = document.getElementById("accountEmail");
-    const plan = document.getElementById("accountPlan");
-    const avatar = document.getElementById("accountAvatar");
-    const loginBtn = document.getElementById("googleLoginBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const accountButton = document.getElementById("accountButton");
-    const headerPlan = document.getElementById("headerPlan");
-    const greetingTitle = document.getElementById("greetingTitle");
-
-
-    if(!currentUser){
-
-        name.innerText = "Guest User";
-        email.innerText = "Not signed in";
-        plan.innerText = "🆓 FREE";
-        plan.className = "plan-badge plan-free";
-        avatar.innerHTML = "👤";
-        loginBtn.style.display = "block";
-        logoutBtn.style.display = "none";
-        accountButton.innerText = "👤";
-        headerPlan.innerText = "🆓 FREE";
-        headerPlan.className = "free-badge";
-        greetingTitle.innerText = "Let's get things done. 🚀";
-
-        return;
-
-    }
-
-
-    name.innerText = currentUser.displayName || "Google User";
-    email.innerText = currentUser.email || "";
-
-
-    if(currentUser.photoURL){
-
-        avatar.innerHTML = `
-            <img
-                src="${escapeHtml(
-                    currentUser.photoURL
-                )}"
-                alt="Profile">
-        `;
-
-        accountButton.innerHTML = `
-            <img
-                src="${escapeHtml(
-                    currentUser.photoURL
-                )}"
-                alt="Profile">
-        `;
-
-    }else{
-
-        avatar.innerHTML = "👤";
-        accountButton.innerText = "👤";
-
-    }
-
-
-    if(userPlan === "vip"){
-
-        plan.innerText = "👑 VIP";
-        plan.className = "plan-badge plan-vip";
-        headerPlan.innerText = "👑 VIP";
-        headerPlan.className = "vip-badge";
-
-    }else{
-
-        plan.innerText = "🆓 FREE";
-        plan.className = "plan-badge plan-free";
-        headerPlan.innerText = "🆓 FREE";
-        headerPlan.className = "free-badge";
-
-    }
-
-
-    greetingTitle.innerText = "Let's get things done. 🚀";
-
-    loginBtn.style.display = "none";
-    logoutBtn.style.display = "block";
+    document
+        .getElementById("accountModal")
+        .classList.remove("show");
 
 }
 
 
-/* ================= LOAD USER PLAN ================= */
-
-async function loadUserPlan(){
-
-    if(!currentUser){
-        userPlan = "free";
-        renderAccountUI();
-        return;
-    }
-
-    try{
-
-        const ref = db.collection("users").doc(currentUser.uid);
-        const snap = await ref.get();
-
-        if(snap.exists){
-            const data = snap.data();
-            userPlan = data.plan === "vip" ? "vip" : "free";
-        }else{
-            userPlan = "free";
-            await ref.set({
-                uid: currentUser.uid,
-                name: currentUser.displayName || "",
-                email: currentUser.email || "",
-                photo: currentUser.photoURL || "",
-                plan: "free",
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-        }
-
-    }catch(error){
-        console.error("User plan error:", error);
-        userPlan = "free";
-    }
-
-    renderAccountUI();
-
-}
-
-
-/* ================= GOOGLE LOGIN ================= */
-
-const googleProvider =
-    new firebase.auth.GoogleAuthProvider();
-
-function loginWithGoogle(){
-
-    const btn =
-        document.getElementById(
-            "googleLoginBtn"
-        );
-
-    const btnMain =
-        document.getElementById(
-            "googleLoginBtnMain"
-        );
-
-    if(btn)
-        btn.innerText = "⏳ Signing in...";
-
-    if(btnMain)
-        btnMain.innerText = "⏳ Signing in...";
-
-    auth.signInWithRedirect(
-        googleProvider
-    ).catch((error) => {
-
-        console.error(error);
-
-        if(btn)
-            btn.innerText =
-                "🔐 Continue with Google";
-
-        if(btnMain)
-            btnMain.innerText =
-                "🔐 Continue with Google";
-
-        alert(
-            "Google Login မအောင်မြင်ပါ။\n\n" +
-            error.message
-        );
-
-    });
-
-}
-
-
-/* ================= AUTH STATE ================= */
-
-auth.onAuthStateChanged(
-    async (user) => {
-
-        const loginScreen =
-            document.getElementById(
-                "loginScreen"
-            );
-
-        currentUser = user || null;
-
-        if(user){
-
-            if(loginScreen){
-                loginScreen.style.display =
-                    "none";
-            }
-
-            console.log(
-                "User:",
-                user.displayName
-            );
-
-            await loadUserPlan();
-
-        }else{
-
-            if(loginScreen){
-                loginScreen.style.display =
-                    "flex";
-            }
-
-            userPlan = "free";
-            renderAccountUI();
-
-        }
-
-    }
-);
-
-
-/* ================= LOGOUT ================= */
-
-async function logoutUser(){
-
-    if(!firebaseReady) return;
-
-    try{
-        await auth.signOut();
-        closeAccountModal();
-        showToast("🚪 Sign Out လုပ်ပြီးပါပြီ");
-    }catch(error){
-        console.error("Logout Error:", error);
-    }
-
-}
-
-
-/* ================= ALARM SOUND ================= */
-
-function startAlarmSound(){
-
-    stopAlarmSound();
-
-    try{
-
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if(!AudioContext) return;
-
-        const ctx = new AudioContext();
-        alarmAudio = ctx;
-
-        if(ctx.state === "suspended"){
-            ctx.resume();
-        }
-
-        function beep(){
-            const now = ctx.currentTime;
-
-            const osc1 = ctx.createOscillator();
-            const gain1 = ctx.createGain();
-
-            osc1.type = "sine";
-            osc1.frequency.setValueAtTime(660, now);
-            osc1.frequency.exponentialRampToValueAtTime(990, now + 0.15);
-
-            gain1.gain.setValueAtTime(0.0001, now);
-            gain1.gain.exponentialRampToValueAtTime(0.5, now + 0.03);
-            gain1.gain.exponentialRampToValueAtTime(0.0001, now + 0.45);
-
-            osc1.connect(gain1);
-            gain1.connect(ctx.destination);
-
-            osc1.start(now);
-            osc1.stop(now + 0.5);
-        }
-
-        beep();
-        alarmTimer = setInterval(beep, 1200);
-
-    }catch(error){
-        console.log("Alarm sound error:", error);
-    }
-
-}
-
-
-function stopAlarmSound(){
-
-    if(alarmTimer){
-        clearInterval(alarmTimer);
-        alarmTimer = null;
-    }
-
-    if(alarmAudio && alarmAudio.state !== "closed"){
-        alarmAudio.close();
-    }
-
-    alarmAudio = null;
-
-}
-
-
-/* ================= PAGE ================= */
-
-function switchPage(pageId, btn){
-
-    document.querySelectorAll(".page").forEach(page =>
-        page.classList.remove("active")
-    );
-
-    document.querySelectorAll(".bottom-nav .nav").forEach(nav =>
-        nav.classList.remove("active")
-    );
-
-    document.getElementById(pageId).classList.add("active");
-    btn.classList.add("active");
-
-    if(pageId === "progress"){
-        updateProgressStats();
-    }
-
-    if(pageId === "schedule"){
-        renderSchedulePage();
-    }
-
-}
-
-
-/* ================= MODAL ================= */
+/* =========================================================
+   ADD TASK MODAL
+========================================================= */
 
 function openAddModal(){
-    document.getElementById("addTaskModal").classList.add("show");
+
+    document
+        .getElementById("addTaskModal")
+        .classList.add("show");
+
 }
 
 function closeAddModal(){
-    document.getElementById("addTaskModal").classList.remove("show");
+
+    document
+        .getElementById("addTaskModal")
+        .classList.remove("show");
+
 }
 
 
-/* ================= SAVE TASK ================= */
+/* =========================================================
+   DEMO TASK
+========================================================= */
 
-function saveTask(e){
+function demoSaveTask(event){
 
-    e.preventDefault();
+    event.preventDefault();
 
-    const time = document.getElementById("taskTime").value;
-    const name = document.getElementById("taskName").value;
-    const category = document.getElementById("taskCategory").value || "General";
-    let link = document.getElementById("taskLink").value;
-    const repeat = document.getElementById("taskRepeat").checked;
+    const time =
+        document.getElementById("taskTime").value;
 
-    if(link && userPlan !== "vip"){
-        showToast("👑 Worksite Link က VIP Feature ပါ");
-        link = "";
-    }
+    const name =
+        document.getElementById("taskName").value;
 
-    const newTask = {
-        id: Date.now(),
-        time: time,
-        name: name,
-        category: category,
-        link: link,
-        done: false,
-        status: "waiting",
-        repeat: repeat
-    };
+    const category =
+        document.getElementById("taskCategory").value
+        || "General";
 
-    tasks.push(newTask);
 
-    saveAndRender();
+    tasks.push({
+
+        id:Date.now(),
+
+        time:time,
+
+        name:name,
+
+        category:category,
+
+        done:false,
+
+        status:"waiting"
+
+    });
+
+
+    renderTasks();
+
     closeAddModal();
 
-    document.getElementById("taskForm").reset();
+    event.target.reset();
 
     showToast("✨ Task သိမ်းပြီးပါပြီ!");
 
 }
 
 
-/* ================= RENDER ================= */
+/* =========================================================
+   RENDER TASKS
+========================================================= */
 
 function renderTasks(){
 
-    const taskList = document.getElementById("taskList");
-    const scheduleList = document.getElementById("scheduleList");
+    const taskList =
+        document.getElementById("taskList");
 
-    taskList.innerHTML = "";
-    scheduleList.innerHTML = "";
+    const scheduleList =
+        document.getElementById("scheduleList");
+
+    const schedulePageList =
+        document.getElementById("schedulePageList");
+
 
     if(tasks.length === 0){
 
@@ -2194,429 +1526,381 @@ function renderTasks(){
 
         scheduleList.innerHTML = `
             <div class="empty">
-                ⏰ Alarm မရှိသေးပါ။
+                ⏰ Schedule မရှိသေးပါ။
             </div>
         `;
 
-        updateProgressUI(0, 0);
-        renderSchedulePage();
-        return;
-
-    }
-
-    tasks.sort((a, b) => a.time.localeCompare(b.time));
-
-    let completedCount = 0;
-
-    tasks.forEach(task => {
-
-        if(task.done){
-            completedCount++;
-        }
-
-        const formattedTime = formatTimeTo12Hour(task.time);
-
-        taskList.innerHTML += `
-            <div
-                class="task ${task.done ? "completed" : ""}"
-                id="task-${task.id}">
-
-                <div class="time">
-                    ${formattedTime}
-                </div>
-
-                <div class="task-info">
-                    <strong>
-                        ${escapeHtml(task.name)}
-                    </strong>
-                    <small>
-                        ${escapeHtml(task.category)}
-                        ${task.link ? " • 👑 VIP Link" : ""}
-                    </small>
-                </div>
-
-                <div class="status ${task.status}">
-                    ${getStatusText(task.status)}
-                </div>
-
-                <div class="task-actions">
-                    <button
-                        class="icon-btn"
-                        onclick="toggleTask(${task.id})">
-                        ${task.done ? "↩" : "✓"}
-                    </button>
-                    <button
-                        class="icon-btn delete"
-                        onclick="deleteTask(${task.id})">
-                        ✕
-                    </button>
-                </div>
-
-            </div>
-        `;
-
-        scheduleList.innerHTML += `
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-card">
-                    <button
-                        class="schedule-test"
-                        onclick="triggerAlarmTest(${task.id})">
-                        🔔
-                    </button>
-                    <div class="schedule-time">
-                        ${formattedTime}
-                    </div>
-                    <h3>
-                        ${escapeHtml(task.name)}
-                    </h3>
-                    <small>
-                        ${escapeHtml(task.category)}
-                        •
-                        ${task.link ? "👑 VIP Link Connected" : "Standard Alarm"}
-                    </small>
-                </div>
-            </div>
-        `;
-
-    });
-
-    updateProgressUI(completedCount, tasks.length);
-    renderSchedulePage();
-
-}
-
-
-/* ================= SCHEDULE PAGE ================= */
-
-function renderSchedulePage(){
-
-    const container = document.getElementById("schedulePageList");
-    if(!container) return;
-
-    container.innerHTML = "";
-
-    if(tasks.length === 0){
-        container.innerHTML = `
+        schedulePageList.innerHTML = `
             <div class="empty">
                 ⏰ Schedule မရှိသေးပါ။
             </div>
         `;
+
+        updateProgress();
+
         return;
+
     }
 
-    tasks.slice().sort((a, b) => a.time.localeCompare(b.time)).forEach(task => {
-        container.innerHTML += `
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-card">
-                    <button
-                        class="schedule-test"
-                        onclick="triggerAlarmTest(${task.id})">
-                        🔔
-                    </button>
-                    <div class="schedule-time">
-                        ${formatTimeTo12Hour(task.time)}
-                    </div>
-                    <h3>
+
+    tasks.sort((a,b) =>
+        a.time.localeCompare(b.time)
+    );
+
+
+    taskList.innerHTML = "";
+    scheduleList.innerHTML = "";
+    schedulePageList.innerHTML = "";
+
+
+    tasks.forEach(task => {
+
+        const time =
+            formatTime(task.time);
+
+
+        taskList.innerHTML += `
+
+            <div class="task">
+
+                <div class="time">
+                    ${time}
+                </div>
+
+                <div class="task-info">
+
+                    <strong>
                         ${escapeHtml(task.name)}
-                    </h3>
+                    </strong>
+
                     <small>
                         ${escapeHtml(task.category)}
                     </small>
+
                 </div>
+
+                <div class="status ${task.status}">
+                    ${task.status.toUpperCase()}
+                </div>
+
+                <div class="task-actions">
+
+                    <button
+                        class="icon-btn"
+                        onclick="toggleDemoTask(${task.id})">
+
+                        ✓
+
+                    </button>
+
+                </div>
+
             </div>
+
         `;
+
+
+        const timelineHTML = `
+
+            <div class="timeline-item">
+
+                <div class="timeline-dot"></div>
+
+                <div class="timeline-card">
+
+                    <div class="schedule-time">
+                        ${time}
+                    </div>
+
+                    <h3>
+                        ${escapeHtml(task.name)}
+                    </h3>
+
+                    <small>
+                        ${escapeHtml(task.category)}
+                    </small>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        scheduleList.innerHTML +=
+            timelineHTML;
+
+        schedulePageList.innerHTML +=
+            timelineHTML;
+
     });
 
+
+    updateProgress();
+
 }
 
 
-/* ================= SECURITY ================= */
+/* =========================================================
+   DEMO COMPLETE
+========================================================= */
 
-function escapeHtml(text){
-    const div = document.createElement("div");
-    div.textContent = text ?? "";
-    return div.innerHTML;
+function toggleDemoTask(id){
+
+    const task =
+        tasks.find(t => t.id === id);
+
+    if(!task) return;
+
+    task.done = !task.done;
+
+    task.status =
+        task.done
+        ? "done"
+        : "waiting";
+
+
+    renderTasks();
+
+    showToast(
+        task.done
+        ? "✅ Task Completed!"
+        : "↩️ Task ပြန်ဖွင့်ပြီးပါပြီ"
+    );
+
 }
 
 
-/* ================= TIME ================= */
+/* =========================================================
+   PROGRESS
+========================================================= */
 
-function formatTimeTo12Hour(time){
+function updateProgress(){
 
-    if(!time) return "";
+    const total =
+        tasks.length;
 
-    const parts = time.split(":");
-    let hours = parseInt(parts[0]);
-    const minutes = parts[1];
-    const ampm = hours >= 12 ? "PM" : "AM";
+    const done =
+        tasks.filter(
+            task => task.done
+        ).length;
 
-    hours = hours % 12;
+
+    const missed =
+        tasks.filter(
+            task => task.status === "missed"
+        ).length;
+
+
+    const percent =
+        total === 0
+        ? 0
+        : Math.round(
+            (done / total) * 100
+        );
+
+
+    document.getElementById("percent")
+        .innerText =
+        percent + "%";
+
+    document.getElementById("circlePercent")
+        .innerText =
+        percent + "%";
+
+    document.getElementById("progressPercent")
+        .innerText =
+        percent + "%";
+
+
+    document.getElementById("progressFill")
+        .style.width =
+        percent + "%";
+
+    document.getElementById("progressPageFill")
+        .style.width =
+        percent + "%";
+
+
+    document.getElementById("taskCount")
+        .innerText =
+        total + " TASKS";
+
+
+    document.getElementById("pDone")
+        .innerText =
+        done;
+
+    document.getElementById("pMissed")
+        .innerText =
+        missed;
+
+    document.getElementById("pTotal")
+        .innerText =
+        total;
+
+
+    document.getElementById("pageDone")
+        .innerText =
+        done;
+
+    document.getElementById("pageMissed")
+        .innerText =
+        missed;
+
+    document.getElementById("pageTotal")
+        .innerText =
+        total;
+
+
+    document.getElementById("progressCircle")
+        .style.background = `
+
+            conic-gradient(
+                var(--gold)
+                ${percent * 3.6}deg,
+
+                #292d35
+                ${percent * 3.6}deg
+            )
+
+        `;
+
+}
+
+
+/* =========================================================
+   TIME FORMAT
+========================================================= */
+
+function formatTime(time){
+
+    if(!time){
+        return "";
+    }
+
+
+    const parts =
+        time.split(":");
+
+
+    let hours =
+        parseInt(parts[0]);
+
+
+    const minutes =
+        parts[1];
+
+
+    const ampm =
+        hours >= 12
+        ? "PM"
+        : "AM";
+
+
+    hours =
+        hours % 12;
+
+
     if(hours === 0){
         hours = 12;
     }
 
-    return `${hours}:${minutes} ${ampm}`;
 
-}
-
-
-/* ================= STATUS ================= */
-
-function getStatusText(status){
-    if(status === "done") return "DONE";
-    if(status === "missed") return "MISSED";
-    if(status === "active") return "ACTIVE";
-    return "WAITING";
-}
-
-
-/* ================= TOGGLE ================= */
-
-function toggleTask(id){
-    const task = tasks.find(t => t.id === id);
-    if(!task) return;
-
-    task.done = !task.done;
-    task.status = task.done ? "done" : "waiting";
-
-    saveAndRender();
-}
-
-
-/* ================= DELETE ================= */
-
-function deleteTask(id){
-    tasks = tasks.filter(t => t.id !== id);
-    saveAndRender();
-    showToast("🗑️ Task ဖျက်ပြီးပါပြီ");
-}
-
-
-/* ================= SAVE ================= */
-
-function saveAndRender(){
-    localStorage.setItem("vip_tasks", JSON.stringify(tasks));
-    renderTasks();
-    updateProgressStats();
-}
-
-
-/* ================= PROGRESS ================= */
-
-function updateProgressUI(completed, total){
-
-    const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
-
-    document.getElementById("percent").innerText = percent + "%";
-    document.getElementById("circlePercent").innerText = percent + "%";
-    document.getElementById("progressPercent").innerText = percent + "%";
-    document.getElementById("progressFill").style.width = percent + "%";
-    document.getElementById("progressPageFill").style.width = percent + "%";
-    document.getElementById("taskCount").innerText = total + " TASKS";
-
-    const circle = document.getElementById("progressCircle");
-    circle.style.background = `
-        conic-gradient(
-            var(--gold) ${percent * 3.6}deg,
-            #292d35 ${percent * 3.6}deg
-        )
+    return `
+        ${hours}:${minutes} ${ampm}
     `;
 
 }
 
 
-/* ================= PROGRESS STATS ================= */
+/* =========================================================
+   SECURITY
+========================================================= */
 
-function updateProgressStats(){
+function escapeHtml(text){
 
-    const done = tasks.filter(t => t.done).length;
-    const missed = tasks.filter(t => t.status === "missed").length;
+    const div =
+        document.createElement("div");
 
-    document.getElementById("pDone").innerText = done;
-    document.getElementById("pMissed").innerText = missed;
-    document.getElementById("pTotal").innerText = tasks.length;
+    div.textContent =
+        text ?? "";
 
-    document.getElementById("pageDone").innerText = done;
-    document.getElementById("pageMissed").innerText = missed;
-    document.getElementById("pageTotal").innerText = tasks.length;
-
-}
-
-
-/* ================= ALARM TEST ================= */
-
-function triggerAlarmTest(id){
-
-    const task = tasks.find(t => t.id === id);
-    if(!task) return;
-
-    activeAlarmTask = task;
-    startAlarmSound();
-
-    document.getElementById("alarmTimeText").innerText = formatTimeTo12Hour(task.time);
-    document.getElementById("alarmTaskText").innerText = task.name;
-    document.getElementById("alarmCatText").innerText = task.category;
-
-    const acceptBtn = document.getElementById("alarmAcceptBtn");
-
-    if(task.link && userPlan === "vip"){
-        acceptBtn.innerText = "✨ Open Link & Start";
-    }else{
-        acceptBtn.innerText = "✓ Accept & Start";
-    }
-
-    document.getElementById("alarmOverlay").classList.add("show");
+    return div.innerHTML;
 
 }
 
 
-/* ================= DISMISS ================= */
-
-function dismissAlarm(){
-
-    stopAlarmSound();
-    document.getElementById("alarmOverlay").classList.remove("show");
-
-    if(activeAlarmTask){
-        activeAlarmTask.status = "missed";
-        saveAndRender();
-    }
-
-    activeAlarmTask = null;
-
-}
-
-
-/* ================= ACCEPT ================= */
-
-function acceptAlarm(){
-
-    stopAlarmSound();
-    document.getElementById("alarmOverlay").classList.remove("show");
-
-    if(!activeAlarmTask) return;
-
-    activeAlarmTask.status = "active";
-
-    if(activeAlarmTask.link && userPlan === "vip"){
-
-        document.getElementById("workTitle").innerText = activeAlarmTask.name;
-
-        const container = document.getElementById("workLinksContainer");
-
-        container.innerHTML = `
-            <a
-                href="${escapeHtml(activeAlarmTask.link)}"
-                target="_blank"
-                rel="noopener"
-                class="work-link">
-                🔗 Open Worksite
-                <br><br>
-                ${escapeHtml(activeAlarmTask.link)}
-            </a>
-        `;
-
-        document.getElementById("workOverlay").classList.add("show");
-
-        try{
-            window.open(activeAlarmTask.link, "_blank");
-        }catch(error){
-            console.log(error);
-        }
-
-        saveAndRender();
-
-    }else{
-        saveAndRender();
-        showToast("▶️ Task စတင်ပါပြီ");
-    }
-
-}
-
-
-/* ================= COMPLETE WORK ================= */
-
-function completeActiveTask(){
-
-    stopAlarmSound();
-    document.getElementById("workOverlay").classList.remove("show");
-
-    if(!activeAlarmTask) return;
-
-    activeAlarmTask.done = true;
-    activeAlarmTask.status = "done";
-
-    saveAndRender();
-    showToast("🎉 Task ပြီးမြောက်ပါပြီ!");
-
-    activeAlarmTask = null;
-
-}
-
-
-/* ================= AUTO ALARM ================= */
-
-function checkAlarms(){
-
-    const now = new Date();
-    const currentTime =
-        String(now.getHours()).padStart(2, "0") +
-        ":" +
-        String(now.getMinutes()).padStart(2, "0");
-
-    tasks.forEach(task => {
-        if(
-            task.time === currentTime &&
-            task.status === "waiting" &&
-            !task.done
-        ){
-            const alarmKey = "alarm_" + task.id + "_" + currentTime;
-
-            if(sessionStorage.getItem(alarmKey)){
-                return;
-            }
-
-            sessionStorage.setItem(alarmKey, "1");
-            triggerAlarmTest(task.id);
-        }
-    });
-
-}
-
-setInterval(checkAlarms, 15000);
-
-
-/* ================= TOAST ================= */
+/* =========================================================
+   TOAST
+========================================================= */
 
 let toastTimer = null;
 
 function showToast(message){
 
-    const toast = document.getElementById("toast");
-    toast.innerText = message;
+    const toast =
+        document.getElementById("toast");
+
+
+    toast.innerText =
+        message;
+
+
     toast.classList.add("show");
 
+
     if(toastTimer){
+
         clearTimeout(toastTimer);
+
     }
 
-    toastTimer = setTimeout(() => {
-        toast.classList.remove("show");
-    }, 2500);
+
+    toastTimer =
+        setTimeout(() => {
+
+            toast.classList.remove("show");
+
+        },2500);
 
 }
 
 
-/* ================= INIT ================= */
+/* =========================================================
+   CLOSE MODAL BY BACKDROP
+========================================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
-    renderAccountUI();
-    renderTasks();
-    updateProgressStats();
-    checkAlarms();
-});
+document.addEventListener(
+    "click",
+    function(event){
+
+        if(
+            event.target.classList.contains("modal")
+        ){
+
+            event.target.classList.remove("show");
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        renderTasks();
+
+        updateProgress();
+
+    }
+);
 
 </script>
 
