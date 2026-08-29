@@ -4192,3 +4192,846 @@ function(){
 <!-- =======================================================
      P4-B END
 ======================================================= -->
+<!-- =======================================================
+     P4-C : FIREBASE GOOGLE LOGIN + ACCOUNT + PLAN
+======================================================= -->
+
+<script type="module">
+
+/* =========================================================
+   FIREBASE SDK
+========================================================= */
+
+import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+    getAuth,
+    GoogleAuthProvider,
+    signInWithPopup,
+    signOut,
+    onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+/* =========================================================
+   FIREBASE CONFIG
+========================================================= */
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyCw72aOGSLvdf3q221Gf0yIM63RiSqpkJc",
+
+    authDomain:
+        "my-productivity-7ae74.firebaseapp.com",
+
+    projectId:
+        "my-productivity-7ae74",
+
+    storageBucket:
+        "my-productivity-7ae74.firebasestorage.app",
+
+    messagingSenderId:
+        "955389154479",
+
+    appId:
+        "1:955389154479:web:e2b46c690d7e9b1610305a",
+
+    measurementId:
+        "G-FYVSE71BM1"
+
+};
+
+
+/* =========================================================
+   INITIALIZE FIREBASE
+========================================================= */
+
+let timeflowApp;
+let timeflowAuth;
+let timeflowProvider;
+
+
+try {
+
+    timeflowApp =
+        initializeApp(
+            firebaseConfig
+        );
+
+
+    timeflowAuth =
+        getAuth(
+            timeflowApp
+        );
+
+
+    timeflowProvider =
+        new GoogleAuthProvider();
+
+
+    /*
+       Login တိုင်း Google Account
+       ရွေးချယ်နိုင်အောင်
+    */
+
+    timeflowProvider.setCustomParameters({
+
+        prompt:
+            "select_account"
+
+    });
+
+
+    console.log(
+        "🔥 Firebase initialized"
+    );
+
+}
+catch(error){
+
+    console.error(
+        "❌ Firebase Initialize Error:",
+        error
+    );
+
+}
+
+
+/* =========================================================
+   GLOBAL PLAN
+========================================================= */
+
+window.currentUserPlan =
+    "free";
+
+
+/* =========================================================
+   CURRENT USER
+========================================================= */
+
+window.currentFirebaseUser =
+    null;
+
+
+/* =========================================================
+   GOOGLE LOGIN
+========================================================= */
+
+window.googleLogin =
+async function(){
+
+    if(!timeflowAuth){
+
+        showToast(
+            "❌ Firebase Auth မတက်သေးပါ"
+        );
+
+        return;
+
+    }
+
+
+    const status =
+        document.getElementById(
+            "loginStatus"
+        );
+
+
+    if(status){
+
+        status.innerText =
+            "🔐 Google Login လုပ်နေပါတယ်...";
+
+    }
+
+
+    try{
+
+        const result =
+            await signInWithPopup(
+                timeflowAuth,
+                timeflowProvider
+            );
+
+
+        const user =
+            result.user;
+
+
+        window.currentFirebaseUser =
+            user;
+
+
+        /*
+           Login အောင်မြင်ရင်
+           အစပိုင်းမှာ FREE
+        */
+
+        window.currentUserPlan =
+            "free";
+
+
+        updateAccountUI(
+            user
+        );
+
+
+        updatePlanUI(
+            "free"
+        );
+
+
+        if(
+            typeof window.updateVipAccess ===
+            "function"
+        ){
+
+            window.updateVipAccess();
+
+        }
+
+
+        showToast(
+            "✅ Google Login အောင်မြင်ပါပြီ!"
+        );
+
+
+        console.log(
+            "✅ Logged in:",
+            user.email
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "❌ Google Login Error:",
+            error
+        );
+
+
+        let message =
+            "❌ Google Login မအောင်မြင်ပါ။";
+
+
+        switch(error.code){
+
+            case "auth/unauthorized-domain":
+
+                message =
+                    "⚠️ ဒီ Domain ကို Firebase Authorized Domains ထဲထည့်ပေးပါ။";
+
+                break;
+
+
+            case "auth/popup-blocked":
+
+                message =
+                    "⚠️ Google Login Popup ကို Browser က ပိတ်ထားပါတယ်။";
+
+                break;
+
+
+            case "auth/popup-closed-by-user":
+
+                message =
+                    "⚠️ Login window ပိတ်လိုက်ပါတယ်။";
+
+                break;
+
+
+            case "auth/cancelled-popup-request":
+
+                message =
+                    "⚠️ Login request တစ်ခုရှိပြီးသားပါ။";
+
+                break;
+
+
+            case "auth/network-request-failed":
+
+                message =
+                    "⚠️ Internet connection ပြဿနာရှိပါတယ်။";
+
+                break;
+
+
+            case "auth/operation-not-allowed":
+
+                message =
+                    "⚠️ Firebase မှာ Google Sign-in ကို Enable လုပ်ပေးပါ။";
+
+                break;
+
+
+            case "auth/invalid-api-key":
+
+                message =
+                    "❌ Firebase API Key မမှန်ပါ။";
+
+                break;
+
+
+            default:
+
+                message =
+                    "❌ Login Error: " +
+                    (
+                        error.message ||
+                        error.code ||
+                        "Unknown Error"
+                    );
+
+        }
+
+
+        if(status){
+
+            status.innerText =
+                message;
+
+        }
+
+
+        showToast(
+            message
+        );
+
+    }
+
+};
+
+
+/* =========================================================
+   GOOGLE LOGOUT
+========================================================= */
+
+window.googleLogout =
+async function(){
+
+    if(!timeflowAuth){
+
+        showToast(
+            "❌ Firebase Auth မတက်သေးပါ"
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        await signOut(
+            timeflowAuth
+        );
+
+
+        window.currentFirebaseUser =
+            null;
+
+
+        window.currentUserPlan =
+            "free";
+
+
+        updateAccountUI(
+            null
+        );
+
+
+        updatePlanUI(
+            "free"
+        );
+
+
+        if(
+            typeof window.updateVipAccess ===
+            "function"
+        ){
+
+            window.updateVipAccess();
+
+        }
+
+
+        showToast(
+            "🚪 Google Account Sign Out လုပ်ပြီးပါပြီ"
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "❌ Logout Error:",
+            error
+        );
+
+
+        showToast(
+            "❌ Sign Out မအောင်မြင်ပါ"
+        );
+
+    }
+
+};
+
+
+/* =========================================================
+   ACCOUNT UI
+========================================================= */
+
+window.updateAccountUI =
+function(user){
+
+    const name =
+        document.getElementById(
+            "accountName"
+        );
+
+
+    const email =
+        document.getElementById(
+            "accountEmail"
+        );
+
+
+    const avatar =
+        document.getElementById(
+            "accountAvatar"
+        );
+
+
+    const accountButton =
+        document.getElementById(
+            "accountButton"
+        );
+
+
+    const loginBtn =
+        document.getElementById(
+            "googleLoginBtn"
+        );
+
+
+    const logoutBtn =
+        document.getElementById(
+            "logoutBtn"
+        );
+
+
+    const status =
+        document.getElementById(
+            "loginStatus"
+        );
+
+
+    /* =====================================================
+       LOGGED OUT
+    ====================================================== */
+
+    if(!user){
+
+        if(name){
+
+            name.innerText =
+                "Guest User";
+
+        }
+
+
+        if(email){
+
+            email.innerText =
+                "Not signed in";
+
+        }
+
+
+        if(avatar){
+
+            avatar.innerHTML =
+                "👤";
+
+        }
+
+
+        if(accountButton){
+
+            accountButton.innerHTML =
+                "👤";
+
+        }
+
+
+        if(loginBtn){
+
+            loginBtn.style.display =
+                "block";
+
+        }
+
+
+        if(logoutBtn){
+
+            logoutBtn.style.display =
+                "none";
+
+        }
+
+
+        if(status){
+
+            status.innerText =
+                "Google Account Login";
+
+        }
+
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       LOGGED IN
+    ====================================================== */
+
+    if(name){
+
+        name.innerText =
+            user.displayName ||
+            "Google User";
+
+    }
+
+
+    if(email){
+
+        email.innerText =
+            user.email ||
+            "No email";
+
+    }
+
+
+    if(
+        avatar &&
+        user.photoURL
+    ){
+
+        avatar.innerHTML = `
+
+            <img
+                src="${escapeHtml(
+                    user.photoURL
+                )}"
+                alt="Profile">
+
+        `;
+
+    }
+    else if(avatar){
+
+        avatar.innerHTML =
+            "👤";
+
+    }
+
+
+    if(
+        accountButton &&
+        user.photoURL
+    ){
+
+        accountButton.innerHTML = `
+
+            <img
+                src="${escapeHtml(
+                    user.photoURL
+                )}"
+                alt="Profile">
+
+        `;
+
+    }
+    else if(accountButton){
+
+        accountButton.innerHTML =
+            "👤";
+
+    }
+
+
+    if(loginBtn){
+
+        loginBtn.style.display =
+            "none";
+
+    }
+
+
+    if(logoutBtn){
+
+        logoutBtn.style.display =
+            "block";
+
+    }
+
+
+    if(status){
+
+        status.innerText =
+            "✅ Google Account Connected";
+
+    }
+
+};
+
+
+/* =========================================================
+   PLAN UI
+========================================================= */
+
+window.updatePlanUI =
+function(plan){
+
+    plan =
+        String(plan)
+            .toLowerCase()
+            .trim();
+
+
+    if(
+        plan !== "vip" &&
+        plan !== "free"
+    ){
+
+        plan =
+            "free";
+
+    }
+
+
+    window.currentUserPlan =
+        plan;
+
+
+    const headerPlan =
+        document.getElementById(
+            "headerPlan"
+        );
+
+
+    const accountPlan =
+        document.getElementById(
+            "accountPlan"
+        );
+
+
+    const isVip =
+        plan === "vip";
+
+
+    if(headerPlan){
+
+        headerPlan.className =
+            "plan-badge " +
+            (
+                isVip
+                ? "vip-badge"
+                : "free-badge"
+            );
+
+
+        headerPlan.innerText =
+            isVip
+            ? "👑 VIP"
+            : "🆓 FREE";
+
+    }
+
+
+    if(accountPlan){
+
+        accountPlan.className =
+            "plan-badge " +
+            (
+                isVip
+                ? "vip-badge"
+                : "free-badge"
+            );
+
+
+        accountPlan.innerText =
+            isVip
+            ? "👑 VIP"
+            : "🆓 FREE";
+
+    }
+
+
+    /*
+       P4-B VIP Timetable ကို
+       plan ပြောင်းတာနဲ့ update
+    */
+
+    if(
+        typeof window.updateVipAccess ===
+        "function"
+    ){
+
+        window.updateVipAccess();
+
+    }
+
+};
+
+
+/* =========================================================
+   MANUAL PLAN SET
+   TEST ONLY
+========================================================= */
+
+window.setUserPlan =
+function(plan){
+
+    plan =
+        String(plan)
+            .toLowerCase()
+            .trim();
+
+
+    if(
+        plan !== "vip" &&
+        plan !== "free"
+    ){
+
+        plan =
+            "free";
+
+    }
+
+
+    window.currentUserPlan =
+        plan;
+
+
+    updatePlanUI(
+        plan
+    );
+
+
+    showToast(
+
+        plan === "vip"
+
+        ? "👑 VIP Account"
+
+        : "🆓 Free Account"
+
+    );
+
+};
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+if(timeflowAuth){
+
+    onAuthStateChanged(
+
+        timeflowAuth,
+
+        function(user){
+
+            console.log(
+                "🔥 Auth State:",
+                user
+                ? user.email
+                : "Signed Out"
+            );
+
+
+            if(user){
+
+                window.currentFirebaseUser =
+                    user;
+
+
+                /*
+                   လောလောဆယ် FREE
+                   Database VIP system ကို
+                   နောက် P4-D မှာ ချိတ်မယ်
+                */
+
+                window.currentUserPlan =
+                    "free";
+
+
+                updateAccountUI(
+                    user
+                );
+
+
+                updatePlanUI(
+                    "free"
+                );
+
+            }
+            else{
+
+                window.currentFirebaseUser =
+                    null;
+
+
+                window.currentUserPlan =
+                    "free";
+
+
+                updateAccountUI(
+                    null
+                );
+
+
+                updatePlanUI(
+                    "free"
+                );
+
+            }
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   EXPOSE FIREBASE
+========================================================= */
+
+window.timeflowApp =
+    timeflowApp;
+
+window.timeflowAuth =
+    timeflowAuth;
+
+window.timeflowGoogleProvider =
+    timeflowProvider;
+
+
+console.log(
+    "🔥 TIMEFLOW P4-C READY"
+);
+
+</script>
+
+<!-- =======================================================
+     P4-C END
+======================================================= -->
