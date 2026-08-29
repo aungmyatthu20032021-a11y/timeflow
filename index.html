@@ -1972,7 +1972,7 @@ function(event){
 
         day:
             document.getElementById(
-              Avatarold         ).value,
+      nWithPopuptarold         ).value,
 
         start:
             document.getElementById(
@@ -2573,10 +2573,8 @@ document.addEventListener(
 renderTimetable();
 
 </script>
-
 <!-- =======================================================
-     TIMEFLOW P4-B
-     👑 VIP CUSTOM TIMETABLE
+     P4-B : VIP CUSTOM TIMETABLE
 ======================================================= -->
 
 <style>
@@ -2585,359 +2583,231 @@ renderTimetable();
    VIP TIMETABLE
 ========================================================= */
 
-.vip-timetable-page{
-    padding-bottom:20px;
-}
-
-.vip-lock{
-    background:
-        linear-gradient(
-            145deg,
-            #171b24,
-            #0f131a
-        );
-
-    border:1px solid rgba(245,196,81,.15);
-
-    border-radius:22px;
-
-    padding:25px 18px;
-
-    text-align:center;
-
-    margin-top:15px;
-}
-
-.vip-lock-icon{
-    font-size:42px;
-
-    margin-bottom:12px;
-}
-
-.vip-lock h3{
-    font-size:18px;
-
-    margin-bottom:8px;
-}
-
-.vip-lock p{
-    color:var(--muted);
-
-    font-size:11px;
-
-    line-height:1.6;
-
-    margin-bottom:18px;
-}
-
-.vip-upgrade-btn{
-    border:0;
-
-    border-radius:13px;
-
-    padding:13px 22px;
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--gold),
-            var(--gold2)
-        );
-
-    color:#111;
-
-    font-weight:900;
-
-    cursor:pointer;
-}
-
-
-/* =========================================================
-   GRID SETUP
-========================================================= */
-
 .vip-settings-card{
-    background:var(--card);
-
+    background:#0d121a;
     border:1px solid var(--border);
-
-    border-radius:20px;
-
-    padding:16px;
-
-    margin-top:15px;
+    border-radius:16px;
+    padding:15px;
+    margin-bottom:15px;
 }
 
 .vip-settings-card h3{
-    font-size:15px;
-
-    margin-bottom:15px;
+    margin:0 0 14px;
+    color:var(--gold);
 }
 
 .vip-grid-inputs{
     display:grid;
-
     grid-template-columns:1fr 1fr;
-
     gap:10px;
 }
 
+.vip-input-group{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
 .vip-input-group label{
-    display:block;
-
-    color:var(--muted);
-
     font-size:9px;
-
-    margin-bottom:6px;
+    color:var(--muted);
+    font-weight:800;
 }
 
 .vip-input-group input{
     width:100%;
-
-    padding:12px;
-
-    border-radius:11px;
-
+    box-sizing:border-box;
+    padding:11px;
+    border-radius:10px;
     border:1px solid var(--border);
-
-    background:#090c11;
-
-    color:white;
-
+    background:#080c12;
+    color:#fff;
     outline:none;
 }
 
 .vip-create-grid-btn{
     width:100%;
-
     margin-top:12px;
-
-    padding:13px;
-
+    padding:12px;
     border:0;
-
     border-radius:12px;
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--gold),
-            var(--gold2)
-        );
-
+    background:var(--gold);
     color:#111;
-
     font-weight:900;
-
     cursor:pointer;
 }
 
+.vip-grid-toolbar{
+    display:flex;
+    gap:8px;
+    margin-bottom:12px;
+    overflow-x:auto;
+}
 
-/* =========================================================
-   CUSTOM GRID
-========================================================= */
+.vip-tool-btn{
+    flex:1;
+    min-width:100px;
+    padding:10px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:#111720;
+    color:#fff;
+    font-size:11px;
+    font-weight:700;
+    cursor:pointer;
+}
 
 .vip-grid-wrapper{
-    margin-top:15px;
-
-    background:#0c1016;
-
-    border:1px solid var(--border);
-
-    border-radius:20px;
-
+    width:100%;
     overflow:auto;
-
+    border:1px solid var(--border);
+    border-radius:14px;
+    background:#080c12;
     -webkit-overflow-scrolling:touch;
 }
 
 .vip-grid{
     display:grid;
-
-    gap:1px;
-
-    min-width:max-content;
-
-    background:#252b35;
+    width:max-content;
+    min-width:100%;
 }
 
 .vip-cell{
     min-width:105px;
-
-    min-height:80px;
-
-    background:#11161f;
-
-    padding:9px;
-
-    position:relative;
-
-    cursor:pointer;
-
-    transition:.2s;
-}
-
-.vip-cell:hover{
-    background:#171d27;
+    min-height:78px;
+    box-sizing:border-box;
+    border-right:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    padding:8px;
+    color:#fff;
 }
 
 .vip-header-cell{
-    background:#1b202a;
-
-    min-height:45px;
-
+    min-height:48px;
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
-    text-align:center;
-
+    background:#121923;
     color:var(--gold);
-
     font-size:10px;
-
     font-weight:900;
-
+    text-align:center;
     cursor:pointer;
+    position:sticky;
+    top:0;
+    z-index:3;
 }
 
 .vip-time-cell{
-    background:#171c25;
-
-    color:var(--gold);
-
-    font-size:10px;
-
-    font-weight:900;
-
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
-    text-align:center;
+    background:#0e141c;
+    color:#bfc7d4;
+    font-size:10px;
+    font-weight:800;
+    cursor:pointer;
+    position:sticky;
+    left:0;
+    z-index:2;
 }
 
 .vip-task-cell{
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:flex-start;
-
-    gap:5px;
+    background:#0a0f16;
+    cursor:pointer;
+    transition:.15s;
 }
 
-.vip-cell-title{
-    font-size:11px;
-
-    font-weight:900;
-
-    color:white;
-
-    line-height:1.3;
-}
-
-.vip-cell-category{
-    font-size:8px;
-
-    color:var(--muted);
-}
-
-.vip-cell-status{
-    margin-top:auto;
-
-    font-size:8px;
-
-    color:var(--gold);
+.vip-task-cell:hover{
+    background:#111a25;
 }
 
 .vip-empty-cell{
-    color:#555d6b;
-
-    font-size:18px;
-
-    text-align:center;
-}
-
-
-/* =========================================================
-   GRID TOOLBAR
-========================================================= */
-
-.vip-grid-toolbar{
+    height:100%;
+    min-height:60px;
     display:flex;
-
-    gap:7px;
-
-    margin-top:12px;
-
-    overflow-x:auto;
-
-    scrollbar-width:none;
+    align-items:center;
+    justify-content:center;
+    color:#4e5a69;
+    font-size:22px;
 }
 
-.vip-grid-toolbar::-webkit-scrollbar{
-    display:none;
+.vip-cell-title{
+    color:#fff;
+    font-size:11px;
+    font-weight:900;
+    line-height:1.35;
+    word-break:break-word;
 }
 
-.vip-tool-btn{
-    flex:0 0 auto;
+.vip-cell-category{
+    margin-top:5px;
+    color:var(--gold);
+    font-size:8px;
+    font-weight:800;
+}
 
-    padding:10px 13px;
+.vip-cell-status{
+    margin-top:5px;
+    color:#7f8a99;
+    font-size:8px;
+}
 
+.vip-lock{
+    padding:30px 18px;
+    text-align:center;
+    background:#0d121a;
     border:1px solid var(--border);
+    border-radius:16px;
+}
 
-    border-radius:11px;
+.vip-lock-icon{
+    font-size:42px;
+    margin-bottom:10px;
+}
 
-    background:#171c25;
+.vip-lock h3{
+    margin:0 0 8px;
+    color:var(--gold);
+}
 
-    color:white;
+.vip-lock p{
+    color:var(--muted);
+    font-size:11px;
+    line-height:1.7;
+}
 
-    font-size:10px;
-
+.vip-upgrade-btn{
+    margin-top:10px;
+    padding:12px 20px;
+    border:0;
+    border-radius:12px;
+    background:var(--gold);
+    color:#111;
+    font-weight:900;
     cursor:pointer;
 }
 
-.vip-tool-btn.gold{
-    background:
-        linear-gradient(
-            135deg,
-            var(--gold),
-            var(--gold2)
-        );
-
-    color:#111;
-
-    border:0;
-
+.vip-title-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    padding:5px 9px;
+    border-radius:20px;
+    background:rgba(245,196,81,.1);
+    color:var(--gold);
+    font-size:9px;
     font-weight:900;
 }
 
-
-/* =========================================================
-   CELL MODAL
-========================================================= */
-
 .vip-cell-info{
     background:#0a0e14;
-
     border:1px solid var(--border);
-
     border-radius:12px;
-
     padding:12px;
-
     margin-bottom:15px;
-
     font-size:10px;
-
     color:var(--muted);
-
     line-height:1.7;
 }
 
@@ -2947,63 +2817,40 @@ renderTimetable();
 
 .vip-delete-cell-btn{
     width:100%;
-
     padding:12px;
-
     margin-top:9px;
-
     border:0;
-
     border-radius:12px;
-
     background:#2a2024;
-
     color:#ff6262;
-
     font-weight:bold;
-
     cursor:pointer;
 }
 
+@media(max-width:430px){
 
-/* =========================================================
-   VIP BADGE
-========================================================= */
+    .vip-grid-inputs{
+        grid-template-columns:1fr;
+    }
 
-.vip-title-badge{
-    display:inline-flex;
+    .vip-cell{
+        min-width:100px;
+        min-height:78px;
+    }
 
-    align-items:center;
-
-    gap:5px;
-
-    padding:5px 9px;
-
-    border-radius:20px;
-
-    background:
-        rgba(245,196,81,.1);
-
-    color:var(--gold);
-
-    font-size:9px;
-
-    font-weight:900;
 }
 
 
 /* =========================================================
-   RESPONSIVE
+   MODAL
 ========================================================= */
 
-@media(max-width:430px){
+#vipCellModal{
+    display:none;
+}
 
-    .vip-cell{
-        min-width:100px;
-
-        min-height:78px;
-    }
-
+#vipCellModal.active{
+    display:flex;
 }
 
 </style>
@@ -3013,9 +2860,7 @@ renderTimetable();
      VIP TIMETABLE PAGE
 ======================================================= -->
 
-<section
-    class="page"
-    id="vipTimetable">
+<section class="page" id="vipTimetable">
 
     <div class="section-title">
 
@@ -3038,7 +2883,9 @@ renderTimetable();
     </div>
 
 
-    <!-- VIP LOCK -->
+    <!-- =====================================================
+         VIP LOCK
+    ====================================================== -->
 
     <div
         class="vip-lock"
@@ -3056,7 +2903,7 @@ renderTimetable();
             Custom Timetable ကို
             VIP User များအတွက်သာ
             အသုံးပြုနိုင်ပါတယ်။
-            <br>
+            <br><br>
             Grid size၊ Day name၊ Time label
             နဲ့ Cell တစ်ခုချင်းစီကို
             စိတ်ကြိုက်ပြင်နိုင်ပါတယ်။
@@ -3073,7 +2920,9 @@ renderTimetable();
     </div>
 
 
-    <!-- VIP CONTENT -->
+    <!-- =====================================================
+         VIP CONTENT
+    ====================================================== -->
 
     <div
         id="vipTimetableContent"
@@ -3084,7 +2933,6 @@ renderTimetable();
             <h3>
                 ⚙️ Grid Setup
             </h3>
-
 
             <div class="vip-grid-inputs">
 
@@ -3133,8 +2981,7 @@ renderTimetable();
         </div>
 
 
-        <div
-            class="vip-grid-toolbar">
+        <div class="vip-grid-toolbar">
 
             <button
                 class="vip-tool-btn"
@@ -3169,10 +3016,12 @@ renderTimetable();
             class="vip-grid-wrapper"
             id="vipGridWrapper">
 
-            <div
-                class="empty">
+            <div class="empty">
 
                 👑 Custom Timetable
+
+                <br><br>
+
                 Grid မရှိသေးပါ။
 
                 <br><br>
@@ -3235,7 +3084,6 @@ renderTimetable();
             id="vipCellForm"
             onsubmit="saveVipCellTask(event)">
 
-
             <input
                 type="hidden"
                 id="vipCellIndex">
@@ -3292,8 +3140,7 @@ renderTimetable();
 
                 <textarea
                     id="vipCellNote"
-                    placeholder="မှတ်ချက်...">
-                </textarea>
+                    placeholder="မှတ်ချက်..."></textarea>
 
             </div>
 
@@ -3388,15 +3235,6 @@ function createDefaultVipTimes(){
 
 function isVipUser(){
 
-    /*
-       Firebase P4-F မှာ
-       window.currentUserPlan
-       ကို "vip" / "free"
-       အဖြစ်ချိတ်ပေးမယ်။
-
-       အခု test အတွက် false ထားထားတယ်။
-    */
-
     return (
         window.currentUserPlan === "vip"
     );
@@ -3404,7 +3242,8 @@ function isVipUser(){
 }
 
 
-function updateVipAccess(){
+window.updateVipAccess =
+function(){
 
     const lock =
         document.getElementById(
@@ -3434,7 +3273,8 @@ function updateVipAccess(){
 
         renderVipGrid();
 
-    }else{
+    }
+    else{
 
         lock.style.display =
             "block";
@@ -3444,7 +3284,7 @@ function updateVipAccess(){
 
     }
 
-}
+};
 
 
 /* =========================================================
@@ -3469,7 +3309,8 @@ function(){
         parseInt(
             document.getElementById(
                 "vipColumns"
-            ).value
+            ).value,
+            10
         );
 
 
@@ -3477,15 +3318,18 @@ function(){
         parseInt(
             document.getElementById(
                 "vipRows"
-            ).value
+            ).value,
+            10
         );
 
 
     if(
-        !columns ||
-        !rows ||
+        !Number.isInteger(columns) ||
+        !Number.isInteger(rows) ||
         columns < 1 ||
-        rows < 1
+        rows < 1 ||
+        columns > 20 ||
+        rows > 50
     ){
 
         showToast(
@@ -3503,10 +3347,6 @@ function(){
     vipTimetable.rows =
         rows;
 
-
-    /*
-       Default Day Names
-    */
 
     const defaultDays = [
 
@@ -3526,10 +3366,14 @@ function(){
             {
                 length:columns
             },
-            (_,i) =>
-                defaultDays[i]
-                ||
-                `Day ${i + 1}`
+            function(_,i){
+
+                return (
+                    defaultDays[i] ||
+                    `Day ${i + 1}`
+                );
+
+            }
         );
 
 
@@ -3560,7 +3404,6 @@ function renderVipGrid(){
             "vipGridWrapper"
         );
 
-
     const info =
         document.getElementById(
             "vipGridInfo"
@@ -3584,8 +3427,12 @@ function renderVipGrid(){
     }
 
 
-    info.innerText =
-        `${vipTimetable.columns} × ${vipTimetable.rows}`;
+    if(info){
+
+        info.innerText =
+            `${vipTimetable.columns} × ${vipTimetable.rows}`;
+
+    }
 
 
     const grid =
@@ -3602,9 +3449,9 @@ function renderVipGrid(){
         `110px repeat(${vipTimetable.columns}, 105px)`;
 
 
-    /*
-       Corner cell
-    */
+    /* =====================================================
+       CORNER
+    ====================================================== */
 
     const corner =
         document.createElement(
@@ -3617,12 +3464,14 @@ function renderVipGrid(){
     corner.innerText =
         "TIME";
 
-    grid.appendChild(corner);
+    grid.appendChild(
+        corner
+    );
 
 
-    /*
-       Day Headers
-    */
+    /* =====================================================
+       DAY HEADERS
+    ====================================================== */
 
     for(
         let col = 0;
@@ -3639,27 +3488,30 @@ function renderVipGrid(){
             "vip-cell vip-header-cell";
 
         header.innerText =
-            vipTimetable.days[col]
-            ||
+            vipTimetable.days[col] ||
             `Day ${col + 1}`;
 
 
         header.onclick =
             function(){
 
-                renameSingleVipDay(col);
+                renameSingleVipDay(
+                    col
+                );
 
             };
 
 
-        grid.appendChild(header);
+        grid.appendChild(
+            header
+        );
 
     }
 
 
-    /*
-       Rows + Cells
-    */
+    /* =====================================================
+       ROWS
+    ====================================================== */
 
     for(
         let row = 0;
@@ -3676,21 +3528,28 @@ function renderVipGrid(){
             "vip-cell vip-time-cell";
 
         timeCell.innerText =
-            vipTimetable.times[row]
-            ||
+            vipTimetable.times[row] ||
             `${row}:00`;
 
 
         timeCell.onclick =
             function(){
 
-                renameSingleVipTime(row);
+                renameSingleVipTime(
+                    row
+                );
 
             };
 
 
-        grid.appendChild(timeCell);
+        grid.appendChild(
+            timeCell
+        );
 
+
+        /* =================================================
+           TASK CELLS
+        ================================================== */
 
         for(
             let col = 0;
@@ -3702,10 +3561,13 @@ function renderVipGrid(){
                 `${row}_${col}`;
 
 
+            /* FIXED: createElement("div") */
+
             const cell =
                 document.createElement(
-           ePlanUIdiv"
+                    "div"
                 );
+
 
             cell.className =
                 "vip-cell vip-task-cell";
@@ -3722,44 +3584,34 @@ function renderVipGrid(){
                 cell.innerHTML = `
 
                     <div class="vip-cell-title">
-
                         ${escapeHtml(
-                            data.task
+                            data.task || ""
                         )}
-
                     </div>
 
-                    <div
-                        class="vip-cell-category">
-
+                    <div class="vip-cell-category">
                         ${escapeHtml(
-                            data.category
-                            || "General"
+                            data.category ||
+                            "General"
                         )}
-
                     </div>
 
-                    <div
-                        class="vip-cell-status">
-
-                        ${
-                            data.status
-                            || "Waiting"
-                        }
-
+                    <div class="vip-cell-status">
+                        ${escapeHtml(
+                            data.status ||
+                            "Waiting"
+                        )}
                     </div>
 
                 `;
 
-            }else{
+            }
+            else{
 
                 cell.innerHTML = `
 
-                    <div
-                        class="vip-empty-cell">
-
+                    <div class="vip-empty-cell">
                         +
-
                     </div>
 
                 `;
@@ -3778,7 +3630,9 @@ function renderVipGrid(){
                 };
 
 
-            grid.appendChild(cell);
+            grid.appendChild(
+                cell
+            );
 
         }
 
@@ -3787,13 +3641,15 @@ function renderVipGrid(){
 
     wrapper.innerHTML = "";
 
-    wrapper.appendChild(grid);
+    wrapper.appendChild(
+        grid
+    );
 
 }
 
 
 /* =========================================================
-   OPEN CELL
+   OPEN CELL MODAL
 ========================================================= */
 
 window.openVipCellModal =
@@ -3811,32 +3667,57 @@ function(row,col){
 
 
     currentVipCell = {
-
         row:row,
-
-        col:col,
-
-        index:
-            `${row}_${col}`
-
+        col:col
     };
+
+
+    const index =
+        `${row}_${col}`;
+
+
+    const data =
+        vipTimetable.cells[index] ||
+        {};
 
 
     document.getElementById(
         "vipCellIndex"
     ).value =
-        currentVipCell.index;
+        index;
+
+
+    document.getElementById(
+        "vipCellTaskName"
+    ).value =
+        data.task || "";
+
+
+    document.getElementById(
+        "vipCellCategory"
+    ).value =
+        data.category || "";
+
+
+    document.getElementById(
+        "vipCellLink"
+    ).value =
+        data.link || "";
+
+
+    document.getElementById(
+        "vipCellNote"
+    ).value =
+        data.note || "";
 
 
     const day =
-        vipTimetable.days[col]
-        ||
+        vipTimetable.days[col] ||
         `Day ${col + 1}`;
 
 
     const time =
-        vipTimetable.times[row]
-        ||
+        vipTimetable.times[row] ||
         `${row}:00`;
 
 
@@ -3859,53 +3740,47 @@ function(row,col){
     `;
 
 
-    const existing =
-        vipTimetable.cells[
-            currentVipCell.index
-        ];
+    const modal =
+        document.getElementById(
+            "vipCellModal"
+        );
 
 
-    document.getElementById(
-        "vipCellTaskName"
-    ).value =
-        existing?.task || "";
+    if(modal){
 
+        modal.classList.add(
+            "active"
+        );
 
-    document.getElementById(
-        "vipCellCategory"
-    ).value =
-        existing?.category || "";
-
-
-    document.getElementById(
-        "vipCellLink"
-    ).value =
-        existing?.link || "";
-
-
-    document.getElementById(
-        "vipCellNote"
-    ).value =
-        existing?.note || "";
-
-
-    document.getElementById(
-        "vipCellModal"
-    ).classList.add("show");
+    }
 
 };
 
 
 /* =========================================================
-   CLOSE CELL
+   CLOSE MODAL
 ========================================================= */
 
 window.closeVipCellModal =
 function(){
 
-    document.getElementById(
-        "vipCellModal"
-    ).classList.remove("show");
+    const modal =
+        document.getElementById(
+            "vipCellModal"
+        );
+
+
+    if(modal){
+
+        modal.classList.remove(
+            "active"
+        );
+
+    }
+
+
+    currentVipCell =
+        null;
 
 };
 
@@ -3920,7 +3795,11 @@ function(event){
     event.preventDefault();
 
 
-    if(!currentVipCell){
+    if(!isVipUser()){
+
+        showToast(
+            "🔒 VIP User Only"
+        );
 
         return;
 
@@ -3928,35 +3807,59 @@ function(event){
 
 
     const index =
-        currentVipCell.index;
+        document.getElementById(
+            "vipCellIndex"
+        ).value;
+
+
+    const task =
+        document.getElementById(
+            "vipCellTaskName"
+        ).value.trim();
+
+
+    const category =
+        document.getElementById(
+            "vipCellCategory"
+        ).value.trim();
+
+
+    const link =
+        document.getElementById(
+            "vipCellLink"
+        ).value.trim();
+
+
+    const note =
+        document.getElementById(
+            "vipCellNote"
+        ).value.trim();
+
+
+    if(!index || !task){
+
+        showToast(
+            "⚠️ Task Name ထည့်ပါ"
+        );
+
+        return;
+
+    }
 
 
     vipTimetable.cells[index] = {
 
-        task:
-            document.getElementById(
-                "vipCellTaskName"
-            ).value.trim(),
+        task:task,
 
         category:
-            document.getElementById(
-                "vipCellCategory"
-            ).value.trim()
-            ||
+            category ||
             "General",
 
-        link:
-            document.getElementById(
-                "vipCellLink"
-            ).value.trim(),
+        link:link,
 
-        note:
-            document.getElementById(
-                "vipCellNote"
-            ).value.trim(),
+        note:note,
 
-        status:
-            "Waiting"
+        status:"Waiting"
 
     };
 
@@ -3968,7 +3871,7 @@ function(event){
 
 
     showToast(
-        "👑 Cell Task သိမ်းပြီးပါပြီ!"
+        "💾 Cell Task သိမ်းပြီးပါပြီ"
     );
 
 };
@@ -3981,7 +3884,7 @@ function(event){
 window.deleteVipCellTask =
 function(){
 
-    if(!currentVipCell){
+    if(!isVipUser()){
 
         return;
 
@@ -3989,33 +3892,76 @@ function(){
 
 
     const index =
-        currentVipCell.index;
+        document.getElementById(
+            "vipCellIndex"
+        ).value;
 
 
-    if(
-        vipTimetable.cells[index]
-    ){
+    if(index){
 
-        delete
-            vipTimetable.cells[index];
+        delete vipTimetable.cells[
+            index
+        ];
 
     }
 
 
     renderVipGrid();
 
+
     closeVipCellModal();
 
 
     showToast(
-        "🗑️ Cell Task ဖျက်ပြီးပါပြီ"
+        "🗑️ Task ဖျက်ပြီးပါပြီ"
     );
 
 };
 
 
 /* =========================================================
-   RENAME DAYS
+   RENAME SINGLE DAY
+========================================================= */
+
+window.renameSingleVipDay =
+function(col){
+
+    if(!isVipUser()){
+
+        return;
+
+    }
+
+
+    const oldName =
+        vipTimetable.days[col] ||
+        `Day ${col + 1}`;
+
+
+    const newName =
+        prompt(
+            "Day Name အသစ်ထည့်ပါ",
+            oldName
+        );
+
+
+    if(
+        newName !== null &&
+        newName.trim()
+    ){
+
+        vipTimetable.days[col] =
+            newName.trim();
+
+        renderVipGrid();
+
+    }
+
+};
+
+
+/* =========================================================
+   RENAME ALL DAYS
 ========================================================= */
 
 window.renameVipDays =
@@ -4033,36 +3979,34 @@ function(){
 
 
     for(
-        let i = 0;
-        i < vipTimetable.columns;
-        i++
+        let col = 0;
+        col < vipTimetable.columns;
+        col++
     ){
 
-        const current =
-            vipTimetable.days[i]
-            ||
-            `Day ${i + 1}`;
+        const oldName =
+            vipTimetable.days[col] ||
+            `Day ${col + 1}`;
 
 
-        const value =
+        const newName =
             prompt(
-                `Day ${i + 1} Name`,
-                current
+                `Day ${col + 1} Name`,
+                oldName
             );
 
 
-        if(value !== null){
+        if(newName === null){
 
-            const clean =
-                value.trim();
+            break;
+
+        }
 
 
-            if(clean){
+        if(newName.trim()){
 
-                vipTimetable.days[i] =
-                    clean;
-
-            }
+            vipTimetable.days[col] =
+                newName.trim();
 
         }
 
@@ -4071,48 +4015,44 @@ function(){
 
     renderVipGrid();
 
-
-    showToast(
-        "✏️ Day Names ပြင်ပြီးပါပြီ"
-    );
-
 };
 
 
 /* =========================================================
-   RENAME SINGLE DAY
+   RENAME SINGLE TIME
 ========================================================= */
 
-window.renameSingleVipDay =
-function(index){
+window.renameSingleVipTime =
+function(row){
 
-    const current =
-        vipTimetable.days[index]
-        ||
-        `Day ${index + 1}`;
+    if(!isVipUser()){
+
+        return;
+
+    }
 
 
-    const value =
+    const oldTime =
+        vipTimetable.times[row] ||
+        `${row}:00`;
+
+
+    const newTime =
         prompt(
-            "Day Name",
-            current
+            "Time Label အသစ်ထည့်ပါ",
+            oldTime
         );
 
 
-    if(value !== null){
+    if(
+        newTime !== null &&
+        newTime.trim()
+    ){
 
-        const clean =
-            value.trim();
+        vipTimetable.times[row] =
+            newTime.trim();
 
-
-        if(clean){
-
-            vipTimetable.days[index] =
-                clean;
-
-            renderVipGrid();
-
-        }
+        renderVipGrid();
 
     }
 
@@ -4120,7 +4060,7 @@ function(index){
 
 
 /* =========================================================
-   RENAME TIMES
+   RENAME ALL TIMES
 ========================================================= */
 
 window.renameVipTimes =
@@ -4138,36 +4078,34 @@ function(){
 
 
     for(
-        let i = 0;
-        i < vipTimetable.rows;
-        i++
+        let row = 0;
+        row < vipTimetable.rows;
+        row++
     ){
 
-        const current =
-            vipTimetable.times[i]
-            ||
-            `${i}:00`;
+        const oldTime =
+            vipTimetable.times[row] ||
+            `${row}:00`;
 
 
-        const value =
+        const newTime =
             prompt(
-                `Time ${i + 1}`,
-                current
+                `Time ${row + 1}`,
+                oldTime
             );
 
 
-        if(value !== null){
+        if(newTime === null){
 
-            const clean =
-                value.trim();
+            break;
+
+        }
 
 
-            if(clean){
+        if(newTime.trim()){
 
-                vipTimetable.times[i] =
-                    clean;
-
-            }
+            vipTimetable.times[row] =
+                newTime.trim();
 
         }
 
@@ -4175,51 +4113,6 @@ function(){
 
 
     renderVipGrid();
-
-
-    showToast(
-        "🕐 Time Labels ပြင်ပြီးပါပြီ"
-    );
-
-};
-
-
-/* =========================================================
-   RENAME SINGLE TIME
-========================================================= */
-
-window.renameSingleVipTime =
-function(index){
-
-    const current =
-        vipTimetable.times[index]
-        ||
-        `${index}:00`;
-
-
-    const value =
-        prompt(
-            "Time Label",
-            current
-        );
-
-
-    if(value !== null){
-
-        const clean =
-            value.trim();
-
-
-        if(clean){
-
-            vipTimetable.times[index] =
-                clean;
-
-            renderVipGrid();
-
-        }
-
-    }
 
 };
 
@@ -4242,13 +4135,13 @@ function(){
     }
 
 
-    const confirmed =
+    const confirmClear =
         confirm(
-            "Custom Timetable ထဲက Task အားလုံးကို ဖျက်မှာသေချာလား?"
+            "⚠️ Custom Timetable အားလုံးကို ဖျက်မှာ သေချာပါသလား?"
         );
 
 
-    if(!confirmed){
+    if(!confirmClear){
 
         return;
 
@@ -4262,971 +4155,40 @@ function(){
 
 
     showToast(
-        "🗑️ Grid Tasks အားလုံးဖျက်ပြီးပါပြီ"
+        "🗑️ Timetable Clear ပြီးပါပြီ"
     );
 
 };
 
 
 /* =========================================================
-   VIP NAV
+   INITIALIZE
 ========================================================= */
 
-function addVipNavButton(){
+(function(){
 
-    const nav =
-        document.querySelector(
-            ".bottom-nav"
-        );
+    createDefaultVipTimes();
 
-
-    if(!nav){
-
-        return;
-
-    }
-
-
-    if(
-        document.getElementById(
-            "vipNavButton"
-        )
-    ){
-
-        return;
-
-    }
-
-
-    const button =
-        document.createElement(
-            "button"
-        );
-
-
-    button.className =
-        "nav";
-
-
-    button.id =
-        "vipNavButton";
-
-
-    button.onclick =
+    setTimeout(
         function(){
 
-            switchPage(
-                "vipTimetable",
-                button
-            );
+            if(
+                typeof updateVipAccess ===
+                "function"
+            ){
 
-            updateVipAccess();
+                updateVipAccess();
 
-        };
+            }
 
+        },
+        100
+    );
 
-    button.innerHTML = `
-
-        <div>
-            👑
-        </div>
-
-        VIP Table
-
-    `;
-
-
-    nav.appendChild(button);
-
-}
-
-
-/* =========================================================
-   INITIAL VIP SETUP
-========================================================= */
-
-window.currentUserPlan =
-    window.currentUserPlan || "free";
-
-
-createDefaultVipTimes();
-
-addVipNavButton();
-
-updateVipAccess();
-
-
-/*
-=========================================================
-IMPORTANT P4-F CONNECTION
-=====rtPermission=======================================
-
-Google/Firebase Login ပြီးတဲ့အခါ
-ဒီလိုပဲ သတ်မှတ်ပေးရမယ် -
-
-window.currentUserPlan = "free";
-
-or
-
-window.currentUserPlan = "vip";
-
-ပြီးရင် -
-
-updateVipAccess();
-
-=========================================================
-*/
+})();
 
 </script>
 
 <!-- =======================================================
      P4-B END
-======================================================= -->
-<!-- =======================================================
-     TIMEFLOW P4-C
-     🔐 FIREBASE + GOOGLE LOGIN + ACCOUNT + FREE/VIP
-======================================================= -->
-
-<script type="module">
-
-/* =========================================================
-   FIREBASE SDK
-========================================================= */
-
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-    getAuth,
-    GoogleAuthProvider,
-    signInWithPopup,
-    signOut,
-    onAuthStateChanged
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-
-/* =========================================================
-   FIREBASE CONFIG
-========================================================= */
-
-const firebaseConfig = {
-
-    apiKey:
-        "AIzaSyCw72aOGSLvdf3q221gF0yIM63RiSqpkcJ",
-
-    authDomain:
-        "my-productivity-7ae74.firebaseapp.com",
-
-    projectId:
-        "my-productivity-7ae74",
-
-    storageBucket:
-        "my-productivity-7ae74.firebasestorage.app",
-
-    messagingSenderId:
-        "955389154479",
-
-    appId:
-        "1:955389154479:web:e2b46c690d7e9b1610305a",
-
-    measurementId:
-        "G-FYVSE71BM1"
-
-};
-
-
-/* =========================================================
-   FIREBASE INITIALIZE
-========================================================= */
-
-let timeflowApp;
-let timeflowAuth;
-let timeflowProvider;
-
-
-/* =========================================================
-   START FIREBASE
-========================================================= */
-
-try {
-
-    timeflowApp =
-        initializeApp(firebaseConfig);
-
-    timeflowAuth =
-        getAuth(timeflowApp);
-
-    timeflowProvider =
-        new GoogleAuthProvider();
-
-
-    /*
-       Login တိုင်း Google Account
-       ရွေးချယ်ခွင့်ပြမယ်
-    */
-
-    timeflowProvider.setCustomParameters({
-
-        prompt:
-            "select_account"
-
-    });
-
-
-    console.log(
-        "✅ Firebase initialized"
-    );
-
-
-}
-catch(error){
-
-    console.error(
-        "❌ Firebase Initialize Error:",
-        error
-    );
-
-}
-
-
-/* =========================================================
-   DEFAULT USER PLAN
-========================================================= */
-
-window.currentUserPlan =
-    window.currentUserPlan || "free";
-
-
-/* =========================================================
-   GOOGLE LOGIN
-========================================================= */
-
-window.googleLogin =
-async function(){
-
-    console.log(
-        "🔐 Google Login started"
-    );
-
-
-    const status =
-        document.getElementById(
-            "loginStatus"
-        );
-
-
-    if(status){
-
-        status.innerText =
-            "🔐 Google Login လုပ်နေပါတယ်...";
-
-    }
-
-
-    if(!timeflowAuth){
-
-        const message =
-            "❌ Firebase Auth မတက်သေးပါ။";
-
-        console.error(message);
-
-        if(status){
-
-            status.innerText =
-                message;
-
-        }
-
-        showToast(message);
-
-        return;
-
-    }
-
-
-    try{
-
-        const result =
-            await signInWithPopup(
-                timeflowAuth,
-                timeflowProvider
-            );
-
-
-        const user =
-            result.user;
-
-
-        console.log(
-            "✅ Google Login Success:",
-            user.email
-        );
-
-
-        /*
-           အခု P4-C မှာ default FREE
-
-           P4-F မှာ Firebase Database
-           ထဲက VIP / FREE ကို load လုပ်မယ်
-        */
-
-        window.currentUserPlan =
-            window.currentUserPlan || "free";
-
-
-        updateAccountUI(
-            user
-        );
-
-
-        updatePlanUI(
-            window.currentUserPlan
-        );
-
-
-        if(
-            typeof updateVipAccess ===
-            "function"
-        ){
-
-            updateVipAccess();
-
-        }
-
-
-        showToast(
-            "✅ Google Login အောင်မြင်ပါပြီ!"
-        );
-
-
-    }
-    catch(error){
-
-        console.error(
-            "❌ Login Error:",
-            error
-        );
-
-
-        let message =
-            "❌ Google Login မအောင်မြင်ပါ။";
-
-
-        switch(error.code){
-
-            case "auth/api-key-not-valid":
-
-                message =
-                    "❌ Firebase API Key မမှန်ပါ။ Firebase Console ထဲက Web App config ကို ပြန်စစ်ပါ။";
-
-                break;
-
-
-            case "auth/unauthorized-domain":
-
-                message =
-                    "⚠️ GitHub Pages Domain ကို Firebase Authorized Domains ထဲ ထည့်ထားတာသေချာစစ်ပါ။";
-
-                break;
-
-
-            case "auth/popup-blocked":
-
-                message =
-                    "⚠️ Browser က Google Login popup ကို ပိတ်ထားပါတယ်။";
-
-                break;
-
-
-            case "auth/popup-closed-by-user":
-
-                message =
-                    "⚠️ Google Login window ကို ပိတ်လိုက်ပါတယ်။";
-
-                break;
-
-
-            case "auth/cancelled-popup-request":
-
-                message =
-                    "⚠️ Login request တစ်ခုရှိပြီးသားပါ။";
-
-                break;
-
-
-            case "auth/network-request-failed":
-
-                message =
-                    "⚠️ Internet connection ပြဿနာရှိပါတယ်။";
-
-                break;
-
-
-            case "auth/operation-not-allowed":
-
-                message =
-                    "⚠️ Firebase Authentication ထဲမှာ Google Sign-in ကို Enable မလုပ်ရသေးပါ။";
-
-                break;
-
-
-            case "auth/internal-error":
-
-                message =
-                    "❌ Firebase internal error ဖြစ်နေပါတယ်။";
-
-                break;
-
-
-            default:
-
-                message =
-                    "❌ Login Error: " +
-                    (
-                        error.message ||
-                        error.code ||
-                        "Unknown Error"
-                    );
-
-                break;
-
-        }
-
-
-        if(status){
-
-            status.innerText =
-                message;
-
-        }
-
-
-        showToast(
-            message
-        );
-
-    }
-
-};
-
-
-/* =========================================================
-   GOOGLE LOGOUT
-========================================================= */
-
-window.googleLogout =
-async function(){
-
-    if(!timeflowAuth){
-
-        showToast(
-            "❌ Firebase Auth မတက်သေးပါ"
-        );
-
-        return;
-
-    }
-
-
-    try{
-
-        await signOut(
-            timeflowAuth
-        );
-
-
-        window.currentUserPlan =
-            "free";
-
-
-        updateAccountUI(
-            null
-        );
-
-
-        updatePlanUI(
-            "free"
-        );
-
-
-        if(
-            typeof updateVipAccess ===
-            "function"
-        ){
-
-            updateVipAccess();
-
-        }
-
-
-        showToast(
-            "🚪 Google Account Sign Out လုပ်ပြီးပါပြီ"
-        );
-
-
-    }
-    catch(error){
-
-        console.error(
-            "❌ Logout Error:",
-            error
-        );
-
-
-        showToast(
-            "❌ Sign Out မအောင်မြင်ပါ"
-        );
-
-    }
-
-};
-
-
-/* =========================================================
-   ACCOUNT UI
-========================================================= */
-
-function updateAccountUI(user){
-
-    const name =
-        document.getElementById(
-            "accountName"
-        );
-
-
-    const email =
-        document.getElementById(
-            "accountEmail"
-        );
-
-
-    const avatar =
-        document.getElementById(
-            "accountAvatar"
-        );
-
-
-    const accountButton =
-        document.getElementById(
-            "accountButton"
-        );
-
-
-    const loginBtn =
-        document.getElementById(
-            "googleLoginBtn"
-        );
-
-
-    const logoutBtn =
-        document.getElementById(
-            "logoutBtn"
-        );
-
-
-    const status =
-        document.getElementById(
-            "loginStatus"
-        );
-
-
-    /* =====================================================
-       NOT LOGGED IN
-    ===================================================== */
-
-    if(!user){
-
-        if(name){
-
-            name.innerText =
-                "Guest User";
-
-        }
-
-
-        if(email){
-
-            email.innerText =
-                "Not signed in";
-
-        }
-
-
-        if(avatar){
-
-            avatar.innerHTML =
-                "👤";
-
-        }
-
-
-        if(accountButton){
-
-            accountButton.innerHTML =
-                "👤";
-
-        }
-
-
-        if(loginBtn){
-
-            loginBtn.style.display =
-                "block";
-
-        }
-
-
-        if(logoutBtn){
-
-            logoutBtn.style.display =
-                "none";
-
-        }
-
-
-        if(status){
-
-            status.innerText =
-                "Google Account Login";
-
-        }
-
-
-        updatePlanUI(
-            "free"
-        );
-
-
-        return;
-
-    }
-
-
-    /* =====================================================
-       LOGGED IN
-    ===================================================== */
-
-    if(name){
-
-        name.innerText =
-            user.displayName ||
-            "Google User";
-
-    }
-
-
-    if(email){
-
-        email.innerText =
-            user.email ||
-            "No email";
-
-    }
-
-
-    if(
-        avatar &&
-        user.photoURL
-    ){
-
-        avatar.innerHTML = `
-
-            <img
-                src="${escapeHtml(user.photoURL)}"
-                alt="Profile">
-
-        `;
-
-    }
-    else if(avatar){
-
-        avatar.innerHTML =
-            "👤";
-
-    }
-
-
-    if(
-        accountButton &&
-        user.photoURL
-    ){
-
-        accountButton.innerHTML = `
-
-            <img
-                src="${escapeHtml(user.photoURL)}"
-                alt="Profile">
-
-        `;
-
-    }
-    else if(accountButton){
-
-        accountButton.innerHTML =
-            "👤";
-
-    }
-
-
-    if(loginBtn){
-
-        loginBtn.style.display =
-            "none";
-
-    }
-
-
-    if(logoutBtn){
-
-        logoutBtn.style.display =
-            "block";
-
-    }
-
-
-    if(status){
-
-        status.innerText =
-            "✅ Google Account Connected";
-
-    }
-
-
-    updatePlanUI(
-        window.currentUserPlan || "free"
-    );
-
-}
-
-
-/* =========================================================
-   PLAN UI
-========================================================= */
-
-function updatePlanUI(plan){
-
-    const headerPlan =
-        document.getElementById(
-            "headerPlan"
-        );
-
-
-    const accountPlan =
-        document.getElementById(
-            "accountPlan"
-        );
-
-
-    const isVip =
-        plan === "vip";
-
-
-    if(headerPlan){
-
-        headerPlan.className =
-            "plan-badge " +
-            (
-                isVip
-                ? "vip-badge"
-                : "free-badge"
-            );
-
-
-        headerPlan.innerText =
-            isVip
-            ? "👑 VIP"
-            : "🆓 FREE";
-
-    }
-
-
-    if(accountPlan){
-
-        accountPlan.className =
-            "plan-badge " +
-            (
-                isVip
-                ? "vip-badge"
-                : "free-badge"
-            );
-
-
-        accountPlan.innerText =
-            isVip
-            ? "👑 VIP"
-            : "🆓 FREE";
-
-    }
-
-
-    /*
-       P4-B VIP Timetable ကို
-       plan ပြောင်းတာနဲ့ update လုပ်မယ်
-    */
-
-    if(
-        typeof updateVipAccess ===
-        "function"
-    ){
-
-        updateVipAccess();
-
-    }
-
-}
-
-
-/* =========================================================
-   SET USER PLAN
-========================================================= */
-
-window.setUserPlan =
-function(plan){
-
-    plan =
-        String(plan)
-            .toLowerCase()
-            .trim();
-
-
-    if(
-        plan !== "vip" &&
-        plan !== "free"
-    ){
-
-        plan =
-            "free";
-
-    }
-
-
-    window.currentUserPlan =
-        plan;
-
-
-    updatePlanUI(
-        plan
-    );
-
-
-    showToast(
-
-        plan === "vip"
-
-        ? "👑 VIP Account"
-
-        : "🆓 Free Account"
-
-    );
-
-};
-
-
-/* =========================================================
-   AUTH STATE
-========================================================= */
-
-if(timeflowAuth){
-
-    onAuthStateChanged(
-
-        timeflowAuth,
-
-        function(user){
-
-            console.log(
-                "Auth State:",
-                user
-                ? user.email
-                : "Signed Out"
-            );
-
-
-            if(user){
-
-                /*
-                   Login ဝင်ထားတယ်
-                */
-
-                updateAccountUI(
-                    user
-                );
-
-
-                /*
-                   P4-C မှာ default FREE
-                   P4-F မှာ Firebase Database
-                   ကနေ plan load မယ်
-                */
-
-                window.currentUserPlan =
-                    window.currentUserPlan ||
-                    "free";
-
-
-                updatePlanUI(
-                    window.currentUserPlan
-                );
-
-
-            }
-            else{
-
-                /*
-                   Login မဝင်ထားဘူး
-                */
-
-                window.currentUserPlan =
-                    "free";
-
-
-                updateAccountUI(
-                    null
-                );
-
-
-                if(
-                    typeof updateVipAccess ===
-                    "function"
-                ){
-
-                    updateVipAccess();
-
-                }
-
-            }
-
-        }
-
-    );
-
-}
-
-
-/* =========================================================
-   EXPOSE FIREBASE
-========================================================= */
-
-window.timeflowApp =
-    timeflowApp;
-
-
-window.timeflowAuth =
-    timeflowAuth;
-
-
-window.timeflowGoogleProvider =
-    timeflowProvider;
-
-
-console.log(
-    "🔥 TIMEFLOW P4-C READY"
-);
-
-</script>
-
-
-<!-- =======================================================
-     P4-C END
 ======================================================= -->
