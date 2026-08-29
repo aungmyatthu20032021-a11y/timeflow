@@ -7,20 +7,12 @@
 
 <title>TimeFlow</title>
 
-<!-- ======================================================
-     FIREBASE
-====================================================== -->
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
-
 <style>
 
-/* ======================================================
-   RESET
-====================================================== */
+/* =========================================================
+   TIMEFLOW — PART 1
+   BASE UI + APP STRUCTURE
+========================================================= */
 
 *{
     box-sizing:border-box;
@@ -38,6 +30,7 @@
     --muted:#858d9c;
     --green:#4ade80;
     --red:#ff6262;
+    --blue:#60a5fa;
     --border:rgba(255,255,255,.07);
 }
 
@@ -59,10 +52,9 @@ body{
     padding-bottom:95px;
 }
 
-
-/* ======================================================
+/* =========================================================
    HEADER
-====================================================== */
+========================================================= */
 
 .header{
     padding:28px 20px 18px;
@@ -77,6 +69,7 @@ body{
 .logo{
     font-size:22px;
     font-weight:900;
+    letter-spacing:.2px;
 }
 
 .logo span{
@@ -121,17 +114,10 @@ body{
     background:#171c25;
     color:white;
     cursor:pointer;
-    overflow:hidden;
     display:flex;
     align-items:center;
     justify-content:center;
     font-size:18px;
-}
-
-.account-btn img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
 }
 
 .greeting{
@@ -149,10 +135,9 @@ body{
     font-size:26px;
 }
 
-
-/* ======================================================
+/* =========================================================
    PAGE
-====================================================== */
+========================================================= */
 
 .page{
     display:none;
@@ -178,10 +163,9 @@ body{
 
 }
 
-
-/* ======================================================
-   PROGRESS
-====================================================== */
+/* =========================================================
+   PROGRESS CARD
+========================================================= */
 
 .progress-card{
     margin:8px 0 22px;
@@ -195,11 +179,13 @@ body{
             transparent
         ),
         var(--card);
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
 }
 
 .progress-head{
     display:flex;
     justify-content:space-between;
+    align-items:center;
 }
 
 .progress-head h3{
@@ -279,10 +265,9 @@ body{
     transition:.5s;
 }
 
-
-/* ======================================================
-   SECTION
-====================================================== */
+/* =========================================================
+   SECTION TITLE
+========================================================= */
 
 .section-title{
     display:flex;
@@ -300,10 +285,9 @@ body{
     font-size:10px;
 }
 
-
-/* ======================================================
+/* =========================================================
    TASK
-====================================================== */
+========================================================= */
 
 .task-list{
     display:flex;
@@ -325,14 +309,6 @@ body{
     border:1px solid var(--border);
     padding:14px 12px;
     border-radius:18px;
-}
-
-.task.completed{
-    opacity:.6;
-}
-
-.task.completed strong{
-    text-decoration:line-through;
 }
 
 .time{
@@ -372,14 +348,14 @@ body{
     color:#aeb5c1;
 }
 
-.status.done{
-    background:rgba(74,222,128,.12);
-    color:var(--green);
-}
-
 .status.active{
     background:rgba(245,196,81,.15);
     color:var(--gold);
+}
+
+.status.done{
+    background:rgba(74,222,128,.12);
+    color:var(--green);
 }
 
 .status.missed{
@@ -402,10 +378,9 @@ body{
     cursor:pointer;
 }
 
-
-/* ======================================================
+/* =========================================================
    EMPTY
-====================================================== */
+========================================================= */
 
 .empty{
     text-align:center;
@@ -416,10 +391,9 @@ body{
     font-size:13px;
 }
 
-
-/* ======================================================
+/* =========================================================
    TIMELINE
-====================================================== */
+========================================================= */
 
 .timeline{
     position:relative;
@@ -478,10 +452,9 @@ body{
     font-size:10px;
 }
 
-
-/* ======================================================
+/* =========================================================
    STATS
-====================================================== */
+========================================================= */
 
 .stats-grid{
     display:grid;
@@ -509,6 +482,10 @@ body{
     font-size:9px;
 }
 
+/* =========================================================
+   BIG PROGRESS
+========================================================= */
+
 .big-progress{
     margin-top:15px;
     padding:20px;
@@ -517,10 +494,13 @@ body{
     border:1px solid var(--border);
 }
 
+.big-progress h3{
+    font-size:15px;
+}
 
-/* ======================================================
+/* =========================================================
    ADD BUTTON
-====================================================== */
+========================================================= */
 
 .add-btn{
     position:fixed;
@@ -543,10 +523,9 @@ body{
     z-index:20;
 }
 
-
-/* ======================================================
-   NAV
-====================================================== */
+/* =========================================================
+   BOTTOM NAV
+========================================================= */
 
 .bottom-nav{
     position:fixed;
@@ -585,10 +564,9 @@ body{
     color:var(--gold);
 }
 
-
-/* ======================================================
-   MODAL
-====================================================== */
+/* =========================================================
+   MODAL BASE
+========================================================= */
 
 .modal{
     position:fixed;
@@ -640,15 +618,53 @@ body{
     cursor:pointer;
 }
 
+/* =========================================================
+   FORM
+========================================================= */
 
-/* ======================================================
-   ACCOUNT
-====================================================== */
-
-.account-modal-user{
-    text-align:center;
-    padding:10px 0 20px;
+.form-group{
+    margin-bottom:16px;
 }
+
+.form-group label{
+    display:block;
+    color:var(--muted);
+    font-size:10px;
+    font-weight:bold;
+    margin-bottom:7px;
+    letter-spacing:1px;
+}
+
+.form-group input,
+.form-group select{
+    width:100%;
+    padding:13px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:#090c11;
+    color:white;
+    outline:none;
+}
+
+.save-btn{
+    width:100%;
+    padding:14px;
+    border:0;
+    border-radius:13px;
+    background:
+        linear-gradient(
+            135deg,
+            var(--gold),
+            var(--gold2)
+        );
+    color:#111;
+    font-weight:900;
+    cursor:pointer;
+}
+
+/* =========================================================
+   ACCOUNT
+========================================================= */
 
 .account-avatar{
     width:76px;
@@ -659,14 +675,12 @@ body{
     display:flex;
     align-items:center;
     justify-content:center;
-    overflow:hidden;
     font-size:30px;
 }
 
-.account-avatar img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
+.account-modal-user{
+    text-align:center;
+    padding:10px 0 20px;
 }
 
 .account-name{
@@ -678,15 +692,6 @@ body{
     color:var(--muted);
     font-size:11px;
     margin-top:5px;
-    word-break:break-all;
-}
-
-.account-note{
-    text-align:center;
-    color:var(--muted);
-    font-size:10px;
-    line-height:1.6;
-    margin-top:12px;
 }
 
 .google-btn{
@@ -712,10 +717,9 @@ body{
     margin-top:10px;
 }
 
-
-/* ======================================================
+/* =========================================================
    TOAST
-====================================================== */
+========================================================= */
 
 .toast{
     position:fixed;
@@ -743,10 +747,9 @@ body{
         translateY(0);
 }
 
-
-/* ======================================================
+/* =========================================================
    MOBILE
-====================================================== */
+========================================================= */
 
 @media(max-width:430px){
 
@@ -774,137 +777,38 @@ body{
 </style>
 </head>
 
-
 <body>
 
-
-<!-- ======================================================
-     LOGIN SCREEN
-====================================================== -->
-
-<div
-    id="loginScreen"
-    style="
-        position:fixed;
-        inset:0;
-        background:#07090d;
-        z-index:9999;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        padding:20px;
-    "
->
-
-    <div
-        style="
-            width:100%;
-            max-width:380px;
-            background:#10141c;
-            border:1px solid rgba(245,196,81,.15);
-            border-radius:25px;
-            padding:30px 22px;
-            text-align:center;
-        "
-    >
-
-        <div style="font-size:55px;">
-            ⚡
-        </div>
-
-        <h1
-            style="
-                margin-top:12px;
-                font-size:25px;
-            "
-        >
-
-            Time<span style="color:#f5c451;">
-                Flow
-            </span>
-
-        </h1>
-
-        <p
-            style="
-                color:#858d9c;
-                font-size:12px;
-                line-height:1.7;
-                margin:12px 0 25px;
-            "
-        >
-
-            Login ဝင်ပြီး
-            သင့် Productivity Tasks
-            တွေကို စီမံခန့်ခွဲလိုက်ပါ။
-
-        </p>
-
-        <button
-            id="googleLoginBtnMain"
-            onclick="loginWithGoogle()"
-            style="
-                width:100%;
-                padding:14px;
-                border:0;
-                border-radius:13px;
-                background:white;
-                color:#111;
-                font-weight:800;
-                font-size:14px;
-                cursor:pointer;
-            "
-        >
-
-            🔐 Continue with Google
-
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- ======================================================
+<!-- =======================================================
      HEADER
-====================================================== -->
+======================================================= -->
 
 <header class="header">
 
     <div class="header-top">
 
         <div class="logo">
-
             ⚡ <span>TimeFlow</span>
-
         </div>
-
 
         <div class="header-actions">
 
             <div
                 class="plan-badge free-badge"
                 id="headerPlan">
-
                 🆓 FREE
-
             </div>
-
 
             <button
                 class="account-btn"
                 id="accountButton"
-                onclick="openAccountModal()"
-            >
-
+                onclick="openAccountModal()">
                 👤
-
             </button>
 
         </div>
 
     </div>
-
 
     <div class="greeting">
 
@@ -913,9 +817,7 @@ body{
         </small>
 
         <h1 id="greetingTitle">
-
             Let's get things done. 🚀
-
         </h1>
 
     </div>
@@ -923,14 +825,13 @@ body{
 </header>
 
 
-<!-- ======================================================
-     HOME
-====================================================== -->
+<!-- =======================================================
+     HOME PAGE
+======================================================= -->
 
 <section
     class="page active"
-    id="home"
->
+    id="home">
 
     <div class="progress-card">
 
@@ -946,13 +847,11 @@ body{
 
         </div>
 
-
         <div class="progress-number">
 
             <div
                 class="circle"
-                id="progressCircle"
-            >
+                id="progressCircle">
 
                 <strong id="circlePercent">
                     0%
@@ -960,24 +859,19 @@ body{
 
             </div>
 
-
             <div class="progress-info">
 
                 <p>
-
-                    Keep going!
-                    Complete your tasks
+                    Keep going! Complete your tasks
                     and make today productive. 🔥
-
                 </p>
-
 
                 <div class="bar">
 
                     <div
                         class="fill"
-                        id="progressFill"
-                    ></div>
+                        id="progressFill">
+                    </div>
 
                 </div>
 
@@ -1000,21 +894,15 @@ body{
 
     </div>
 
-
     <div
         class="task-list"
-        id="taskList"
-    >
+        id="taskList">
 
         <div class="empty">
-
             📭 Task မရှိသေးပါ။
-
             <br><br>
-
             + ခလုတ်ကိုနှိပ်ပြီး
             Task အသစ်ထည့်ပါ။
-
         </div>
 
     </div>
@@ -1032,16 +920,12 @@ body{
 
     </div>
 
-
     <div
         class="timeline"
-        id="scheduleList"
-    >
+        id="scheduleList">
 
         <div class="empty">
-
             ⏰ Schedule မရှိသေးပါ။
-
         </div>
 
     </div>
@@ -1059,7 +943,6 @@ body{
 
     </div>
 
-
     <div class="stats-grid">
 
         <div class="stat">
@@ -1074,7 +957,6 @@ body{
 
         </div>
 
-
         <div class="stat">
 
             <strong id="pMissed">
@@ -1086,7 +968,6 @@ body{
             </small>
 
         </div>
-
 
         <div class="stat">
 
@@ -1105,14 +986,13 @@ body{
 </section>
 
 
-<!-- ======================================================
-     SCHEDULE
-====================================================== -->
+<!-- =======================================================
+     SCHEDULE PAGE
+======================================================= -->
 
 <section
     class="page"
-    id="schedule"
->
+    id="schedule">
 
     <div class="section-title">
 
@@ -1126,16 +1006,12 @@ body{
 
     </div>
 
-
     <div
         class="timeline"
-        id="schedulePageList"
-    >
+        id="schedulePageList">
 
         <div class="empty">
-
             ⏰ Schedule မရှိသေးပါ။
-
         </div>
 
     </div>
@@ -1143,14 +1019,13 @@ body{
 </section>
 
 
-<!-- ======================================================
-     PROGRESS
-====================================================== -->
+<!-- =======================================================
+     PROGRESS PAGE
+======================================================= -->
 
 <section
     class="page"
-    id="progress"
->
+    id="progress">
 
     <div class="section-title">
 
@@ -1163,7 +1038,6 @@ body{
         </span>
 
     </div>
-
 
     <div class="stats-grid">
 
@@ -1179,7 +1053,6 @@ body{
 
         </div>
 
-
         <div class="stat">
 
             <strong id="pageMissed">
@@ -1191,7 +1064,6 @@ body{
             </small>
 
         </div>
-
 
         <div class="stat">
 
@@ -1219,31 +1091,27 @@ body{
                 style="
                     float:right;
                     color:#f5c451;
-                "
-            >
+                ">
                 0%
             </span>
 
         </h3>
 
-
         <div class="bar">
 
             <div
                 class="fill"
-                id="progressPageFill"
-            ></div>
+                id="progressPageFill">
+            </div>
 
         </div>
-
 
         <p
             style="
                 color:#858d9c;
                 font-size:11px;
                 margin-top:12px;
-            "
-        >
+            ">
 
             Small progress every day becomes
             big results. 🔥
@@ -1255,30 +1123,28 @@ body{
 </section>
 
 
-<!-- ======================================================
+<!-- =======================================================
      ADD BUTTON
-====================================================== -->
+======================================================= -->
 
 <button
     class="add-btn"
-    onclick="openAddModal()"
->
+    onclick="openAddModal()">
 
     +
 
 </button>
 
 
-<!-- ======================================================
-     NAV
-====================================================== -->
+<!-- =======================================================
+     BOTTOM NAVIGATION
+======================================================= -->
 
 <nav class="bottom-nav">
 
     <button
         class="nav active"
-        onclick="switchPage('home',this)"
-    >
+        onclick="switchPage('home',this)">
 
         <div>
             🏠
@@ -1291,8 +1157,7 @@ body{
 
     <button
         class="nav"
-        onclick="switchPage('schedule',this)"
-    >
+        onclick="switchPage('schedule',this)">
 
         <div>
             ⏰
@@ -1305,8 +1170,7 @@ body{
 
     <button
         class="nav"
-        onclick="switchPage('progress',this)"
-    >
+        onclick="switchPage('progress',this)">
 
         <div>
             📊
@@ -1319,14 +1183,13 @@ body{
 </nav>
 
 
-<!-- ======================================================
+<!-- =======================================================
      ACCOUNT MODAL
-====================================================== -->
+======================================================= -->
 
 <div
     class="modal"
-    id="accountModal"
->
+    id="accountModal">
 
     <div class="modal-box">
 
@@ -1338,8 +1201,7 @@ body{
 
             <button
                 class="close"
-                onclick="closeAccountModal()"
-            >
+                onclick="closeAccountModal()">
 
                 ✕
 
@@ -1350,41 +1212,21 @@ body{
 
         <div class="account-modal-user">
 
-            <div
-                class="account-avatar"
-                id="accountAvatar"
-            >
-
+            <div class="account-avatar">
                 👤
-
             </div>
 
-
-            <div
-                class="account-name"
-                id="accountName"
-            >
-
+            <div class="account-name">
                 Guest User
-
             </div>
 
-
-            <div
-                class="account-email"
-                id="accountEmail"
-            >
-
+            <div class="account-email">
                 Not signed in
-
             </div>
-
 
             <div
                 class="plan-badge free-badge"
-                id="accountPlan"
-                style="margin-top:10px;"
-            >
+                style="margin-top:10px;">
 
                 🆓 FREE
 
@@ -1395,33 +1237,25 @@ body{
 
         <button
             class="google-btn"
-            id="googleLoginBtn"
-            onclick="loginWithGoogle()"
-        >
+            onclick="showToast('🔐 Google Login — P2 မှာထည့်မယ်')">
 
             🔐 Continue with Google
 
         </button>
 
 
-        <button
-            class="logout-btn"
-            id="logoutBtn"
-            onclick="logoutUser()"
-            style="display:none;"
-        >
+        <div
+            style="
+                text-align:center;
+                color:#858d9c;
+                font-size:10px;
+                line-height:1.6;
+                margin-top:12px;
+            ">
 
-            🚪 Sign Out
-
-        </button>
-
-
-        <div class="account-note">
-
-            Google Account Login
-            အောင်မြင်ပါက
-            User Profile ကို ဒီနေရာမှာ
-            ပြသပေးမယ်။
+            Google Account Login,
+            User Profile နဲ့ Firebase
+            ကို Part 2 မှာ ချိတ်ဆက်မယ်။
 
         </div>
 
@@ -1430,14 +1264,13 @@ body{
 </div>
 
 
-<!-- ======================================================
+<!-- =======================================================
      ADD TASK MODAL
-====================================================== -->
+======================================================= -->
 
 <div
     class="modal"
-    id="addTaskModal"
->
+    id="addTaskModal">
 
     <div class="modal-box">
 
@@ -1449,8 +1282,7 @@ body{
 
             <button
                 class="close"
-                onclick="closeAddModal()"
-            >
+                onclick="closeAddModal()">
 
                 ✕
 
@@ -1460,9 +1292,7 @@ body{
 
 
         <form
-            id="taskForm"
-            onsubmit="demoSaveTask(event)"
-        >
+            onsubmit="demoSaveTask(event)">
 
             <div class="form-group">
 
@@ -1473,8 +1303,7 @@ body{
                 <input
                     type="time"
                     id="taskTime"
-                    required
-                >
+                    required>
 
             </div>
 
@@ -1489,8 +1318,7 @@ body{
                     type="text"
                     id="taskName"
                     placeholder="ဥပမာ - Physics Study"
-                    required
-                >
+                    required>
 
             </div>
 
@@ -1504,16 +1332,14 @@ body{
                 <input
                     type="text"
                     id="taskCategory"
-                    placeholder="Study / Meal / Workout"
-                >
+                    placeholder="Study / Meal / Workout">
 
             </div>
 
 
             <button
                 type="submit"
-                class="save-btn"
-            >
+                class="save-btn">
 
                 ✨ Save Task
 
@@ -1526,728 +1352,120 @@ body{
 </div>
 
 
-<!-- ======================================================
+<!-- =======================================================
      TOAST
-====================================================== -->
+======================================================= -->
 
 <div
     class="toast"
-    id="toast"
->
+    id="toast">
 
-    Ready
+    Saved!
 
 </div>
 
 
-<!-- ======================================================
-     JAVASCRIPT
-====================================================== -->
+<!-- =======================================================
+     PART 1 JAVASCRIPT
+======================================================= -->
 
 <script>
 
-/* ======================================================
-   FIREBASE CONFIG
-====================================================== */
-
-const firebaseConfig = {
-
-    apiKey:
-        "AIzaSyCw72aOGSLvdf3q221gF0yIM63RiSqpkJc",
-
-    authDomain:
-        "my-productivity-7ae74.firebaseapp.com",
-
-    projectId:
-        "my-productivity-7ae74",
-
-    storageBucket:
-        "my-productivity-7ae74.firebasestorage.app",
-
-    messagingSenderId:
-        "955389154479",
-
-    appId:
-        "1:955389154479:web:e2b46c690d7e9b1610305a",
-
-    measurementId:
-        "G-FYVSE71BM1"
-
-};
-
-
-/* ======================================================
-   INITIALIZE FIREBASE
-====================================================== */
-
-if(!firebase.apps.length){
-
-    firebase.initializeApp(
-        firebaseConfig
-    );
-
-}
-
-const auth =
-    firebase.auth();
-
-const db =
-    firebase.firestore();
-
-
-/* ======================================================
-   GOOGLE PROVIDER
-====================================================== */
-
-const googleProvider =
-    new firebase.auth.GoogleAuthProvider();
-
-googleProvider.setCustomParameters({
-
-    prompt:"select_account"
-
-});
-
-
-/* ======================================================
-   STATE
-====================================================== */
-
-let currentUser = null;
-
-let userPlan = "free";
+/* =========================================================
+   BASIC APP STATE
+========================================================= */
 
 let tasks = [];
 
 
-/* ======================================================
-   GOOGLE LOGIN
-====================================================== */
+/* =========================================================
+   PAGE SWITCH
+========================================================= */
 
-function loginWithGoogle(){
+function switchPage(pageId,btn){
 
-    const mainBtn =
-        document.getElementById(
-            "googleLoginBtnMain"
-        );
+    document.querySelectorAll(".page")
+        .forEach(page => {
+            page.classList.remove("active");
+        });
 
-    const accountBtn =
-        document.getElementById(
-            "googleLoginBtn"
-        );
+    document.querySelectorAll(".bottom-nav .nav")
+        .forEach(nav => {
+            nav.classList.remove("active");
+        });
 
+    const page =
+        document.getElementById(pageId);
 
-    if(mainBtn){
-
-        mainBtn.innerText =
-            "⏳ Signing in...";
-
+    if(page){
+        page.classList.add("active");
     }
 
-
-    if(accountBtn){
-
-        accountBtn.innerText =
-            "⏳ Signing in...";
-
-    }
-
-
-    auth.signInWithRedirect(
-        googleProvider
-    ).catch(error => {
-
-        console.error(
-            "Google Login Error:",
-            error
-        );
-
-
-        resetLoginButtons();
-
-
-        alert(
-            "Google Login မအောင်မြင်ပါ။\n\n" +
-            error.message
-        );
-
-    });
-
-}
-
-
-/* ======================================================
-   RESET LOGIN BUTTON
-====================================================== */
-
-function resetLoginButtons(){
-
-    const mainBtn =
-        document.getElementById(
-            "googleLoginBtnMain"
-        );
-
-    const accountBtn =
-        document.getElementById(
-            "googleLoginBtn"
-        );
-
-
-    if(mainBtn){
-
-        mainBtn.innerText =
-            "🔐 Continue with Google";
-
-    }
-
-
-    if(accountBtn){
-
-        accountBtn.innerText =
-            "🔐 Continue with Google";
-
+    if(btn){
+        btn.classList.add("active");
     }
 
 }
 
 
-/* ======================================================
-   CREATE / UPDATE USER DOCUMENT
-====================================================== */
-
-async function saveUserProfile(user){
-
-    if(!user) return;
-
-
-    try{
-
-        const userRef =
-            db
-            .collection("users")
-            .doc(user.uid);
-
-
-        const snapshot =
-            await userRef.get();
-
-
-        if(!snapshot.exists){
-
-            await userRef.set({
-
-                uid:user.uid,
-
-                name:
-                    user.displayName || "",
-
-                email:
-                    user.email || "",
-
-                photo:
-                    user.photoURL || "",
-
-                plan:"free",
-
-                createdAt:
-                    firebase.firestore
-                    .FieldValue
-                    .serverTimestamp()
-
-            });
-
-        }else{
-
-            await userRef.set({
-
-                name:
-                    user.displayName || "",
-
-                email:
-                    user.email || "",
-
-                photo:
-                    user.photoURL || "",
-
-                updatedAt:
-                    firebase.firestore
-                    .FieldValue
-                    .serverTimestamp()
-
-            },{
-
-                merge:true
-
-            });
-
-        }
-
-    }catch(error){
-
-        console.error(
-            "Save user error:",
-            error
-        );
-
-    }
-
-}
-
-
-/* ======================================================
-   LOAD USER PLAN
-====================================================== */
-
-async function loadUserPlan(){
-
-    if(!currentUser){
-
-        userPlan = "free";
-
-        return;
-
-    }
-
-
-    try{
-
-        const snapshot =
-            await db
-            .collection("users")
-            .doc(currentUser.uid)
-            .get();
-
-
-        if(snapshot.exists){
-
-            const data =
-                snapshot.data();
-
-
-            userPlan =
-                data.plan === "vip"
-                ? "vip"
-                : "free";
-
-        }else{
-
-            userPlan = "free";
-
-        }
-
-    }catch(error){
-
-        console.error(
-            "Plan loading error:",
-            error
-        );
-
-        userPlan = "free";
-
-    }
-
-}
-
-
-/* ======================================================
-   RENDER ACCOUNT
-====================================================== */
-
-function renderAccountUI(){
-
-    const name =
-        document.getElementById(
-            "accountName"
-        );
-
-    const email =
-        document.getElementById(
-            "accountEmail"
-        );
-
-    const avatar =
-        document.getElementById(
-            "accountAvatar"
-        );
-
-    const accountButton =
-        document.getElementById(
-            "accountButton"
-        );
-
-    const accountPlan =
-        document.getElementById(
-            "accountPlan"
-        );
-
-    const headerPlan =
-        document.getElementById(
-            "headerPlan"
-        );
-
-    const loginBtn =
-        document.getElementById(
-            "googleLoginBtn"
-        );
-
-    const logoutBtn =
-        document.getElementById(
-            "logoutBtn"
-        );
-
-
-    if(!currentUser){
-
-        name.innerText =
-            "Guest User";
-
-        email.innerText =
-            "Not signed in";
-
-        avatar.innerHTML =
-            "👤";
-
-        accountButton.innerHTML =
-            "👤";
-
-        accountPlan.innerText =
-            "🆓 FREE";
-
-        accountPlan.className =
-            "plan-badge free-badge";
-
-        headerPlan.innerText =
-            "🆓 FREE";
-
-        headerPlan.className =
-            "plan-badge free-badge";
-
-        loginBtn.style.display =
-            "block";
-
-        logoutBtn.style.display =
-            "none";
-
-        return;
-
-    }
-
-
-    name.innerText =
-        currentUser.displayName
-        || "Google User";
-
-
-    email.innerText =
-        currentUser.email
-        || "";
-
-
-    if(currentUser.photoURL){
-
-        const photo =
-            escapeHtml(
-                currentUser.photoURL
-            );
-
-
-        avatar.innerHTML = `
-            <img
-                src="${photo}"
-                alt="Profile">
-        `;
-
-
-        accountButton.innerHTML = `
-            <img
-                src="${photo}"
-                alt="Profile">
-        `;
-
-    }else{
-
-        avatar.innerHTML =
-            "👤";
-
-        accountButton.innerHTML =
-            "👤";
-
-    }
-
-
-    if(userPlan === "vip"){
-
-        accountPlan.innerText =
-            "👑 VIP";
-
-        accountPlan.className =
-            "plan-badge vip-badge";
-
-        headerPlan.innerText =
-            "👑 VIP";
-
-        headerPlan.className =
-            "plan-badge vip-badge";
-
-    }else{
-
-        accountPlan.innerText =
-            "🆓 FREE";
-
-        accountPlan.className =
-            "plan-badge free-badge";
-
-        headerPlan.innerText =
-            "🆓 FREE";
-
-        headerPlan.className =
-            "plan-badge free-badge";
-
-    }
-
-
-    loginBtn.style.display =
-        "none";
-
-    logoutBtn.style.display =
-        "block";
-
-}
-
-
-/* ======================================================
-   AUTH STATE
-====================================================== */
-
-auth.onAuthStateChanged(
-    async user => {
-
-        currentUser =
-            user || null;
-
-
-        const loginScreen =
-            document.getElementById(
-                "loginScreen"
-            );
-
-
-        if(user){
-
-            if(loginScreen){
-
-                loginScreen.style.display =
-                    "none";
-
-            }
-
-
-            await saveUserProfile(
-                user
-            );
-
-
-            await loadUserPlan();
-
-
-            renderAccountUI();
-
-
-            showToast(
-                "✅ Google Login အောင်မြင်ပါပြီ"
-            );
-
-        }else{
-
-            if(loginScreen){
-
-                loginScreen.style.display =
-                    "flex";
-
-            }
-
-
-            userPlan =
-                "free";
-
-
-            renderAccountUI();
-
-        }
-
-    }
-);
-
-
-/* ======================================================
-   LOGOUT
-====================================================== */
-
-async function logoutUser(){
-
-    try{
-
-        await auth.signOut();
-
-
-        closeAccountModal();
-
-
-        showToast(
-            "🚪 Sign Out လုပ်ပြီးပါပြီ"
-        );
-
-    }catch(error){
-
-        console.error(
-            "Logout error:",
-            error
-        );
-
-    }
-
-}
-
-
-/* ======================================================
+/* =========================================================
    ACCOUNT MODAL
-====================================================== */
+========================================================= */
 
 function openAccountModal(){
 
     document
-        .getElementById(
-            "accountModal"
-        )
+        .getElementById("accountModal")
         .classList.add("show");
 
-
-    renderAccountUI();
-
 }
-
 
 function closeAccountModal(){
 
     document
-        .getElementById(
-            "accountModal"
-        )
+        .getElementById("accountModal")
         .classList.remove("show");
 
 }
 
 
-/* ======================================================
-   PAGE SWITCH
-====================================================== */
-
-function switchPage(
-    pageId,
-    btn
-){
-
-    document
-        .querySelectorAll(".page")
-        .forEach(page => {
-
-            page.classList.remove(
-                "active"
-            );
-
-        });
-
-
-    document
-        .querySelectorAll(
-            ".bottom-nav .nav"
-        )
-        .forEach(nav => {
-
-            nav.classList.remove(
-                "active"
-            );
-
-        });
-
-
-    const page =
-        document.getElementById(
-            pageId
-        );
-
-
-    if(page){
-
-        page.classList.add(
-            "active"
-        );
-
-    }
-
-
-    if(btn){
-
-        btn.classList.add(
-            "active"
-        );
-
-    }
-
-}
-
-
-/* ======================================================
-   ADD MODAL
-====================================================== */
+/* =========================================================
+   ADD TASK MODAL
+========================================================= */
 
 function openAddModal(){
 
     document
-        .getElementById(
-            "addTaskModal"
-        )
+        .getElementById("addTaskModal")
         .classList.add("show");
 
 }
 
-
 function closeAddModal(){
 
     document
-        .getElementById(
-            "addTaskModal"
-        )
+        .getElementById("addTaskModal")
         .classList.remove("show");
 
 }
 
 
-/* ======================================================
-   DEMO SAVE TASK
-====================================================== */
+/* =========================================================
+   DEMO TASK
+========================================================= */
 
 function demoSaveTask(event){
 
     event.preventDefault();
 
-
     const time =
-        document.getElementById(
-            "taskTime"
-        ).value;
-
+        document.getElementById("taskTime").value;
 
     const name =
-        document.getElementById(
-            "taskName"
-        ).value;
-
+        document.getElementById("taskName").value;
 
     const category =
-        document.getElementById(
-            "taskCategory"
-        ).value
+        document.getElementById("taskCategory").value
         || "General";
 
 
@@ -2270,40 +1488,29 @@ function demoSaveTask(event){
 
     renderTasks();
 
-
     closeAddModal();
-
 
     event.target.reset();
 
-
-    showToast(
-        "✨ Task သိမ်းပြီးပါပြီ!"
-    );
+    showToast("✨ Task သိမ်းပြီးပါပြီ!");
 
 }
 
 
-/* ======================================================
+/* =========================================================
    RENDER TASKS
-====================================================== */
+========================================================= */
 
 function renderTasks(){
 
     const taskList =
-        document.getElementById(
-            "taskList"
-        );
+        document.getElementById("taskList");
 
     const scheduleList =
-        document.getElementById(
-            "scheduleList"
-        );
+        document.getElementById("scheduleList");
 
     const schedulePageList =
-        document.getElementById(
-            "schedulePageList"
-        );
+        document.getElementById("schedulePageList");
 
 
     if(tasks.length === 0){
@@ -2317,20 +1524,17 @@ function renderTasks(){
             </div>
         `;
 
-
         scheduleList.innerHTML = `
             <div class="empty">
                 ⏰ Schedule မရှိသေးပါ။
             </div>
         `;
 
-
         schedulePageList.innerHTML = `
             <div class="empty">
                 ⏰ Schedule မရှိသေးပါ။
             </div>
         `;
-
 
         updateProgress();
 
@@ -2339,20 +1543,14 @@ function renderTasks(){
     }
 
 
-    tasks.sort(
-        (a,b) =>
-            a.time.localeCompare(b.time)
+    tasks.sort((a,b) =>
+        a.time.localeCompare(b.time)
     );
 
 
-    taskList.innerHTML =
-        "";
-
-    scheduleList.innerHTML =
-        "";
-
-    schedulePageList.innerHTML =
-        "";
+    taskList.innerHTML = "";
+    scheduleList.innerHTML = "";
+    schedulePageList.innerHTML = "";
 
 
     tasks.forEach(task => {
@@ -2363,10 +1561,7 @@ function renderTasks(){
 
         taskList.innerHTML += `
 
-            <div
-                class="task
-                ${task.done ? "completed" : ""}"
-            >
+            <div class="task">
 
                 <div class="time">
                     ${time}
@@ -2384,23 +1579,17 @@ function renderTasks(){
 
                 </div>
 
-                <div
-                    class="status
-                    ${task.status}"
-                >
-
+                <div class="status ${task.status}">
                     ${task.status.toUpperCase()}
-
                 </div>
 
                 <div class="task-actions">
 
                     <button
                         class="icon-btn"
-                        onclick="toggleTask(${task.id})"
-                    >
+                        onclick="toggleDemoTask(${task.id})">
 
-                        ${task.done ? "↩" : "✓"}
+                        ✓
 
                     </button>
 
@@ -2441,7 +1630,6 @@ function renderTasks(){
         scheduleList.innerHTML +=
             timelineHTML;
 
-
         schedulePageList.innerHTML +=
             timelineHTML;
 
@@ -2453,24 +1641,18 @@ function renderTasks(){
 }
 
 
-/* ======================================================
-   TOGGLE TASK
-====================================================== */
+/* =========================================================
+   DEMO COMPLETE
+========================================================= */
 
-function toggleTask(id){
+function toggleDemoTask(id){
 
     const task =
-        tasks.find(
-            t => t.id === id
-        );
-
+        tasks.find(t => t.id === id);
 
     if(!task) return;
 
-
-    task.done =
-        !task.done;
-
+    task.done = !task.done;
 
     task.status =
         task.done
@@ -2479,7 +1661,6 @@ function toggleTask(id){
 
 
     renderTasks();
-
 
     showToast(
         task.done
@@ -2490,25 +1671,24 @@ function toggleTask(id){
 }
 
 
-/* ======================================================
+/* =========================================================
    PROGRESS
-====================================================== */
+========================================================= */
 
 function updateProgress(){
 
     const total =
         tasks.length;
 
-
     const done =
         tasks.filter(
-            t => t.done
+            task => task.done
         ).length;
 
 
     const missed =
         tasks.filter(
-            t => t.status === "missed"
+            task => task.status === "missed"
         ).length;
 
 
@@ -2516,102 +1696,82 @@ function updateProgress(){
         total === 0
         ? 0
         : Math.round(
-            done / total * 100
+            (done / total) * 100
         );
 
 
-    document.getElementById(
-        "percent"
-    ).innerText =
+    document.getElementById("percent")
+        .innerText =
+        percent + "%";
+
+    document.getElementById("circlePercent")
+        .innerText =
+        percent + "%";
+
+    document.getElementById("progressPercent")
+        .innerText =
         percent + "%";
 
 
-    document.getElementById(
-        "circlePercent"
-    ).innerText =
+    document.getElementById("progressFill")
+        .style.width =
+        percent + "%";
+
+    document.getElementById("progressPageFill")
+        .style.width =
         percent + "%";
 
 
-    document.getElementById(
-        "progressPercent"
-    ).innerText =
-        percent + "%";
-
-
-    document.getElementById(
-        "progressFill"
-    ).style.width =
-        percent + "%";
-
-
-    document.getElementById(
-        "progressPageFill"
-    ).style.width =
-        percent + "%";
-
-
-    document.getElementById(
-        "taskCount"
-    ).innerText =
+    document.getElementById("taskCount")
+        .innerText =
         total + " TASKS";
 
 
-    document.getElementById(
-        "pDone"
-    ).innerText =
+    document.getElementById("pDone")
+        .innerText =
         done;
 
-
-    document.getElementById(
-        "pMissed"
-    ).innerText =
+    document.getElementById("pMissed")
+        .innerText =
         missed;
 
-
-    document.getElementById(
-        "pTotal"
-    ).innerText =
+    document.getElementById("pTotal")
+        .innerText =
         total;
 
 
-    document.getElementById(
-        "pageDone"
-    ).innerText =
+    document.getElementById("pageDone")
+        .innerText =
         done;
 
-
-    document.getElementById(
-        "pageMissed"
-    ).innerText =
+    document.getElementById("pageMissed")
+        .innerText =
         missed;
 
-
-    document.getElementById(
-        "pageTotal"
-    ).innerText =
+    document.getElementById("pageTotal")
+        .innerText =
         total;
 
 
-    document.getElementById(
-        "progressCircle"
-    ).style.background = `
+    document.getElementById("progressCircle")
+        .style.background = `
 
-        conic-gradient(
-            var(--gold)
-            ${percent * 3.6}deg,
+            conic-gradient(
+                var(--gold)
+                ${percent * 3.6}deg,
 
-            #292d35
-            ${percent * 3.6}deg
-        )
+                #292d35
+                ${percent * 3.6}deg
+            )
 
-    `;
+        `;
 
 }
 
 
-/* ======================================================
-   TIME
-====================================================== */
+/* =========================================================
+   TIME FORMAT
+========================================================= */
 
 function formatTime(time){
 
@@ -2654,89 +1814,72 @@ function formatTime(time){
 }
 
 
-/* ======================================================
+/* =========================================================
    SECURITY
-====================================================== */
+========================================================= */
 
 function escapeHtml(text){
 
     const div =
-        document.createElement(
-            "div"
-        );
-
+        document.createElement("div");
 
     div.textContent =
         text ?? "";
-
 
     return div.innerHTML;
 
 }
 
 
-/* ======================================================
+/* =========================================================
    TOAST
-====================================================== */
+========================================================= */
 
 let toastTimer = null;
 
 function showToast(message){
 
     const toast =
-        document.getElementById(
-            "toast"
-        );
+        document.getElementById("toast");
 
 
     toast.innerText =
         message;
 
 
-    toast.classList.add(
-        "show"
-    );
+    toast.classList.add("show");
 
 
     if(toastTimer){
 
-        clearTimeout(
-            toastTimer
-        );
+        clearTimeout(toastTimer);
 
     }
 
 
     toastTimer =
-        setTimeout(
-            () => {
+        setTimeout(() => {
 
-                toast.classList.remove(
-                    "show"
-                );
+            toast.classList.remove("show");
 
-            },
-            2500
-        );
+        },2500);
 
 }
 
 
-/* ======================================================
-   BACKDROP CLOSE
-====================================================== */
+/* =========================================================
+   CLOSE MODAL BY BACKDROP
+========================================================= */
 
 document.addEventListener(
     "click",
-    event => {
+    function(event){
 
         if(
-            event.target.classList
-                .contains("modal")
+            event.target.classList.contains("modal")
         ){
 
-            event.target.classList
-                .remove("show");
+            event.target.classList.remove("show");
 
         }
 
@@ -2744,13 +1887,13 @@ document.addEventListener(
 );
 
 
-/* ======================================================
-   INIT
-====================================================== */
+/* =========================================================
+   INITIALIZE
+========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
-    () => {
+    function(){
 
         renderTasks();
 
